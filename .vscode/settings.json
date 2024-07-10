@@ -1,0 +1,10 @@
+{
+    "python.autoComplete.extraPaths": [
+        ".\\venv\\Lib\\site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        ".\\venv\\Lib\\site-packages"
+    ],
+    "git.autofetch": "all",
+    "files.autoSave": "afterDelay"
+}
