@@ -20,12 +20,12 @@ stream_ai_advisor/
 │   ├── nlp_analysis.py                # 自然語言處理與情感分析 
 │   ├── recommendation.py              # 推薦系統開發   
 │   
-├── reports/    
-│   ├── figures/    
-│   └── final_report.md 
+├── reports/             # 與報告相關的文件和圖表 
+│   ├── figures/         # 專案中生成的所有視覺化圖表   
+│   └── final_report.md  # 最終報告，包含專案的介紹、方法、結果和結論
 │   
-├── utils/  
-│   └── helper_functions.py 
+├── utils/                   # 專案中的輔助函數和工具   
+│   └── helper_functions.py  # 包含各種輔助函數，比如讀取和寫入數據的函數、數據清理和處理的函數，還可能包括一些常見的數學或統計函數 
 │   
 ├── main.py  # 主程序，統合所有模組 
 ├── requirements.txt    
