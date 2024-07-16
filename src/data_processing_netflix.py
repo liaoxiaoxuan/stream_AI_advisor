@@ -14,9 +14,17 @@ processed_data_path = os.path.join('data', 'processed', 'netflix_titles_cleaned.
 
 
 
-# 收集數據
+# 定義收集數據的函數
 
 def collect_data(path):  # 定義了一個名為 collect_data 的函數
     df = pd.read_csv(path)  # 使用 Pandas 的 read_csv 函數從指定路徑讀取 CSV 檔，並將其內容存儲在變數 df 中
     return df  # 返回 df 變數，從 CSV 檔中讀取的資料框
+
+
+
+# 主程式執行時收集數據
+
+if __name__ == "__main__":
+    print("Loading raw Netflix data...")  # 輸出通知：即將載入原始的 Netflix 資料
+    df_netflix = collect_data(raw_data_path)  # 調用 collect_data 函數，從 raw_data_path 指定的路徑載入原始的 Netflix 資料，並將結果存儲在變數 df_netflix 中
 
