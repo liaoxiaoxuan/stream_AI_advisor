@@ -28,10 +28,27 @@ if __name__ == "__main__":
     print("Loading raw Netflix data...")  # 輸出通知：即將載入原始的 Netflix 資料
     df_netflix = collect_data(raw_data_path)  # 調用 collect_data 函數，從 raw_data_path 指定的路徑載入原始的 Netflix 資料，並將結果存儲在變數 df_netflix 中
 
-    # # 輸出載入的數據
-    # print("Netflix data loaded successfully:")
-    # print(df_netflix.head())  # 輸出 DataFrame 的前幾行
+    # 輸出載入的數據
+    print("Netflix data loaded successfully:")
+    print(f"前幾行：\n{df_netflix.head()}")                     # 前幾行
+    print("-----------------------------------------------------")
+    print(f"列數和欄數：\n{df_netflix.shape}")                   # 列數和欄數
+    print("-----------------------------------------------------")
+    print(f"總數據量：\n{df_netflix.size}")                      # 總數據量
+    print("-----------------------------------------------------")
+    print(f"所有欄位名稱：\n{df_netflix.columns}")               # 所有欄位名稱
+    print("-----------------------------------------------------")
+    print(f"摘要資訊：\n{df_netflix.info()}")                    # 摘要資訊（包括每個欄位的非空值數量和數據類型）
+    print("-----------------------------------------------------")
+    print(f"記憶體使用量：\n{df_netflix.memory_usage()}")         # 記憶體使用量
+    print("-----------------------------------------------------")
+    print(f"重複行的數量：\n{df_netflix.duplicated().sum()}")     # 重複行的數量
+    print("-----------------------------------------------------")
+    print(f"每個欄位的缺失值數量：\n{df_netflix.isna().sum()}")    # 每個欄位的缺失值數量
+    print("-----------------------------------------------------")
+    print(f"所有欄位的數據類型：\n{df_netflix.dtypes.unique()}")   # 所有欄位的數據類型
+    print("-----------------------------------------------------")
 
-    # 預處理數據
-    print("Preprocessing Netflix data...")   # 輸出通知：即將預處理原始的 Netflix 資料
-    df_netflix_cleaned = preprocess_data(df_netflix)  # 調用 preprocess_data 函數，對 df_netflix 中的資料進行預處理，並將結果存儲在變數 df_netflix_cleaned 中
+    # # 預處理數據
+    # print("Preprocessing Netflix data...")   # 輸出通知：即將預處理原始的 Netflix 資料
+    # df_netflix_cleaned = preprocess_data(df_netflix)  # 調用 preprocess_data 函數，對 df_netflix 中的資料進行預處理，並將結果存儲在變數 df_netflix_cleaned 中
