@@ -28,6 +28,10 @@ if __name__ == "__main__":
     print("Loading raw Netflix data...")  # 輸出通知：即將載入原始的 Netflix 資料
     df_netflix = collect_data(raw_data_path)  # 調用 collect_data 函數，從 raw_data_path 指定的路徑載入原始的 Netflix 資料，並將結果存儲在變數 df_netflix 中
 
-    # 輸出載入的數據
-    print("Netflix data loaded successfully:")
-    print(df_netflix.head())  # 輸出 DataFrame 的前幾行
+    # # 輸出載入的數據
+    # print("Netflix data loaded successfully:")
+    # print(df_netflix.head())  # 輸出 DataFrame 的前幾行
+
+    # 預處理數據
+    print("Preprocessing Netflix data...")   # 輸出通知：即將預處理原始的 Netflix 資料
+    df_netflix_cleaned = preprocess_data(df_netflix)  # 調用 preprocess_data 函數，對 df_netflix 中的資料進行預處理，並將結果存儲在變數 df_netflix_cleaned 中
