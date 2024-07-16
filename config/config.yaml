@@ -1,0 +1,5 @@
+data_paths:
+  raw_netflix: "data/raw/netflix_titles.csv"
+  raw_disney: "data/raw/disney_plus_titles.csv"
+  processed_xls_netflix: "data/processed/netflix_data.csv"
+  processed_xls_disney: "data/processed/disney_plus_data.csv"
