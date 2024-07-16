@@ -27,6 +27,7 @@ stream_ai_advisor/
 │   ├── config.yaml                      # 配置文件，包含路徑和參數     
 │   
 ├── reports/             # 與報告相關的文件和圖表   
+│   ├── collect_data/    # data 數據   
 │   ├── figures/         # 專案中生成的所有視覺化圖表   
 │   └── final_report.md  # 最終報告，包含專案的介紹、方法、結果和結論   
 │   
