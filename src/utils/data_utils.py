@@ -7,10 +7,10 @@ import pandas as pd
 # 預處理
 
 def preprocess_data(data):
-    data.dropna(inplace=True)
-    # 刪除數據中的缺失值（NaN）
     data.drop_duplicates(inplace=True)
     # 刪除數據中的重複行
+    data.fillna('NA', inplace=True)
+    # 將所有缺失值填充為 'NA'
     return data
 
 
