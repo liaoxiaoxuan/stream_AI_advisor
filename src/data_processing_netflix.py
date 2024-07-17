@@ -10,7 +10,7 @@ from utils.data_utils import preprocess_data, save_data
 # 原始數據
 raw_data_path = os.path.join('data', 'raw', 'netflix_titles.csv')
 # 整理過後
-processed_data_path = os.path.join('data', 'processed', 'netflix_titles_cleaned.csv')
+processed_data_path = os.path.join('data', 'processed', 'netflix_titles_processed.csv')
 
 
 
@@ -61,12 +61,15 @@ if __name__ == "__main__":
     # print(f"資料摘要已成功寫入到 {output_file} 文件中。")
 
 
-
     # 預處理數據
     print("Preprocessing Netflix data...")   # 輸出通知：即將預處理原始的 Netflix 資料
     df_netflix_cleaned = preprocess_data(df_netflix)  # 調用 preprocess_data 函數，對 df_netflix 中的資料進行預處理，並將結果存儲在變數 df_netflix_cleaned 中
 
     # 輸出整理結果至 terminal
     print(f"Preprocessing Netflix data（first 20 rows）：\n{df_netflix_cleaned.head(20)}\n")
-    
+
+
+    # 儲存處理後的數據
+    save_data(df_netflix_cleaned, processed_data_path)  # 調用 save_data 函數，將預處理後的資料保存到 processed_data_path 指定的路徑
+    print(f"Processed data saved to {processed_data_path}")  # 輸出通知：預處理後的資料已成功保存到指定路徑
     
