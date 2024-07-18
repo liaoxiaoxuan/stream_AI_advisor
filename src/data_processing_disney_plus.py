@@ -25,8 +25,8 @@ def collect_data(path):  # 定義了一個名為 collect_data 的函數
 # 主程式執行時收集數據
 
 if __name__ == "__main__":
-    print("Loading raw disney_plus data...")  # 輸出通知：即將載入原始的 Netflix 資料
-    df_disney_plus = collect_data(raw_data_path)  # 調用 collect_data 函數，從 raw_data_path 指定的路徑載入原始的 Netflix 資料，並將結果存儲在變數 df_netflix 中
+    print("Loading raw disney_plus data...")  # 輸出通知：即將載入原始的 Disney+ 資料
+    df_disney_plus = collect_data(raw_data_path)  # 調用 collect_data 函數，從 raw_data_path 指定的路徑載入原始的 Disney+ 資料，並將結果存儲在變數 df_netflix 中
 
     # # 輸出載入的數據
     # print("disney_plus data loaded successfully:")
@@ -62,14 +62,14 @@ if __name__ == "__main__":
 
 
     # 預處理數據
-    print("Preprocessing Netflix data...")   # 輸出通知：即將預處理原始的 Netflix 資料
+    print("Preprocessing Disney+ data...")   # 輸出通知：即將預處理原始的 Disney+ 資料
     df_disney_plus_cleaned = preprocess_data(df_disney_plus)  # 調用 preprocess_data 函數，對 df_netflix 中的資料進行預處理，並將結果存儲在變數 df_netflix_cleaned 中
 
     # 輸出整理結果至 terminal
-    print(f"Preprocessing Netflix data（first 20 rows）：\n{df_disney_plus_cleaned.head(20)}\n")
+    print(f"Preprocessing Disney+ data（first 20 rows）：\n{df_disney_plus_cleaned.head(20)}\n")
 
 
-    # 儲存處理後的數據
-    save_data(df_disney_plus_cleaned, processed_data_path)  # 調用 save_data 函數，將預處理後的資料保存到 processed_data_path 指定的路徑
-    print(f"Processed data saved to {processed_data_path}")  # 輸出通知：預處理後的資料已成功保存到指定路徑
+    # # 儲存處理後的數據
+    # save_data(df_disney_plus_cleaned, processed_data_path)  # 調用 save_data 函數，將預處理後的資料保存到 processed_data_path 指定的路徑
+    # print(f"Processed data saved to {processed_data_path}")  # 輸出通知：預處理後的資料已成功保存到指定路徑
     
