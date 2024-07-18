@@ -54,7 +54,7 @@ if __name__ == "__main__":
     # )
     
     # # 寫入到txt文件中
-    # output_file = os.path.join('reports', 'collect_data', 'netflix_data_summary.txt')
+    # output_file = os.path.join('reports', 'collect_data', 'N_data_summary.txt')
     # with open(output_file, "w", encoding="utf-8") as file:
         # file.write(content)
     
