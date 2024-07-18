@@ -1,0 +1,62 @@
+disney_plus data loaded successfully:
+前幾行：
+  show_id     type  ...                      listed_in                                        description
+0      s1    Movie  ...              Animation, Family   Join Mickey and the gang as they duck the halls!
+1      s2    Movie  ...                         Comedy  Santa Claus passes his magic bag to a new St. ...
+2      s3    Movie  ...      Animation, Comedy, Family          Sid the Sloth is on Santa's naughty list.
+3      s4    Movie  ...                        Musical               This is real life, not just fantasy!
+4      s5  TV Show  ...  Docuseries, Historical, Music  A three-part documentary from Peter Jackson ca...
+
+[5 rows x 12 columns]
+-----------------------------------------------------
+列數和欄數：
+(1450, 12)
+-----------------------------------------------------
+總數據量：
+17400
+-----------------------------------------------------
+所有欄位名稱：
+Index(['show_id', 'type', 'title', 'director', 'cast', 'country', 'date_added',
+       'release_year', 'rating', 'duration', 'listed_in', 'description'],
+      dtype='object')
+-----------------------------------------------------
+摘要資訊：
+None
+-----------------------------------------------------
+記憶體使用量：
+Index             132
+show_id         11600
+type            11600
+title           11600
+director        11600
+cast            11600
+country         11600
+date_added      11600
+release_year    11600
+rating          11600
+duration        11600
+listed_in       11600
+description     11600
+dtype: int64
+-----------------------------------------------------
+重複行的數量：
+0
+-----------------------------------------------------
+每個欄位的缺失值數量：
+show_id           0
+type              0
+title             0
+director        473
+cast            190
+country         219
+date_added        3
+release_year      0
+rating            3
+duration          0
+listed_in         0
+description       0
+dtype: int64
+-----------------------------------------------------
+所有欄位的數據類型：
+[dtype('O') dtype('int64')]
+-----------------------------------------------------
