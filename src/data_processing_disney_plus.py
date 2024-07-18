@@ -69,7 +69,7 @@ if __name__ == "__main__":
     print(f"Preprocessing Disney+ data（first 20 rows）：\n{df_disney_plus_cleaned.head(20)}\n")
 
 
-    # # 儲存處理後的數據
-    # save_data(df_disney_plus_cleaned, processed_data_path)  # 調用 save_data 函數，將預處理後的資料保存到 processed_data_path 指定的路徑
-    # print(f"Processed data saved to {processed_data_path}")  # 輸出通知：預處理後的資料已成功保存到指定路徑
+    # 儲存處理後的數據
+    save_data(df_disney_plus_cleaned, processed_data_path)  # 調用 save_data 函數，將預處理後的資料保存到 processed_data_path 指定的路徑
+    print(f"Processed data saved to {processed_data_path}")  # 輸出通知：預處理後的資料已成功保存到指定路徑
     
