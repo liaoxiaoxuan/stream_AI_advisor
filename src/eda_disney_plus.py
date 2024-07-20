@@ -64,7 +64,48 @@ if __name__ == "__main__":
 
 
 # 加載數據集
-disney_pluss_overall = pd.read_csv(processed_data_path)
+disney_plus_overall = pd.read_csv(processed_data_path)
 
-# 顯示數據集的前五行
-print(disney_pluss_overall.head())
+# # 顯示數據集的前五行
+# print(disney_plus_overall.head())
+
+
+
+# 分析影片類型（'type'列），並產生圖表
+
+
+# # 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
+# netflix_shows = disney_plus_overall[disney_plus_overall['type'] == 'TV Show']  # 篩選出 'type' 列值為 'TV Show' 的數據，並存儲在 netflix_shows 變量中
+# netflix_movies = disney_plus_overall[disney_plus_overall['type'] == 'Movie']   # 篩選出 'type' 列值為 'Movie' 的數據，並存儲在 netflix_movies 變量中
+
+
+# 計算並輸出電影和電視節目的數量
+num_movies = disney_plus_overall[disney_plus_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
+num_shows = disney_plus_overall[disney_plus_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
+
+print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
+print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
+
+
+# 分析電影與電視節目的數量對比
+sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
+ax = sns.countplot(x="type", data=disney_plus_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 disney_plus_overall，使用 "Set2" 調色盤
+plt.title("Comparison of Movie vs TV Show on Disney_plus")  # 設置圖表標題
+plt.xlabel("Type")  # 設置 x 軸標籤
+plt.ylabel("Count")  # 設置 y 軸標籤
+
+# 在長條圖上顯示統計數字
+for p in ax.patches:  # 遍歷每個柱狀圖的 patch（即每個柱子）
+    height = p.get_height()  # 獲取柱子的高度，即統計數字
+    ax.text(p.get_x() + p.get_width() / 2., height + 10,  # 在柱子上方添加文本標籤，位置略高於柱子的頂端
+            f'{int(height)}',  # 顯示的數字，轉換為整數
+            ha='center',  # 水平對齊方式為中心
+            va='bottom')  # 垂直對齊方式為底部
+
+# 保存圖片
+plot_file = os.path.join('reports', 'collect_data', 'D_type.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑，包含目錄路徑 'reports/collect_data' 和文件名 'N_type.png'
+os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
+plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+
+plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+print(f"分析圖已保存到 {plot_file} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
