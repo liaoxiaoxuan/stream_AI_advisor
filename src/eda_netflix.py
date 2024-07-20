@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd  # 用於數據處理和分析。
 import os
 import seaborn as sns  # seaborn 提供高級抽象層，讓複雜的圖表生成變得簡單且美觀。
 import matplotlib.pyplot as plt  # matplotlib 提供底層功能，讓用戶可以對圖表進行詳細的控制和定制。
@@ -70,6 +70,21 @@ netflix_overall = pd.read_csv(processed_data_path)
 
 
 
-# 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
-netflix_shows = netflix_overall[netflix_overall['type'] == 'TV Show']
-netflix_movies = netflix_overall[netflix_overall['type'] == 'Movie']
+# 分析影片類型（'type'列），並產生圖表
+
+
+# # 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
+# netflix_shows = netflix_overall[netflix_overall['type'] == 'TV Show']  # 篩選出 'type' 列值為 'TV Show' 的數據，並存儲在 netflix_shows 變量中
+# netflix_movies = netflix_overall[netflix_overall['type'] == 'Movie']   # 篩選出 'type' 列值為 'Movie' 的數據，並存儲在 netflix_movies 變量中
+
+# 計算並輸出電影和電視節目的數量
+num_movies = netflix_overall[netflix_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
+num_shows = netflix_overall[netflix_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
+
+print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
+print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
+
+
+
+
+
