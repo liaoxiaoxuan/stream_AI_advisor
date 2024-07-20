@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     # 輸出載入的數據
     print("Netflix data loaded successfully:")
-    
+
     # 定義要寫入的內容
     content = (
         f"Netflix data loaded successfully:\n"
@@ -32,6 +32,7 @@ if __name__ == "__main__":
 
     # 將 info 輸出重定向到 content 中
     # 將 info() 的完整輸出（包括所有細節）添加到 content 中，以確保 info() 的所有信息都被完整地寫入到文件中。
+
     from io import StringIO  # 從 io 模組中導入 StringIO 類，用於創建內存中的字符串緩衝區
     buffer = StringIO()  # 創建一個 StringIO 實例，作為內存中的緩衝區
     df_netflix_cleaned.info(buf=buffer)  # 將 DataFrame 的 info 輸出重定向到緩衝區中
@@ -49,13 +50,18 @@ if __name__ == "__main__":
         "-----------------------------------------------------\n"
     )
     
-    # 寫入到txt文件中
-    output_file = os.path.join('reports', 'collect_data', 'N_data_cleaned_summary.txt')
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)  # 建立目標文件路徑中的所有目錄，並確保如果目錄已經存在，不會引發錯誤。
-    with open(output_file, "w", encoding="utf-8") as file:
-        file.write(content)
-    
-    print(f"資料摘要已成功寫入到 {output_file} 文件中。")
+# # 寫入到txt文件中
+# output_file = os.path.join('reports', 'collect_data', 'N_data_cleaned_summary.txt')
+# os.makedirs(os.path.dirname(output_file), exist_ok=True)  # 建立目標文件路徑中的所有目錄，並確保如果目錄已經存在，不會引發錯誤。
+# with open(output_file, "w", encoding="utf-8") as file:
+#     file.write(content)
+
+# print(f"資料摘要已成功寫入到 {output_file} 文件中。")
 
 
 
+# 加載數據集
+netflix_overall = pd.read_csv(processed_data_path)
+
+# 顯示數據集的前五行
+print(netflix_overall.head())
