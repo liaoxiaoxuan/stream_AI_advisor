@@ -53,10 +53,18 @@ if __name__ == "__main__":
         "-----------------------------------------------------\n"
     )
     
-    # 寫入到txt文件中
-    output_file = os.path.join('reports', 'collect_data', 'D_data_cleaned_summary.txt')
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)  # 建立目標文件路徑中的所有目錄，並確保如果目錄已經存在，不會引發錯誤。
-    with open(output_file, "w", encoding="utf-8") as file:
-        file.write(content)
+    # # 寫入到txt文件中
+    # output_file = os.path.join('reports', 'collect_data', 'D_data_cleaned_summary.txt')
+    # os.makedirs(os.path.dirname(output_file), exist_ok=True)  # 建立目標文件路徑中的所有目錄，並確保如果目錄已經存在，不會引發錯誤。
+    # with open(output_file, "w", encoding="utf-8") as file:
+        # file.write(content)
     
-    print(f"資料摘要已成功寫入到 {output_file} 文件中。")
+    # print(f"資料摘要已成功寫入到 {output_file} 文件中。")
+
+
+
+# 加載數據集
+disney_pluss_overall = pd.read_csv(processed_data_path)
+
+# 顯示數據集的前五行
+print(disney_pluss_overall.head())
