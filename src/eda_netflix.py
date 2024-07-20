@@ -65,3 +65,11 @@ if __name__ == "__main__":
 # 加載數據集
 netflix_overall = pd.read_csv(processed_data_path)
 
+# # 顯示數據集的前五行
+# print(netflix_overall.head())
+
+
+
+# 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
+netflix_shows = netflix_overall[netflix_overall['type'] == 'TV Show']
+netflix_movies = netflix_overall[netflix_overall['type'] == 'Movie']
