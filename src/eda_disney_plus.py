@@ -26,7 +26,19 @@ if __name__ == "__main__":
         "-----------------------------------------------------\n"
         f"所有欄位名稱：\n{df_disney_plus_cleaned.columns}\n"
         "-----------------------------------------------------\n"
-        f"摘要資訊：\n{df_disney_plus_cleaned.info()}\n"
+        f"摘要資訊：\n"
+    )
+
+    # 將 info 輸出重定向到 content 中
+    # 將 info() 的完整輸出（包括所有細節）添加到 content 中，以確保 info() 的所有信息都被完整地寫入到文件中。
+    
+    from io import StringIO  # 從 io 模組中導入 StringIO 類，用於創建內存中的字符串緩衝區
+    buffer = StringIO()  # 創建一個 StringIO 實例，作為內存中的緩衝區
+    df_disney_plus_cleaned.info(buf=buffer)  # 將 DataFrame 的 info 輸出重定向到緩衝區中
+    info_str = buffer.getvalue()  # 從緩衝區中獲取內容，並將其存儲為字符串
+    content += info_str + "-----------------------------------------------------\n"  # 將 info 字符串和分隔線添加到 content 中
+    
+    content += (    
         "-----------------------------------------------------\n"
         f"記憶體使用量：\n{df_disney_plus_cleaned.memory_usage()}\n"
         "-----------------------------------------------------\n"
@@ -40,6 +52,7 @@ if __name__ == "__main__":
     
     # 寫入到txt文件中
     output_file = os.path.join('reports', 'collect_data', 'D_data_cleaned_summary.txt')
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)  # 建立目標文件路徑中的所有目錄，並確保如果目錄已經存在，不會引發錯誤。
     with open(output_file, "w", encoding="utf-8") as file:
         file.write(content)
     
