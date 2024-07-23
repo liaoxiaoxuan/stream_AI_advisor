@@ -86,29 +86,57 @@ print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
 print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
 
 
-# 分析電影與電視節目的數量對比
-sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
-ax = sns.countplot(x="type", data=netflix_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 netflix_overall，使用 "Set2" 調色盤
-plt.title("Comparison of Movie vs TV Show on Netflix")  # 設置圖表標題
-plt.xlabel("Type")  # 設置 x 軸標籤
-plt.ylabel("Count")  # 設置 y 軸標籤
+# # 繪製長條圖
 
-# 在長條圖上顯示統計數字
-for p in ax.patches:  # 遍歷每個柱狀圖的 patch（即每個柱子）
-    height = p.get_height()  # 獲取柱子的高度，即統計數字
-    ax.text(p.get_x() + p.get_width() / 2., height + 10,  # 在柱子上方添加文本標籤，位置略高於柱子的頂端
-            f'{int(height)}',  # 顯示的數字，轉換為整數
-            ha='center',  # 水平對齊方式為中心
-            va='bottom')  # 垂直對齊方式為底部
+# # 分析電影與電視節目的數量對比
+# sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
+# ax = sns.countplot(x="type", data=netflix_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 netflix_overall，使用 "Set2" 調色盤
+# plt.title("Comparison of Movie vs TV Show on Netflix")  # 設置圖表標題
+# plt.xlabel("Type")  # 設置 x 軸標籤
+# plt.ylabel("Count")  # 設置 y 軸標籤
 
-# 保存圖片
-plot_file = os.path.join('reports', 'collect_data', 'N_type.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑，包含目錄路徑 'reports/collect_data' 和文件名 'N_type.png'
-os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
-plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+# # 在長條圖上顯示統計數字
+# for p in ax.patches:  # 遍歷每個柱狀圖的 patch（即每個柱子）
+    # height = p.get_height()  # 獲取柱子的高度，即統計數字
+    # ax.text(p.get_x() + p.get_width() / 2., height + 10,  # 在柱子上方添加文本標籤，位置略高於柱子的頂端
+            # f'{int(height)}',  # 顯示的數字，轉換為整數
+            # ha='center',  # 水平對齊方式為中心
+            # va='bottom')  # 垂直對齊方式為底部
 
+# # 保存圖片
+# plot_file = os.path.join('reports', 'collect_data', 'N_type.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑，包含目錄路徑 'reports/collect_data' 和文件名 'N_type.png'
+# os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
+# plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+
+# plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+# print(f"分析圖已保存到 {plot_file} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
+
+
+# 繪製圓餅圖
+
+labels = ['Movies', 'TV Shows']  # 圓餅圖的標籤
+sizes = [num_movies, num_shows]  # 每塊圓餅的大小對應電影和電視節目的數量
+colors = ['#ff9999', '#66b3ff']  # 每塊圓餅的顏色，電影用紅色，電視節目用藍色
+explode = (0.1, 0)  # 將第一塊（電影）突出顯示，突出顯示的比例為 0.1
+
+fig1, ax1 = plt.subplots()  # 創建一個新的圖和子圖
+ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
+        shadow=True, startangle=90)  # 繪製圓餅圖
+# sizes: 圓餅每塊的大小
+# explode: 突出顯示的比例
+# labels: 標籤
+# colors: 顏色
+# autopct: 顯示百分比，格式為 1.1%
+# shadow: 添加陰影
+# startangle: 起始角度，設定為 90 度，使第一塊從 90 度開始繪製
+
+ax1.axis('equal')  # 確保圓餅圖是圓形
+plt.title("Proportion of Movies vs TV Shows on Netflix")  # 設置圖表標題
+
+# 保存圓餅圖
+plot_file_pie = os.path.join('reports', 'collect_data', 'N_pie_chart.png')  # 圓餅圖的儲存路徑
+os.makedirs(os.path.dirname(plot_file_pie), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
+plt.savefig(plot_file_pie)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
-print(f"分析圖已保存到 {plot_file} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
-
-
-
+print(f"圓餅圖已保存到 {plot_file_pie} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
 
