@@ -155,18 +155,25 @@ netflix_date = netflix_overall[['date_added']].dropna()  # 從 netflix_overall �
 netflix_date['year'] = netflix_date['date_added'].dt.year  # 提取年份
 netflix_date['month'] = netflix_date['date_added'].dt.month_name()  # 提取月份名稱
 # 檢查創建的列
-print(netflix_date.head())
-print(netflix_date.columns)
-
-# # 定義月份順序，並反轉順序
-# month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
-# # print(month_order)
-
-
-# # 繪製熱力圖
-
-# # 計算每個年份中各個月份的頻次
-# month_counts = netflix_overall.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
-
+# print(netflix_date.head())
+# print(netflix_date.columns)
+# 計算每個年份中各個月份的頻次
+month_counts = netflix_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
 # print(month_counts)
+
+
+# 繪製熱力圖
+
+# 定義月份順序，並反轉順序
+month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
+# print(month_order)
+
+# 排列為矩陣
+matrix = month_counts.unstack()  # 先使用 unstack() 將月份從行索引轉為列索引，未出現的月份會變成 NaN
+matrix = matrix.fillna(0)  # 使用 fillna(0) 將 NaN 值填充為 0
+matrix = matrix.astype(int)  # 將數據類型轉換為整數
+matrix = matrix[month_order]  # 根據指定的月份順序重新排序列
+result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為行索引
+print(result)
+
 
