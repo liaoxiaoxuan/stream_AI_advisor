@@ -162,7 +162,7 @@ month_counts = netflix_date.groupby('year')['month'].value_counts()  # month_cou
 # print(month_counts)
 
 # 定義月份順序，並反轉順序
-month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
+month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']  #[::-1]
 # print(month_order)
 
 # 排列為矩陣
@@ -174,21 +174,61 @@ result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為�
 # print(result)
 
 
-# 繪製熱力圖
-plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
-plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
-plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
-plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
-plt.title('Netflix Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
-cbar = plt.colorbar()  # 顯示顏色條
-cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
-cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+# 計算年和月的總和
 
-# # 在熱力圖的每個單元格上顯示數值
-# for i in range(len(result.index)):  # 遍歷行索引
-#     for j in range(len(result.columns)):  # 遍歷列索引
-#         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
-#                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
-#                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
+result['Month Total'] = result.sum(axis=1)  # 計算每年的總和，並將結果新增至 DataFrame 的新列 'Year Total'
+result.loc['Year Total'] = result.sum(axis=0)  # 計算每月的總和，並將結果新增至 DataFrame 的新行 'Month Total'
 
-plt.show()  # 顯示圖表
+
+# 繪製表格
+
+# 設置圖表大小和分辨率
+plt.figure(figsize=(12, 8), dpi=300)
+# plt.figure(): 創建一個新的圖形對象，這是 Matplotlib 用來顯示和處理圖形的容器。
+# figsize=(12, 8): 設定圖形的尺寸。figsize 是一個元組，表示圖形的寬度和高度，單位是英寸（inches）。
+# dpi=200: 設定圖形的解析度。dpi 代表 "dots per inch"（每英寸點數），它決定了圖形的解析度。在這個例子中，dpi=200 表示每英寸有 200 個點，這將使圖形的細節更為清晰。高 dpi 值通常用於生成高質量的圖像文件。
+
+table = plt.table(cellText=result.values,  # cellText：表格中的數據
+                  rowLabels=result.index,  # rowLabels：表格的行標籤
+                  colLabels=result.columns,  # colLabels：表格的列標籤
+                  cellLoc='center',  # cellLoc：表格單元格中文字的位置
+                  loc='center')  # loc：表格在圖中的位置
+
+# 設置表格樣式
+table.auto_set_font_size(True)  # 自動調整字體大小
+table.set_fontsize(10)  # 設置字體大小
+table.scale(1, 1)  # 調整表格的縮放比例
+
+# 繪製格線（使用 table 的內建方法）
+for key, cell in table.get_celld().items():  # 遍歷表格中的所有單元格，返回的 key 是單元格的行列索引，cell 是單元格對象
+    if key[0] in result.index and key[1] in result.columns:  # 檢查單元格的行和列是否在結果的索引和列中
+        cell.set_edgecolor('black')  # 設置單元格邊框顏色為黑色
+        cell.set_linewidth(0.05)  # 設置單元格邊框的線寬
+
+# 隱藏坐標軸
+plt.axis('off')
+
+# 保存表格為圖片
+plt.savefig('N_date_add_count_table.png', bbox_inches='tight')
+
+# 顯示圖表
+plt.show()
+
+# # 繪製熱力圖
+# plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
+# plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
+# plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
+# plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
+# plt.title('Netflix Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
+# cbar = plt.colorbar()  # 顯示顏色條
+# cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
+# cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+
+# # # 在熱力圖的每個單元格上顯示數值
+# # for i in range(len(result.index)):  # 遍歷行索引
+# #     for j in range(len(result.columns)):  # 遍歷列索引
+# #         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
+# #                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
+# #                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
+
+# plt.show()  # 顯示圖表
