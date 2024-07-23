@@ -161,9 +161,6 @@ netflix_date['month'] = netflix_date['date_added'].dt.month_name()  # 提取月�
 month_counts = netflix_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
 # print(month_counts)
 
-
-# 繪製熱力圖
-
 # 定義月份順序，並反轉順序
 month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
 # print(month_order)
@@ -174,6 +171,16 @@ matrix = matrix.fillna(0)  # 使用 fillna(0) 將 NaN 值填充為 0
 matrix = matrix.astype(int)  # 將數據類型轉換為整數
 matrix = matrix[month_order]  # 根據指定的月份順序重新排序列
 result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為行索引
-print(result)
+# print(result)
 
 
+# 繪製熱力圖
+plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
+plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
+plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
+plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
+plt.title('Netflix Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
+cbar = plt.colorbar()  # 顯示顏色條
+cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
+cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+plt.show()  # 顯示圖表
