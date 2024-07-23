@@ -154,16 +154,19 @@ netflix_overall['date_added'] = pd.to_datetime(netflix_overall['date_added'], fo
 netflix_date = netflix_overall[['date_added']].dropna()  # 從 netflix_overall 中提取 'date_added' 列，並刪除空值
 netflix_date['year'] = netflix_date['date_added'].dt.year  # 提取年份
 netflix_date['month'] = netflix_date['date_added'].dt.month_name()  # 提取月份名稱
-# print(netflix_date['year'])
-# print(netflix_date['month'])
+# 檢查創建的列
+print(netflix_date.head())
+print(netflix_date.columns)
 
-# 定義月份順序，並反轉順序
-month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
-# print(month_order)
+# # 定義月份順序，並反轉順序
+# month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
+# # print(month_order)
 
 
-# 繪製熱力圖
+# # 繪製熱力圖
 
-df = netflix_date.groupby('year')['month'].value_counts().unstack().fillna(0)[month_order].T
-# 按年份和月份分組計數，並重新排列為矩陣
+# # 計算每個年份中各個月份的頻次
+# month_counts = netflix_overall.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
+
+# print(month_counts)
 
