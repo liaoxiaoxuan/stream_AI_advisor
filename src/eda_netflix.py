@@ -183,4 +183,12 @@ plt.title('Netflix Contents Update', fontsize=12, fontfamily='calibri', fontweig
 cbar = plt.colorbar()  # 顯示顏色條
 cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
 cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+
+# # 在熱力圖的每個單元格上顯示數值
+# for i in range(len(result.index)):  # 遍歷行索引
+#     for j in range(len(result.columns)):  # 遍歷列索引
+#         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
+#                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
+#                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
+
 plt.show()  # 顯示圖表
