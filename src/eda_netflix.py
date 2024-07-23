@@ -82,7 +82,6 @@ netflix_overall = pd.read_csv(processed_data_path)
 # # 計算並輸出電影和電視節目的數量
 # num_movies = netflix_overall[netflix_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
 # num_shows = netflix_overall[netflix_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
-
 # print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
 # print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
 
@@ -143,14 +142,28 @@ netflix_overall = pd.read_csv(processed_data_path)
 
 
 
-# # 分析上架日期（'date_add'列），並產生圖表（影片更新頻率熱力圖）
+# 分析上架日期（'date_add'列），並產生圖表（影片更新頻率熱力圖）
 
 
-# netflix_date = df_netflix_cleaned[['date_added']].dropna()  # 從 netflix_shows 中提取 'date_added' 列，並刪除空值
-# # print(netflix_date)
+# 確保 'date_added' 列是日期時間格式
+netflix_overall['date_added'] = pd.to_datetime(netflix_overall['date_added'], format='%Y/%m/%d')
+# pd.to_datetime 用來將 date_added 列轉換為 datetime 類型
+# print(netflix_overall['date_added'])
 
-# netflix_date['year'] = netflix_date['date_added'].apply(lambda x : x.split(', ')[-1])  # 提取 'date_added' 列中的年份
-# netflix_date['month'] = netflix_date['date_added'].apply(lambda x : x.lstrip().split(' ')[0])  # 提取 'date_added' 列中的月份
+# 提取年份和月份
+netflix_date = netflix_overall[['date_added']].dropna()  # 從 netflix_overall 中提取 'date_added' 列，並刪除空值
+netflix_date['year'] = netflix_date['date_added'].dt.year  # 提取年份
+netflix_date['month'] = netflix_date['date_added'].dt.month_name()  # 提取月份名稱
 # print(netflix_date['year'])
 # print(netflix_date['month'])
+
+# 定義月份順序，並反轉順序
+month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][::-1]
+# print(month_order)
+
+
+# 繪製熱力圖
+
+df = netflix_date.groupby('year')['month'].value_counts().unstack().fillna(0)[month_order].T
+# 按年份和月份分組計數，並重新排列為矩陣
 
