@@ -2,6 +2,7 @@ import pandas as pd  # 用於數據處理和分析。
 import os
 import seaborn as sns  # seaborn 提供高級抽象層，讓複雜的圖表生成變得簡單且美觀。
 import matplotlib.pyplot as plt  # matplotlib 提供底層功能，讓用戶可以對圖表進行詳細的控制和定制。
+import numpy as np  # 數值計算庫，，主要用於處理大型多維陣列和矩陣運算，以及提供大量的數學函數庫來操作這些陣列。
 
 
 
@@ -70,20 +71,20 @@ netflix_overall = pd.read_csv(processed_data_path)
 
 
 
-# 分析影片類型（'type'列），並產生圖表
+# # 分析影片類型（'type'列），並產生圖表
 
 
-# # 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
-# netflix_shows = netflix_overall[netflix_overall['type'] == 'TV Show']  # 篩選出 'type' 列值為 'TV Show' 的數據，並存儲在 netflix_shows 變量中
-# netflix_movies = netflix_overall[netflix_overall['type'] == 'Movie']   # 篩選出 'type' 列值為 'Movie' 的數據，並存儲在 netflix_movies 變量中
+# # # 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
+# # netflix_shows = netflix_overall[netflix_overall['type'] == 'TV Show']  # 篩選出 'type' 列值為 'TV Show' 的數據，並存儲在 netflix_shows 變量中
+# # netflix_movies = netflix_overall[netflix_overall['type'] == 'Movie']   # 篩選出 'type' 列值為 'Movie' 的數據，並存儲在 netflix_movies 變量中
 
 
-# 計算並輸出電影和電視節目的數量
-num_movies = netflix_overall[netflix_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
-num_shows = netflix_overall[netflix_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
+# # 計算並輸出電影和電視節目的數量
+# num_movies = netflix_overall[netflix_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
+# num_shows = netflix_overall[netflix_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
 
-print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
-print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
+# print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
+# print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
 
 
 # # 繪製長條圖
@@ -112,31 +113,44 @@ print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
 # print(f"分析圖已保存到 {plot_file} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
 
 
-# 繪製圓餅圖
+# # 繪製圓餅圖
 
-labels = ['Movies', 'TV Shows']  # 圓餅圖的標籤
-sizes = [num_movies, num_shows]  # 每塊圓餅的大小對應電影和電視節目的數量
-colors = ['#ff9999', '#66b3ff']  # 每塊圓餅的顏色，電影用紅色，電視節目用藍色
-explode = (0.1, 0)  # 將第一塊（電影）突出顯示，突出顯示的比例為 0.1
+# labels = ['Movies', 'TV Shows']  # 圓餅圖的標籤
+# sizes = [num_movies, num_shows]  # 每塊圓餅的大小對應電影和電視節目的數量
+# colors = ['#ff9999', '#66b3ff']  # 每塊圓餅的顏色，電影用紅色，電視節目用藍色
+# explode = (0.1, 0)  # 將第一塊（電影）突出顯示，突出顯示的比例為 0.1
 
-fig1, ax1 = plt.subplots()  # 創建一個新的圖和子圖
-ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
-        shadow=True, startangle=90)  # 繪製圓餅圖
-# sizes: 圓餅每塊的大小
-# explode: 突出顯示的比例
-# labels: 標籤
-# colors: 顏色
-# autopct: 顯示百分比，格式為 1.1%
-# shadow: 添加陰影
-# startangle: 起始角度，設定為 90 度，使第一塊從 90 度開始繪製
+# fig1, ax1 = plt.subplots()  # 創建一個新的圖和子圖
+# ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
+        # shadow=True, startangle=90)  # 繪製圓餅圖
+# # sizes: 圓餅每塊的大小
+# # explode: 突出顯示的比例
+# # labels: 標籤
+# # colors: 顏色
+# # autopct: 顯示百分比，格式為 1.1%
+# # shadow: 添加陰影
+# # startangle: 起始角度，設定為 90 度，使第一塊從 90 度開始繪製
 
-ax1.axis('equal')  # 確保圓餅圖是圓形
-plt.title("Proportion of Movies vs TV Shows on Netflix")  # 設置圖表標題
+# ax1.axis('equal')  # 確保圓餅圖是圓形
+# plt.title("Proportion of Movies vs TV Shows on Netflix")  # 設置圖表標題
 
-# 保存圓餅圖
-plot_file_pie = os.path.join('reports', 'collect_data', 'N_pie_chart.png')  # 圓餅圖的儲存路徑
-os.makedirs(os.path.dirname(plot_file_pie), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
-plt.savefig(plot_file_pie)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
-plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
-print(f"圓餅圖已保存到 {plot_file_pie} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
+# # 保存圓餅圖
+# plot_file_pie = os.path.join('reports', 'collect_data', 'N_pie_chart.png')  # 圓餅圖的儲存路徑
+# os.makedirs(os.path.dirname(plot_file_pie), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
+# plt.savefig(plot_file_pie)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+# plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+# print(f"圓餅圖已保存到 {plot_file_pie} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
+
+
+
+# # 分析上架日期（'date_add'列），並產生圖表（影片更新頻率熱力圖）
+
+
+# netflix_date = df_netflix_cleaned[['date_added']].dropna()  # 從 netflix_shows 中提取 'date_added' 列，並刪除空值
+# # print(netflix_date)
+
+# netflix_date['year'] = netflix_date['date_added'].apply(lambda x : x.split(', ')[-1])  # 提取 'date_added' 列中的年份
+# netflix_date['month'] = netflix_date['date_added'].apply(lambda x : x.lstrip().split(' ')[0])  # 提取 'date_added' 列中的月份
+# print(netflix_date['year'])
+# print(netflix_date['month'])
 
