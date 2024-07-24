@@ -71,72 +71,165 @@ disney_plus_overall = pd.read_csv(processed_data_path)
 
 
 
-# 分析影片類型（'type'列），並產生圖表
+# # 分析影片類型（'type'列），並產生圖表
 
 
-# # 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
-# netflix_shows = disney_plus_overall[disney_plus_overall['type'] == 'TV Show']  # 篩選出 'type' 列值為 'TV Show' 的數據，並存儲在 netflix_shows 變量中
-# netflix_movies = disney_plus_overall[disney_plus_overall['type'] == 'Movie']   # 篩選出 'type' 列值為 'Movie' 的數據，並存儲在 netflix_movies 變量中
+# # # 篩選出 'type' 列值為 'TV Show' 和 'Movie' 的數據
+# # disney_plus_shows = disney_plus_overall[disney_plus_overall['type'] == 'TV Show']  # 篩選出 'type' 列值為 'TV Show' 的數據，並存儲在 disney_plus_shows 變量中
+# # disney_plus_movies = disney_plus_overall[disney_plus_overall['type'] == 'Movie']   # 篩選出 'type' 列值為 'Movie' 的數據，並存儲在 disney_plus_movies 變量中
 
 
-# 計算並輸出電影和電視節目的數量
-num_movies = disney_plus_overall[disney_plus_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
-num_shows = disney_plus_overall[disney_plus_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
+# # 計算並輸出電影和電視節目的數量
+# num_movies = disney_plus_overall[disney_plus_overall['type'] == 'Movie'].shape[0]  # 計算 'type' 列為 'Movie' 的行數
+# num_shows = disney_plus_overall[disney_plus_overall['type'] == 'TV Show'].shape[0]  # 計算 'type' 列為 'TV Show' 的行數
 
-print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
-print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
+# print(f"Number of Movies: {num_movies}")  # 輸出電影的數量
+# print(f"Number of TV Shows: {num_shows}")  # 輸出電視節目的數量
 
 
-# # 繪製長條圖
+# # # 繪製長條圖
 
-# # 分析電影與電視節目的數量對比
-# sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
-# ax = sns.countplot(x="type", data=disney_plus_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 disney_plus_overall，使用 "Set2" 調色盤
-# plt.title("Comparison of Movie vs TV Show on Disney_plus")  # 設置圖表標題
-# plt.xlabel("Type")  # 設置 x 軸標籤
-# plt.ylabel("Count")  # 設置 y 軸標籤
+# # # 分析電影與電視節目的數量對比
+# # sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
+# # ax = sns.countplot(x="type", data=disney_plus_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 disney_plus_overall，使用 "Set2" 調色盤
+# # plt.title("Comparison of Movie vs TV Show on Disney_plus")  # 設置圖表標題
+# # plt.xlabel("Type")  # 設置 x 軸標籤
+# # plt.ylabel("Count")  # 設置 y 軸標籤
 
-# # 在長條圖上顯示統計數字
-# for p in ax.patches:  # 遍歷每個柱狀圖的 patch（即每個柱子）
-    # height = p.get_height()  # 獲取柱子的高度，即統計數字
-    # ax.text(p.get_x() + p.get_width() / 2., height + 10,  # 在柱子上方添加文本標籤，位置略高於柱子的頂端
-            # f'{int(height)}',  # 顯示的數字，轉換為整數
-            # ha='center',  # 水平對齊方式為中心
-            # va='bottom')  # 垂直對齊方式為底部
+# # # 在長條圖上顯示統計數字
+# # for p in ax.patches:  # 遍歷每個柱狀圖的 patch（即每個柱子）
+    # # height = p.get_height()  # 獲取柱子的高度，即統計數字
+    # # ax.text(p.get_x() + p.get_width() / 2., height + 10,  # 在柱子上方添加文本標籤，位置略高於柱子的頂端
+            # # f'{int(height)}',  # 顯示的數字，轉換為整數
+            # # ha='center',  # 水平對齊方式為中心
+            # # va='bottom')  # 垂直對齊方式為底部
 
-# # 保存圖片
-# plot_file = os.path.join('reports', 'collect_data', 'D_type.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑，包含目錄路徑 'reports/collect_data' 和文件名 'N_type.png'
-# os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
-# plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+# # # 保存圖片
+# # plot_file = os.path.join('reports', 'collect_data', 'D_type.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑，包含目錄路徑 'reports/collect_data' 和文件名 'N_type.png'
+# # os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
+# # plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 
+# # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+# # print(f"分析圖已保存到 {plot_file} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
+
+
+# # 繪製圓餅圖
+
+# labels = ['Movies', 'TV Shows']  # 圓餅圖的標籤
+# sizes = [num_movies, num_shows]  # 每塊圓餅的大小對應電影和電視節目的數量
+# colors = ['#ff9999', '#66b3ff']  # 每塊圓餅的顏色，電影用紅色，電視節目用藍色
+# explode = (0.1, 0)  # 將第一塊（電影）突出顯示，突出顯示的比例為 0.1
+
+# fig1, ax1 = plt.subplots()  # 創建一個新的圖和子圖
+# ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
+        # shadow=True, startangle=90)  # 繪製圓餅圖
+# # sizes: 圓餅每塊的大小
+# # explode: 突出顯示的比例
+# # labels: 標籤
+# # colors: 顏色
+# # autopct: 顯示百分比，格式為 1.1%
+# # shadow: 添加陰影
+# # startangle: 起始角度，設定為 90 度，使第一塊從 90 度開始繪製
+
+# ax1.axis('equal')  # 確保圓餅圖是圓形
+# plt.title("Proportion of Movies vs TV Shows on Disney_plus")  # 設置圖表標題
+
+# # 保存圓餅圖
+# plot_file_pie = os.path.join('reports', 'collect_data', 'D_type_pie_chart.png')  # 圓餅圖的儲存路徑
+# os.makedirs(os.path.dirname(plot_file_pie), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
+# plt.savefig(plot_file_pie)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
-# print(f"分析圖已保存到 {plot_file} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
+# print(f"圓餅圖已保存到 {plot_file_pie} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
 
 
-# 繪製圓餅圖
 
-labels = ['Movies', 'TV Shows']  # 圓餅圖的標籤
-sizes = [num_movies, num_shows]  # 每塊圓餅的大小對應電影和電視節目的數量
-colors = ['#ff9999', '#66b3ff']  # 每塊圓餅的顏色，電影用紅色，電視節目用藍色
-explode = (0.1, 0)  # 將第一塊（電影）突出顯示，突出顯示的比例為 0.1
+# 分析上架日期（'date_add'列），並產生圖表（影片更新頻率熱力圖）
 
-fig1, ax1 = plt.subplots()  # 創建一個新的圖和子圖
-ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
-        shadow=True, startangle=90)  # 繪製圓餅圖
-# sizes: 圓餅每塊的大小
-# explode: 突出顯示的比例
-# labels: 標籤
-# colors: 顏色
-# autopct: 顯示百分比，格式為 1.1%
-# shadow: 添加陰影
-# startangle: 起始角度，設定為 90 度，使第一塊從 90 度開始繪製
 
-ax1.axis('equal')  # 確保圓餅圖是圓形
-plt.title("Proportion of Movies vs TV Shows on Disney_plus")  # 設置圖表標題
+# 確保 'date_added' 列是日期時間格式
+disney_plus_overall['date_added'] = pd.to_datetime(disney_plus_overall['date_added'], format='%Y/%m/%d')
+# pd.to_datetime 用來將 date_added 列轉換為 datetime 類型
+print(disney_plus_overall['date_added'])
 
-# 保存圓餅圖
-plot_file_pie = os.path.join('reports', 'collect_data', 'D_type_pie_chart.png')  # 圓餅圖的儲存路徑
-os.makedirs(os.path.dirname(plot_file_pie), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
-plt.savefig(plot_file_pie)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
-plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
-print(f"圓餅圖已保存到 {plot_file_pie} 文件中。")  # 輸出一條消息到終端，告知用戶圖表已成功保存到指定的文件路徑
+# # 提取年份和月份
+# disney_plus_date = disney_plus_overall[['date_added']].dropna()  # 從 disney_plus_overall 中提取 'date_added' 列，並刪除空值
+# disney_plus_date['year'] = disney_plus_date['date_added'].dt.year  # 提取年份
+# disney_plus_date['month'] = disney_plus_date['date_added'].dt.month_name()  # 提取月份名稱
+# # 檢查創建的列
+# # print(disney_plus_date.head())
+# # print(disney_plus_date.columns)
+# # 計算每個年份中各個月份的頻次
+# month_counts = disney_plus_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
+# # print(month_counts)
+
+# # 定義月份順序，並反轉順序
+# month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']  #[::-1]
+# # print(month_order)
+
+# # 排列為矩陣
+# matrix = month_counts.unstack()  # 先使用 unstack() 將月份從行索引轉為列索引，未出現的月份會變成 NaN
+# matrix = matrix.fillna(0)  # 使用 fillna(0) 將 NaN 值填充為 0
+# matrix = matrix.astype(int)  # 將數據類型轉換為整數
+# matrix = matrix[month_order]  # 根據指定的月份順序重新排序列
+# result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為行索引
+# # print(result)
+
+
+# # 計算年和月的總和
+
+# result['Month Total'] = result.sum(axis=1)  # 計算每年的總和，並將結果新增至 DataFrame 的新列 'Year Total'
+# result.loc['Year Total'] = result.sum(axis=0)  # 計算每月的總和，並將結果新增至 DataFrame 的新行 'Month Total'
+
+
+# # 繪製表格
+
+# # 設置圖表大小和分辨率
+# plt.figure(figsize=(12, 8), dpi=300)
+# # plt.figure(): 創建一個新的圖形對象，這是 Matplotlib 用來顯示和處理圖形的容器。
+# # figsize=(12, 8): 設定圖形的尺寸。figsize 是一個元組，表示圖形的寬度和高度，單位是英寸（inches）。
+# # dpi=200: 設定圖形的解析度。dpi 代表 "dots per inch"（每英寸點數），它決定了圖形的解析度。在這個例子中，dpi=200 表示每英寸有 200 個點，這將使圖形的細節更為清晰。高 dpi 值通常用於生成高質量的圖像文件。
+
+# table = plt.table(cellText=result.values,  # cellText：表格中的數據
+                #   rowLabels=result.index,  # rowLabels：表格的行標籤
+                #   colLabels=result.columns,  # colLabels：表格的列標籤
+                #   cellLoc='center',  # cellLoc：表格單元格中文字的位置
+                #   loc='center')  # loc：表格在圖中的位置
+
+# # 設置表格樣式
+# table.auto_set_font_size(True)  # 自動調整字體大小
+# table.set_fontsize(10)  # 設置字體大小
+# table.scale(1, 1)  # 調整表格的縮放比例
+
+# # 繪製格線（使用 table 的內建方法）
+# for key, cell in table.get_celld().items():  # 遍歷表格中的所有單元格，返回的 key 是單元格的行列索引，cell 是單元格對象
+    # if key[0] in result.index and key[1] in result.columns:  # 檢查單元格的行和列是否在結果的索引和列中
+        # cell.set_edgecolor('black')  # 設置單元格邊框顏色為黑色
+        # cell.set_linewidth(0.05)  # 設置單元格邊框的線寬
+
+# # 隱藏坐標軸
+# plt.axis('off')
+
+# # 保存表格為圖片
+# plt.savefig('N_date_add_count_table.png', bbox_inches='tight')
+
+# # 顯示圖表
+# plt.show()
+
+# # # 繪製熱力圖
+# # plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
+# # plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
+# # plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
+# # plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
+# # plt.title('disney_plus Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
+# # cbar = plt.colorbar()  # 顯示顏色條
+# # cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
+# # cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+
+# # # # 在熱力圖的每個單元格上顯示數值
+# # # for i in range(len(result.index)):  # 遍歷行索引
+# # #     for j in range(len(result.columns)):  # 遍歷列索引
+# # #         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
+# # #                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
+# # #                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
+
+# # plt.show()  # 顯示圖表
