@@ -2,6 +2,7 @@ import pandas as pd  # 用於數據處理和分析。
 import os
 import seaborn as sns  # seaborn 提供高級抽象層，讓複雜的圖表生成變得簡單且美觀。
 import matplotlib.pyplot as plt  # matplotlib 提供底層功能，讓用戶可以對圖表進行詳細的控制和定制。
+import numpy as np  # 數值計算庫，，主要用於處理大型多維陣列和矩陣運算，以及提供大量的數學函數庫來操作這些陣列。
 
 
 
@@ -216,26 +217,22 @@ os.makedirs(os.path.dirname(plt_file_count_table), exist_ok=True)  # 創建圖�
 plt.savefig(plt_file_count_table, bbox_inches='tight')  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
-# plt.savefig('D_date_add_count_table.png', bbox_inches='tight')
 
-# # 顯示圖表
-# plt.show()
+# 繪製熱力圖
+plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
+plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
+plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
+plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
+plt.title('disney_plus Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
+cbar = plt.colorbar()  # 顯示顏色條
+cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
+cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
 
-# # # 繪製熱力圖
-# # plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
-# # plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
-# # plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
-# # plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
-# # plt.title('disney_plus Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
-# # cbar = plt.colorbar()  # 顯示顏色條
-# # cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
-# # cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+# # 在熱力圖的每個單元格上顯示數值
+# for i in range(len(result.index)):  # 遍歷行索引
+#     for j in range(len(result.columns)):  # 遍歷列索引
+#         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
+#                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
+#                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
 
-# # # # 在熱力圖的每個單元格上顯示數值
-# # # for i in range(len(result.index)):  # 遍歷行索引
-# # #     for j in range(len(result.columns)):  # 遍歷列索引
-# # #         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
-# # #                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
-# # #                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
-
-# # plt.show()  # 顯示圖表
+plt.show()  # 顯示圖表
