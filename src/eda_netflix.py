@@ -209,10 +209,11 @@ for key, cell in table.get_celld().items():  # 遍歷表格中的所有單元格
 plt.axis('off')
 
 # 保存表格為圖片
-plt.savefig('N_date_add_count_table.png', bbox_inches='tight')
+plt_file_count_table = os.path.join('reports', 'collect_data', 'N_date_add_count_table.png')  # 表格的儲存路徑
+os.makedirs(os.path.dirname(plt_file_count_table), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
+plt.savefig(plt_file_count_table, bbox_inches='tight')  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
-# 顯示圖表
-plt.show()
 
 # # 繪製熱力圖
 # plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
