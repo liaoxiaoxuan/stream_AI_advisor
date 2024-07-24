@@ -146,10 +146,10 @@ disney_plus_overall = pd.read_csv(processed_data_path)
 # 分析上架日期（'date_add'列），並產生圖表（影片更新頻率熱力圖）
 
 
-# 確保 'date_added' 列是日期時間格式
-disney_plus_overall['date_added'] = pd.to_datetime(disney_plus_overall['date_added'], format='%Y/%m/%d')
-# pd.to_datetime 用來將 date_added 列轉換為 datetime 類型
+# 確保 'date_added' 列是日期時間格式，並處理格式不一致的情況
+disney_plus_overall['date_added'] = pd.to_datetime(disney_plus_overall['date_added'], errors='coerce')
 print(disney_plus_overall['date_added'])
+
 
 # # 提取年份和月份
 # disney_plus_date = disney_plus_overall[['date_added']].dropna()  # 從 disney_plus_overall 中提取 'date_added' 列，並刪除空值
