@@ -238,3 +238,8 @@ os.makedirs(os.path.dirname(plt_file_count_heatmap), exist_ok=True)  # 創建圖
 plt.savefig(plt_file_count_heatmap)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
+
+
+# 分析發行年分（'release_year'列），並產生圖表
+# 分析年齡分級（'rating'列），並產生圖表
+# 分析影片時長（'duration'列），並產生圖表
