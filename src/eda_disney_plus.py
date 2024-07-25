@@ -289,7 +289,7 @@ plt.pie(
 plt.title('Percentage of Netflix Disney+ Released Each Year')  # 設置圓餅圖標題
 
 # 保存圖片
-plot_file = os.path.join('reports', 'collect_data', 'N_release_year_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
+plot_file = os.path.join('reports', 'collect_data', 'D_release_year_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
 os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
 plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 plt.show()  # 顯示圓餅圖
