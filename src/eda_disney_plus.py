@@ -218,26 +218,40 @@ result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為�
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
-# 繪製熱力圖
-plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
-plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
-plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
-plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
-plt.title('disney_plus Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
-cbar = plt.colorbar()  # 顯示顏色條
-cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
-cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
+# # 繪製熱力圖
+# plt.figure(figsize=(10, 7), dpi=200)  # 設置圖表大小和分辨率
+# plt.pcolor(result, cmap='afmhot_r', edgecolors='white', linewidths=2)  # 使用顏色地圖繪製熱力圖
+# plt.xticks(np.arange(0.5, len(result.columns), 1), result.columns, fontsize=7, fontfamily='serif')  # 設置 x 軸標籤
+# plt.yticks(np.arange(0.5, len(result.index), 1), result.index, fontsize=7, fontfamily='serif')  # 設置 y 軸標籤
+# plt.title('disney_plus Contents Update', fontsize=12, fontfamily='calibri', fontweight='bold', position=(0.20, 1.0+0.02))  # 設置圖表標題
+# cbar = plt.colorbar()  # 顯示顏色條
+# cbar.ax.tick_params(labelsize=8)  # 設置顏色條標籤大小
+# cbar.ax.minorticks_on()  # 啟用顏色條的小刻度
 
-# # 在熱力圖的每個單元格上顯示數值
-# for i in range(len(result.index)):  # 遍歷行索引
-#     for j in range(len(result.columns)):  # 遍歷列索引
-#         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
-#                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
-#                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
+# # # 在熱力圖的每個單元格上顯示數值
+# # for i in range(len(result.index)):  # 遍歷行索引
+# #     for j in range(len(result.columns)):  # 遍歷列索引
+# #         plt.text(j + 0.5, i + 0.5, int(result.iloc[i, j]),  # 在 (j + 0.5, i + 0.5) 位置添加文本，文本內容為對應單元格的整數值
+# #                  ha='center', va='center',  # 設置文本的水平和垂直對齊方式為居中
+# #                  fontsize=8, color='black')  # 設置文本的字體大小為 8，顏色為黑色
 
-# 保存熱力圖為圖片
-plt_file_count_heatmap = os.path.join('reports', 'figures', 'D_date_add_heatmap.png')  # 表格的儲存路徑
-os.makedirs(os.path.dirname(plt_file_count_heatmap), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
-plt.savefig(plt_file_count_heatmap)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
-plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+# # 保存熱力圖為圖片
+# plt_file_count_heatmap = os.path.join('reports', 'figures', 'D_date_add_heatmap.png')  # 表格的儲存路徑
+# os.makedirs(os.path.dirname(plt_file_count_heatmap), exist_ok=True)  # 創建圖片儲存目錄（如果不存在的話）
+# plt.savefig(plt_file_count_heatmap)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+# plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+
+
+
+# 分析發行年分（'release_year'列），並產生圖表
+
+
+# 計算每年的電影數量
+release_year_counts = disney_plus_overall['release_year'].value_counts().sort_index()
+# print(release_year_counts)
+
+# 根據數量降冪排序
+release_year_counts_sorted = release_year_counts.sort_values(ascending=False)
+# print(release_year_counts_sorted)
+
 
