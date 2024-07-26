@@ -273,50 +273,50 @@ release_year_counts_sorted = release_year_counts.sort_values(ascending=False)
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
-# # 繪製圓餅圖
-# plt.figure(figsize=(8,8))  # 設置圖表大小
-# top_years = release_year_counts_sorted.head(15)  # 取電影發布前15名多的年份
-# # top_years_sorted = top_years.sort_index()  # 依照年份排序 
-# plt.pie(
-    # top_years,  # 圓餅圖的數據，即每個部分的數量或比例
-    # labels=top_years.index,  # 每個扇形的標籤，這裡是年份
-    # autopct='%1.0f%%',  # 顯示每個扇形的百分比，格式為整數的百分比
-    # colors=sns.color_palette("Set2", 15),  # 設定圓餅圖的顏色，這裡使用 Seaborn 的 "Set2" 調色板，包含15種顏色
-    # startangle=140  # 設置圓餅圖的起始角度為140度，以調整圖形的顯示方向
-# )
-# plt.title('Percentage of Netflix Disney+ Released Each Year')  # 設置圓餅圖標題
-
-# # 保存圖片
-# plot_file = os.path.join('reports', 'collect_data', 'D_release_year_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
-# os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
-# plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
-# plt.show()  # 顯示圓餅圖
-
-
-# 分析年齡分級（'rating'列），並產生圖表
-
-
-# 計算年齡分級的電影數量
-rating_counts = disney_plus_overall['rating'].value_counts().sort_index()
-print(rating_counts)
-
-
-# 繪製長條圖
-plt.figure(figsize=(12,10)) # 設置圖表大小
-sns.set(style="darkgrid") # 設置 Seaborn 的樣式為 "darkgrid"
-ax = sns.countplot(x="rating", data=disney_plus_overall, palette="Set2", order=rating_counts.index) # 使用 Seaborn 繪製柱狀圖，顯示影片分級的數量分布
-ax.set_title("Distribution of Disney+ Movies by Rating", fontsize=16)  # 設置圖表標題
-
-# # 將統計數字顯示在長條圖上
-for container in ax.containers:  # 使用迴圈來依次訪問每根長條
-    ax.bar_label(container, fmt='%d', label_type='edge', padding=3)  # 在當前長條上添加數字標籤
-    # fmt='%d': 指定標籤的格式為整數
-    # label_type='edge': 將標籤顯示在長條的邊緣
-    # padding=3: 設定標籤與條形之間的間距為3個像素
+# 繪製圓餅圖
+plt.figure(figsize=(8,8))  # 設置圖表大小
+top_years = release_year_counts_sorted.head(15)  # 取電影發布前15名多的年份
+# top_years_sorted = top_years.sort_index()  # 依照年份排序 
+plt.pie(
+    top_years,  # 圓餅圖的數據，即每個部分的數量或比例
+    labels=top_years.index,  # 每個扇形的標籤，這裡是年份
+    autopct='%1.0f%%',  # 顯示每個扇形的百分比，格式為整數的百分比
+    colors=sns.color_palette("Set2", 15),  # 設定圓餅圖的顏色，這裡使用 Seaborn 的 "Set2" 調色板，包含15種顏色
+    startangle=140  # 設置圓餅圖的起始角度為140度，以調整圖形的顯示方向
+)
+plt.title('Percentage of Disney+ Released Each Year')  # 設置圓餅圖標題
 
 # 保存圖片
-plot_file = os.path.join('reports', 'collect_data', 'D_rating_bar.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
+plot_file = os.path.join('reports', 'collect_data', 'D_release_year_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
 os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
 plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+plt.show()  # 顯示圓餅圖
 
-plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
+
+# # 分析年齡分級（'rating'列），並產生圖表
+
+
+# # 計算年齡分級的電影數量
+# rating_counts = disney_plus_overall['rating'].value_counts().sort_index()
+# print(rating_counts)
+
+
+# # 繪製長條圖
+# plt.figure(figsize=(12,10)) # 設置圖表大小
+# sns.set(style="darkgrid") # 設置 Seaborn 的樣式為 "darkgrid"
+# ax = sns.countplot(x="rating", data=disney_plus_overall, palette="Set2", order=rating_counts.index) # 使用 Seaborn 繪製柱狀圖，顯示影片分級的數量分布
+# ax.set_title("Distribution of Disney+ Movies by Rating", fontsize=16)  # 設置圖表標題
+
+# # # 將統計數字顯示在長條圖上
+# for container in ax.containers:  # 使用迴圈來依次訪問每根長條
+    # ax.bar_label(container, fmt='%d', label_type='edge', padding=3)  # 在當前長條上添加數字標籤
+    # # fmt='%d': 指定標籤的格式為整數
+    # # label_type='edge': 將標籤顯示在長條的邊緣
+    # # padding=3: 設定標籤與條形之間的間距為3個像素
+
+# # 保存圖片
+# plot_file = os.path.join('reports', 'collect_data', 'D_rating_bar.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
+# os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
+# plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+
+# plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
