@@ -73,8 +73,8 @@ disney_plus_overall = pd.read_csv(processed_data_path)
 # 分割數據集
 d1 = disney_plus_overall[disney_plus_overall["type"] == "TV Show"]  # 篩選出 "type" 列為 "TV Show" 的資料過濾出來並賦值給 d1
 d2 = disney_plus_overall[disney_plus_overall["type"] == "Movie"]  # 篩選出 "type" 列為 "Movie" 的資料過濾出來並賦值給 d2
-print(d1)
-print(d2)
+# print(d1)
+# print(d2)
 
 
 # # 分析影片類型（'type'列），並產生圖表
@@ -261,6 +261,22 @@ ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
 ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
 plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
 # plt.show()
+
+# 繪製折線圖
+
+# 分別計算 "TV Show" 和 "Movie" 的 year_counts
+tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
+tv_show_date['date_added'] = pd.to_datetime(tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+tv_show_date['year'] = tv_show_date['date_added'].dt.year  # 提取年份
+tv_show_year_counts = tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
+
+movie_date = d2[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
+movie_date['date_added'] = pd.to_datetime(movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
+movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
+
+print(tv_show_year_counts)
+print(movie_year_counts)
 
 
 
