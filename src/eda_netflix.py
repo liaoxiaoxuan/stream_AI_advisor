@@ -264,18 +264,19 @@ plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
 
 # 繪製折線圖
 
-# # 分別計算 "TV Show" 和 "Movie" 的 year_counts
-# tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
-# tv_show_date['year'] = tv_show_date['date_added'].dt.year  # 提取年份
-# tv_show_year_counts = tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
+# 分別計算 "TV Show" 和 "Movie" 的 year_counts
+tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
+tv_show_date['date_added'] = pd.to_datetime(tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+tv_show_date['year'] = tv_show_date['date_added'].dt.year  # 提取年份
+tv_show_year_counts = tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
 
-# movie_date = d2[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
-# movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
-# movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
+movie_date = d2[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
+movie_date['date_added'] = pd.to_datetime(movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
+movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
 
-# # 確認計算結果（可選）
-# # print(tv_show_year_counts)  
-# # print(movie_year_counts)
+print(tv_show_year_counts)  
+print(movie_year_counts)
 
 
 
@@ -284,11 +285,11 @@ plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
 
 # 計算每年的電影數量
 release_year_counts = netflix_overall['release_year'].value_counts().sort_index()
-print(release_year_counts)
+# print(release_year_counts)
 
 # 根據數量降冪排序
 release_year_counts_sorted = release_year_counts.sort_values(ascending=False)
-print(release_year_counts_sorted)
+# print(release_year_counts_sorted)
 
 
 # # 繪製長條圖
