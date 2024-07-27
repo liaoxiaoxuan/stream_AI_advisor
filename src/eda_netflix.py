@@ -87,7 +87,7 @@ netflix_overall = pd.read_csv(processed_data_path)
 
 
 # # 繪製長條圖
-# sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
+# sns.set(style="whitegrid")  # 設定 Seaborn 的繪圖樣式為 "whitegrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
 # ax = sns.countplot(x="type", data=netflix_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 netflix_overall，使用 "Set2" 調色盤
 # plt.title("Comparison of Movie vs TV Show on Netflix")  # 設置圖表標題
 # plt.xlabel("Type")  # 設置 x 軸標籤
@@ -143,21 +143,24 @@ netflix_overall = pd.read_csv(processed_data_path)
 # # 分析上架日期（'date_add'列），並產生圖表（影片更新頻率熱力圖）
 
 
-# # 確保 'date_added' 列是日期時間格式
-# netflix_overall['date_added'] = pd.to_datetime(netflix_overall['date_added'], format='%Y/%m/%d')
-# # pd.to_datetime 用來將 date_added 列轉換為 datetime 類型
-# # print(netflix_overall['date_added'])
+# 確保 'date_added' 列是日期時間格式
+netflix_overall['date_added'] = pd.to_datetime(netflix_overall['date_added'], format='%Y/%m/%d')
+# pd.to_datetime 用來將 date_added 列轉換為 datetime 類型
+# print(netflix_overall['date_added'])
 
-# # 提取年份和月份
-# netflix_date = netflix_overall[['date_added']].dropna()  # 從 netflix_overall 中提取 'date_added' 列，並刪除空值
-# netflix_date['year'] = netflix_date['date_added'].dt.year  # 提取年份
-# netflix_date['month'] = netflix_date['date_added'].dt.month_name()  # 提取月份名稱
-# # 檢查創建的列
-# # print(netflix_date.head())
-# # print(netflix_date.columns)
-# # 計算每個年份中各個月份的頻次
-# month_counts = netflix_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
-# # print(month_counts)
+# 提取年份和月份
+netflix_date = netflix_overall[['date_added']].dropna()  # 從 netflix_overall 中提取 'date_added' 列，並刪除空值
+netflix_date['year'] = netflix_date['date_added'].dt.year  # 提取年份
+netflix_date['month'] = netflix_date['date_added'].dt.month_name()  # 提取月份名稱
+# 檢查創建的列
+# print(netflix_date.head())
+# print(netflix_date.columns)
+
+# 計算上架數量
+month_counts = netflix_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
+year_counts = netflix_date['year'].value_counts().sort_index()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
+# print(month_counts)
+print(year_counts)
 
 # # 定義月份順序，並反轉順序
 # month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']  #[::-1]
@@ -172,10 +175,10 @@ netflix_overall = pd.read_csv(processed_data_path)
 # # print(result)
 
 
-# # # 計算年和月的總和
+# # 計算年和月的總和
 
-# # result['Month Total'] = result.sum(axis=1)  # 計算每年的總和，並將結果新增至 DataFrame 的新列 'Year Total'
-# # result.loc['Year Total'] = result.sum(axis=0)  # 計算每月的總和，並將結果新增至 DataFrame 的新行 'Month Total'
+# result['Month Total'] = result.sum(axis=1)  # 計算每年的總和，並將結果新增至 DataFrame 的新列 'Year Total'
+# result.loc['Year Total'] = result.sum(axis=0)  # 計算每月的總和，並將結果新增至 DataFrame 的新行 'Month Total'
 
 
 # # # 繪製表格
@@ -237,6 +240,37 @@ netflix_overall = pd.read_csv(processed_data_path)
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
+# 繪製年分柱狀圖
+
+
+
+# 繪製折線圖
+
+# 分割數據集
+d1 = netflix_overall[netflix_overall["type"] == "TV Show"]  # 篩選出 "type" 列為 "TV Show" 的資料過濾出來並賦值給 d1
+d2 = netflix_overall[netflix_overall["type"] == "Movie"]  # 篩選出 "type" 列為 "Movie" 的資料過濾出來並賦值給 d2
+# print(d1)
+# print(d2)
+
+# # 計算每年新增節目和電影的數量和百分比
+# col = "year_added"  # 設定要計算的列名稱為 "year_added"
+# vc1 = d1[col].value_counts().reset_index()  # 計算 d1 中 "year_added" 列的值出現的次數，並重置索引
+# vc1 = vc1.rename(columns = {col : "count", "index" : col})  # 將列名 "year_added" 更改為 "count"，將索引列名更改為 "year_added"
+# vc1['percent'] = vc1['count'].apply(lambda x : 100*x/sum(vc1['count']))  # 計算每個年份新增內容的百分比
+# vc1 = vc1.sort_values(col)  # 根據年份排序
+# vc2 = d2[col].value_counts().reset_index()  # 計算 d2 中 "year_added" 列的值出現的次數，並重置索引
+# vc2 = vc2.rename(columns = {col : "count", "index" : col})  # 將列名 "year_added" 更改為 "count"，將索引列名更改為 "year_added"
+# vc2['percent'] = vc2['count'].apply(lambda x : 100*x/sum(vc2['count']))  # 計算每個年份新增內容的百分比
+# vc2 = vc2.sort_values(col)  # 根據年份排序
+
+# trace1 = go.Scatter(x=vc1[col], y=vc1["count"], name="TV Shows", marker=dict(color="#a678de"))  # 建立電視節目的散點圖，設定 x 軸為年份，y 軸為新增內容的數量，名稱為 "TV Shows"，並設定標記顏色
+# trace2 = go.Scatter(x=vc2[col], y=vc2["count"], name="Movies", marker=dict(color="#6ad49b"))  # 建立電影的散點圖，設定 x 軸為年份，y 軸為新增內容的數量，名稱為 "Movies"，並設定標記顏色
+# data = [trace1, trace2]  # 將兩個散點圖數據集合在一起
+# layout = go.Layout(title="Content added over the years", legend=dict(x=0.1, y=1.1, orientation="h"))  # 設定圖表的佈局，包括標題和圖例位置
+# fig = go.Figure(data, layout=layout)  # 建立圖表物件並傳入數據和佈局
+# fig.show()  # 顯示圖表
+
+
 
 # 分析發行年分（'release_year'列），並產生圖表
 
@@ -252,7 +286,7 @@ print(release_year_counts_sorted)
 
 # # 繪製長條圖
 # plt.figure(figsize=(12,10)) # 設置圖表大小
-# sns.set(style="darkgrid") # 設置 Seaborn 的樣式為 "darkgrid"
+# sns.set(style="whitegrid") # 設置 Seaborn 的樣式為 "whitegrid"
 # ax = sns.countplot(y="release_year", data=netflix_overall, palette="Set2", order=release_year_counts_sorted.index[0:15]) # 取前 15 名發行數量較多的年分，使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
 # ax.set_title("Number of Movies Released by Netflix Each Year", fontsize=16)  # 設置圖表標題
 
@@ -296,21 +330,21 @@ print(release_year_counts_sorted)
 
 # 計算年齡分級的電影數量
 rating_counts = netflix_overall['rating'].value_counts().sort_index()
-print(rating_counts)
+# print(rating_counts)
 
 
 # # 繪製長條圖
 # plt.figure(figsize=(12,10)) # 設置圖表大小
-# sns.set(style="darkgrid") # 設置 Seaborn 的樣式為 "darkgrid"
+# sns.set(style="whitegrid") # 設置 Seaborn 的樣式為 "whitegrid"
 # ax = sns.countplot(x="rating", data=netflix_overall, palette="Set2", order=rating_counts.index) # 使用 Seaborn 繪製柱狀圖，顯示影片分級的數量分布
 # ax.set_title("Distribution of Netflix Movies by Rating", fontsize=16)  # 設置圖表標題
 
-# # # 將統計數字顯示在長條圖上
+# # 將統計數字顯示在長條圖上
 # for container in ax.containers:  # 使用迴圈來依次訪問每根長條
     # ax.bar_label(container, fmt='%d', label_type='edge', padding=3)  # 在當前長條上添加數字標籤
-    # # fmt='%d': 指定標籤的格式為整數
-    # # label_type='edge': 將標籤顯示在長條的邊緣
-    # # padding=3: 設定標籤與條形之間的間距為3個像素
+    # fmt='%d': 指定標籤的格式為整數
+    # label_type='edge': 將標籤顯示在長條的邊緣
+    # padding=3: 設定標籤與條形之間的間距為3個像素
 
 # # 保存圖片
 # plot_file = os.path.join('reports', 'collect_data', 'N_rating_bar.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
@@ -320,22 +354,29 @@ print(rating_counts)
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
-# 繪製圓餅圖
-plt.figure(figsize=(8,8))  # 設置圖表大小
-plt.pie(
-    rating_counts,  # 圓餅圖的數據，即每個部分的數量或比例
-    labels=rating_counts.index,  # 每個扇形的標籤，這裡是年份
-    autopct='%1.0f%%',  # 顯示每個扇形的百分比，格式為整數的百分比
-    colors=sns.color_palette("Set2", 15),  # 設定圓餅圖的顏色，這裡使用 Seaborn 的 "Set2" 調色板，包含15種顏色
-    startangle=140  # 設置圓餅圖的起始角度為140度，以調整圖形的顯示方向
-)
-plt.title('Percentage Distribution of Netflix by Rating')  # 設置圓餅圖標題
+# # 繪製圓餅圖
+# plt.figure(figsize=(8,8))  # 設置圖表大小
+# plt.pie(
+    # rating_counts,  # 圓餅圖的數據，即每個部分的數量或比例
+    # labels=rating_counts.index,  # 每個扇形的標籤，這裡是年份
+    # autopct='%1.0f%%',  # 顯示每個扇形的百分比，格式為整數的百分比
+    # colors=sns.color_palette("Set2", 15),  # 設定圓餅圖的顏色，這裡使用 Seaborn 的 "Set2" 調色板，包含15種顏色
+    # startangle=140  # 設置圓餅圖的起始角度為140度，以調整圖形的顯示方向
+# )
+# plt.title('Percentage Distribution of Netflix by Rating')  # 設置圓餅圖標題
 
-# 保存圖片
-plot_file = os.path.join('reports', 'collect_data', 'N_rating_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
-os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
-plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+# # 保存圖片
+# plot_file = os.path.join('reports', 'collect_data', 'N_rating_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
+# os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
+# plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 
-plt.show()  # 顯示圓餅圖
+# plt.show()  # 顯示圓餅圖
 
-# 分析影片時長（'duration'列），並產生圖表
+
+
+# # 分析影片時長（'duration'列），並產生圖表
+
+
+# # 計算影片時長的電影數量
+# duration_counts = netflix_overall['duration'].value_counts().sort_index()
+# print(duration_counts)
