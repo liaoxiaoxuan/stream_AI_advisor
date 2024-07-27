@@ -2,7 +2,8 @@ import pandas as pd  # 用於數據處理和分析。
 import os
 import seaborn as sns  # seaborn 提供高級抽象層，讓複雜的圖表生成變得簡單且美觀。
 import matplotlib.pyplot as plt  # matplotlib 提供底層功能，讓用戶可以對圖表進行詳細的控制和定制。
-import numpy as np  # 數值計算庫，，主要用於處理大型多維陣列和矩陣運算，以及提供大量的數學函數庫來操作這些陣列。
+import numpy as np  # 數值計算庫，主要用於處理大型多維陣列和矩陣運算，以及提供大量的數學函數庫來操作這些陣列。
+import plotly.graph_objects as go  # 使用 Plotly 的功能來創建和顯示交互式圖表和圖形
 
 
 
@@ -275,8 +276,22 @@ movie_date['date_added'] = pd.to_datetime(movie_date['date_added'], format='%Y/%
 movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
 movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
 
-print(tv_show_year_counts)  
-print(movie_year_counts)
+# print(tv_show_year_counts)
+# print(movie_year_counts)
+
+# 進行繪圖
+ax2 = ax.twinx()  # 創建雙軸圖
+ax2.plot(tv_show_year_counts.index, tv_show_year_counts.values, color="#E50611", marker="o", label="TV Show")  # 繪製 "TV Show" 的折線圖，顏色為藍色
+ax2.plot(movie_year_counts.index, movie_year_counts.values, color="#000000", marker="o", label="Movie")  # 繪製 "Movie" 的折線圖，顏色為橙色
+ax2.set_ylabel("Number of Contents Added (TV Show/Movie)", fontsize=14)  # 設置雙軸圖的 y 軸標籤
+
+# 添加圖例
+lines, labels = ax2.get_legend_handles_labels()  # 獲取圖例的句柄和標籤
+ax2.legend(lines, labels, loc='upper left')  # 設置圖例位置為左上角
+
+# 顯示圖表
+plt.show()
+
 
 
 

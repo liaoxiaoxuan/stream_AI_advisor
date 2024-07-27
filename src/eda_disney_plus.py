@@ -3,6 +3,7 @@ import os
 import seaborn as sns  # seaborn 提供高級抽象層，讓複雜的圖表生成變得簡單且美觀。
 import matplotlib.pyplot as plt  # matplotlib 提供底層功能，讓用戶可以對圖表進行詳細的控制和定制。
 import numpy as np  # 數值計算庫，，主要用於處理大型多維陣列和矩陣運算，以及提供大量的數學函數庫來操作這些陣列。
+import plotly.graph_objects as go  # 使用 Plotly 的功能來創建和顯示交互式圖表和圖形
 
 
 
