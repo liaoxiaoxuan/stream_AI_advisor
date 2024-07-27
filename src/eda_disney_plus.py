@@ -89,7 +89,7 @@ disney_plus_overall = pd.read_csv(processed_data_path)
 
 
 # # # 繪製長條圖
-# # sns.set(style="darkgrid")  # 設定 Seaborn 的繪圖樣式為 "darkgrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
+# # sns.set(style="whitegrid")  # 設定 Seaborn 的繪圖樣式為 "whitegrid"，這會影響圖表的背景網格樣式，使其更適合呈現統計數據
 # # ax = sns.countplot(x="type", data=disney_plus_overall, palette="Set2")  # 使用 Seaborn 的 countplot 函數繪製柱狀圖，x 軸為 "type" 欄位，數據來源為 disney_plus_overall，使用 "Set2" 調色盤
 # # plt.title("Comparison of Movie vs TV Show on Disney_plus")  # 設置圖表標題
 # # plt.xlabel("Type")  # 設置 x 軸標籤
@@ -161,7 +161,9 @@ disney_plus_date['month'] = disney_plus_date['date_added'].dt.month_name()  # �
 
 # 計算每個年份中各個月份的頻次
 month_counts = disney_plus_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
+year_counts = disney_plus_date['year'].value_counts().sort_index()  # year_counts 將會是一個 Series，計算每個年份的總和。
 # print(month_counts)
+print(year_counts)
 
 # 定義月份順序，並反轉順序
 month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']  #[::-1]
@@ -255,7 +257,7 @@ release_year_counts_sorted = release_year_counts.sort_values(ascending=False)
 
 # # 繪製長條圖
 # plt.figure(figsize=(12,10)) # 設置圖表大小
-# sns.set(style="darkgrid") # 設置 Seaborn 的樣式為 "darkgrid"
+# sns.set(style="whitegrid") # 設置 Seaborn 的樣式為 "whitegrid"
 # ax = sns.countplot(y="release_year", data=disney_plus_overall, palette="Set2", order=release_year_counts_sorted.index[0:15]) # 取前 15 名發行數量較多的年分，使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
 # ax.set_title("Number of Movies Released by Disney+ Each Year", fontsize=16)  # 設置圖表標題
 
@@ -298,12 +300,12 @@ release_year_counts_sorted = release_year_counts.sort_values(ascending=False)
 
 # 計算年齡分級的電影數量
 rating_counts = disney_plus_overall['rating'].value_counts().sort_index()
-print(rating_counts)
+# print(rating_counts)
 
 
 # # 繪製長條圖
 # plt.figure(figsize=(12,10)) # 設置圖表大小
-# sns.set(style="darkgrid") # 設置 Seaborn 的樣式為 "darkgrid"
+# sns.set(style="whitegrid") # 設置 Seaborn 的樣式為 "whitegrid"
 # ax = sns.countplot(x="rating", data=disney_plus_overall, palette="Set2", order=rating_counts.index) # 使用 Seaborn 繪製柱狀圖，顯示影片分級的數量分布
 # ax.set_title("Distribution of Disney+ Movies by Rating", fontsize=16)  # 設置圖表標題
 
@@ -322,20 +324,20 @@ print(rating_counts)
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
-# 繪製圓餅圖
-plt.figure(figsize=(8,8))  # 設置圖表大小
-plt.pie(
-    rating_counts,  # 圓餅圖的數據，即每個部分的數量或比例
-    labels=rating_counts.index,  # 每個扇形的標籤，這裡是年份
-    autopct='%1.0f%%',  # 顯示每個扇形的百分比，格式為整數的百分比
-    colors=sns.color_palette("Set2", 15),  # 設定圓餅圖的顏色，這裡使用 Seaborn 的 "Set2" 調色板，包含15種顏色
-    startangle=140  # 設置圓餅圖的起始角度為140度，以調整圖形的顯示方向
-)
-plt.title('Percentage Distribution of Disney+ by Rating')  # 設置圓餅圖標題
+# # 繪製圓餅圖
+# plt.figure(figsize=(8,8))  # 設置圖表大小
+# plt.pie(
+    # rating_counts,  # 圓餅圖的數據，即每個部分的數量或比例
+    # labels=rating_counts.index,  # 每個扇形的標籤，這裡是年份
+    # autopct='%1.0f%%',  # 顯示每個扇形的百分比，格式為整數的百分比
+    # colors=sns.color_palette("Set2", 15),  # 設定圓餅圖的顏色，這裡使用 Seaborn 的 "Set2" 調色板，包含15種顏色
+    # startangle=140  # 設置圓餅圖的起始角度為140度，以調整圖形的顯示方向
+# )
+# plt.title('Percentage Distribution of Disney+ by Rating')  # 設置圓餅圖標題
 
-# 保存圖片
-plot_file = os.path.join('reports', 'collect_data', 'D_rating_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
-os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
-plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
+# # 保存圖片
+# plot_file = os.path.join('reports', 'collect_data', 'D_rating_pie.png')  # 使用 os.path.join 函數組合成圖片的儲存路徑
+# os.makedirs(os.path.dirname(plot_file), exist_ok=True)  # 使用 os.makedirs 創建圖片儲存目錄（如果不存在的話），exist_ok=True 表示如果目錄已經存在則不報錯
+# plt.savefig(plot_file)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 
-plt.show()  # 顯示圓餅圖
+# plt.show()  # 顯示圓餅圖
