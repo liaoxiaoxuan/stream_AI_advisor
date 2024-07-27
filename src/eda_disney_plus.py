@@ -163,7 +163,7 @@ disney_plus_date['month'] = disney_plus_date['date_added'].dt.month_name()  # �
 month_counts = disney_plus_date.groupby('year')['month'].value_counts()  # month_counts 將會是一個 Series，其中包含每個年份和月份的計數，索引是 MultiIndex，第一層是年份，第二層是月份。
 year_counts = disney_plus_date['year'].value_counts().sort_index()  # year_counts 將會是一個 Series，計算每個年份的總和。
 # print(month_counts)
-print(year_counts)
+# print(year_counts)
 
 # 定義月份順序，並反轉順序
 month_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']  #[::-1]
@@ -241,6 +241,21 @@ result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為�
 # plt.savefig(plt_file_count_heatmap)  # 使用 plt.savefig 函數將當前的圖表保存到指定的文件路徑
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
+
+# 繪製年分柱狀圖
+plt.figure(figsize=(12, 10))  # 設置圖表大小
+sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
+ax = sns.countplot(
+    x="year", 
+    data=disney_plus_date, 
+    color="#baf4ff", 
+    order=year_counts.index
+)  # 使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
+ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表標題
+ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
+ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
+plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
+plt.show()
 
 
 # 分析發行年分（'release_year'列），並產生圖表
