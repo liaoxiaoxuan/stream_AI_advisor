@@ -70,6 +70,11 @@ disney_plus_overall = pd.read_csv(processed_data_path)
 # # 顯示數據集的前五行
 # print(disney_plus_overall.head())
 
+# 分割數據集
+d1 = disney_plus_overall[disney_plus_overall["type"] == "TV Show"]  # 篩選出 "type" 列為 "TV Show" 的資料過濾出來並賦值給 d1
+d2 = disney_plus_overall[disney_plus_overall["type"] == "Movie"]  # 篩選出 "type" 列為 "Movie" 的資料過濾出來並賦值給 d2
+print(d1)
+print(d2)
 
 
 # # 分析影片類型（'type'列），並產生圖表
@@ -255,7 +260,9 @@ ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表�
 ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
 ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
 plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
-plt.show()
+# plt.show()
+
+
 
 
 # 分析發行年分（'release_year'列），並產生圖表
