@@ -279,18 +279,33 @@ movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每�
 # print(tv_show_year_counts)
 # print(movie_year_counts)
 
-# 進行繪圖
-ax2 = ax.twinx()  # 創建雙軸圖
-ax2.plot(tv_show_year_counts.index, tv_show_year_counts.values, color="#E50611", marker="o", label="TV Show")  # 繪製 "TV Show" 的折線圖，顏色為藍色
-ax2.plot(movie_year_counts.index, movie_year_counts.values, color="#000000", marker="o", label="Movie")  # 繪製 "Movie" 的折線圖，顏色為橙色
-ax2.set_ylabel("Number of Contents Added (TV Show/Movie)", fontsize=14)  # 設置雙軸圖的 y 軸標籤
+# 準備數據
+trace1 = go.Scatter(  # 創建折線圖數據對象，顯示 "TV Show" 的年份和數量，並設置標記顏色
+    x=tv_show_year_counts.index,  # x 軸設置為年份
+    y=tv_show_year_counts.values,  # y 軸設置為每年數量
+    mode='lines+markers',  # 顯示折線和數據點
+    name="TV Shows",  # 圖例名稱為 "TV Shows"
+    marker=dict(color="#E50611")  # 設置標記顏色
+)
+trace2 = go.Scatter(  # 創建折線圖數據對象，顯示 "Movie" 的年份和數量，並設置標記顏色
+    x=movie_year_counts.index,  # x 軸設置為年份
+    y=movie_year_counts.values,  # y 軸設置為每年數量
+    mode='lines+markers',  # 顯示折線和數據點
+    name="Movies",  # 圖例名稱為 "Movies"
+    marker=dict(color="#000000")  # 設置標記顏色
+)
 
-# 添加圖例
-lines, labels = ax2.get_legend_handles_labels()  # 獲取圖例的句柄和標籤
-ax2.legend(lines, labels, loc='upper left')  # 設置圖例位置為左上角
+# 繪製圖表
+data = [trace1, trace2]  # 將兩個折線圖數據對象放入列表中
+layout = go.Layout(
+    title="Number of TV Shows and Movies Added Over the Years",  # 圖表標題
+    xaxis_title='Year',  # x 軸標籤
+    yaxis_title='Number of Titles',  # y 軸標籤
+    legend=dict(x=0.1, y=1.1, orientation="h")  # 圖例位置和方向設置
+)
+fig = go.Figure(data, layout=layout)  # 創建圖表對象，包含數據和佈局設置
 
-# 顯示圖表
-plt.show()
+fig.show() 
 
 
 
