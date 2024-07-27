@@ -69,6 +69,12 @@ netflix_overall = pd.read_csv(processed_data_path)
 # # 顯示數據集的前五行
 # print(netflix_overall.head())
 
+# 分割數據集
+d1 = netflix_overall[netflix_overall["type"] == "TV Show"]  # 篩選出 "type" 列為 "TV Show" 的資料過濾出來並賦值給 d1
+d2 = netflix_overall[netflix_overall["type"] == "Movie"]  # 篩選出 "type" 列為 "Movie" 的資料過濾出來並賦值給 d2
+# print(d1)
+# print(d2)
+
 
 
 # # 分析影片類型（'type'列），並產生圖表
@@ -253,34 +259,23 @@ ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表�
 ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
 ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
 plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
-plt.show()
+# plt.show()
 
 
 # 繪製折線圖
 
-# 分割數據集
-d1 = netflix_overall[netflix_overall["type"] == "TV Show"]  # 篩選出 "type" 列為 "TV Show" 的資料過濾出來並賦值給 d1
-d2 = netflix_overall[netflix_overall["type"] == "Movie"]  # 篩選出 "type" 列為 "Movie" 的資料過濾出來並賦值給 d2
-# print(d1)
-# print(d2)
+# # 分別計算 "TV Show" 和 "Movie" 的 year_counts
+# tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
+# tv_show_date['year'] = tv_show_date['date_added'].dt.year  # 提取年份
+# tv_show_year_counts = tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
 
-# # 計算每年新增節目和電影的數量和百分比
-# col = "year_added"  # 設定要計算的列名稱為 "year_added"
-# vc1 = d1[col].value_counts().reset_index()  # 計算 d1 中 "year_added" 列的值出現的次數，並重置索引
-# vc1 = vc1.rename(columns = {col : "count", "index" : col})  # 將列名 "year_added" 更改為 "count"，將索引列名更改為 "year_added"
-# vc1['percent'] = vc1['count'].apply(lambda x : 100*x/sum(vc1['count']))  # 計算每個年份新增內容的百分比
-# vc1 = vc1.sort_values(col)  # 根據年份排序
-# vc2 = d2[col].value_counts().reset_index()  # 計算 d2 中 "year_added" 列的值出現的次數，並重置索引
-# vc2 = vc2.rename(columns = {col : "count", "index" : col})  # 將列名 "year_added" 更改為 "count"，將索引列名更改為 "year_added"
-# vc2['percent'] = vc2['count'].apply(lambda x : 100*x/sum(vc2['count']))  # 計算每個年份新增內容的百分比
-# vc2 = vc2.sort_values(col)  # 根據年份排序
+# movie_date = d2[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
+# movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
+# movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
 
-# trace1 = go.Scatter(x=vc1[col], y=vc1["count"], name="TV Shows", marker=dict(color="#a678de"))  # 建立電視節目的散點圖，設定 x 軸為年份，y 軸為新增內容的數量，名稱為 "TV Shows"，並設定標記顏色
-# trace2 = go.Scatter(x=vc2[col], y=vc2["count"], name="Movies", marker=dict(color="#6ad49b"))  # 建立電影的散點圖，設定 x 軸為年份，y 軸為新增內容的數量，名稱為 "Movies"，並設定標記顏色
-# data = [trace1, trace2]  # 將兩個散點圖數據集合在一起
-# layout = go.Layout(title="Content added over the years", legend=dict(x=0.1, y=1.1, orientation="h"))  # 設定圖表的佈局，包括標題和圖例位置
-# fig = go.Figure(data, layout=layout)  # 建立圖表物件並傳入數據和佈局
-# fig.show()  # 顯示圖表
+# # 確認計算結果（可選）
+# # print(tv_show_year_counts)  
+# # print(movie_year_counts)
 
 
 
