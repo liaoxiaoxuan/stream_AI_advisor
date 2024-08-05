@@ -247,6 +247,21 @@ year_counts = netflix_date['year'].value_counts().sort_index()  # year_counts �
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
+# 分別計算 "TV Show" 和 "Movie" 的 year_counts
+tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
+tv_show_date['date_added'] = pd.to_datetime(tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+tv_show_date['year'] = tv_show_date['date_added'].dt.year  # 提取年份
+tv_show_year_counts = tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
+
+movie_date = d2[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
+movie_date['date_added'] = pd.to_datetime(movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
+movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
+
+# print(tv_show_year_counts)
+# print(movie_year_counts)
+
+
 # 繪製年分柱狀圖
 plt.figure(figsize=(12, 10))  # 設置圖表大小
 sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
@@ -265,47 +280,9 @@ plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
 
 # 繪製折線圖
 
-# 分別計算 "TV Show" 和 "Movie" 的 year_counts
-tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
-tv_show_date['date_added'] = pd.to_datetime(tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
-tv_show_date['year'] = tv_show_date['date_added'].dt.year  # 提取年份
-tv_show_year_counts = tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
+# 創建一個第二個 y 軸，用於顯示折線圖
+ax2 = ax.twinx()  # 設置第二個 y 軸
 
-movie_date = d2[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
-movie_date['date_added'] = pd.to_datetime(movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
-movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
-movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
-
-# print(tv_show_year_counts)
-# print(movie_year_counts)
-
-# 準備數據
-trace1 = go.Scatter(  # 創建折線圖數據對象，顯示 "TV Show" 的年份和數量，並設置標記顏色
-    x=tv_show_year_counts.index,  # x 軸設置為年份
-    y=tv_show_year_counts.values,  # y 軸設置為每年數量
-    mode='lines+markers',  # 顯示折線和數據點
-    name="TV Shows",  # 圖例名稱為 "TV Shows"
-    marker=dict(color="#E50611")  # 設置標記顏色
-)
-trace2 = go.Scatter(  # 創建折線圖數據對象，顯示 "Movie" 的年份和數量，並設置標記顏色
-    x=movie_year_counts.index,  # x 軸設置為年份
-    y=movie_year_counts.values,  # y 軸設置為每年數量
-    mode='lines+markers',  # 顯示折線和數據點
-    name="Movies",  # 圖例名稱為 "Movies"
-    marker=dict(color="#000000")  # 設置標記顏色
-)
-
-# 繪製圖表
-data = [trace1, trace2]  # 將兩個折線圖數據對象放入列表中
-layout = go.Layout(
-    title="Number of TV Shows and Movies Added Over the Years",  # 圖表標題
-    xaxis_title='Year',  # x 軸標籤
-    yaxis_title='Number of Titles',  # y 軸標籤
-    legend=dict(x=0.1, y=1.1, orientation="h")  # 圖例位置和方向設置
-)
-fig = go.Figure(data, layout=layout)  # 創建圖表對象，包含數據和佈局設置
-
-fig.show() 
 
 
 
