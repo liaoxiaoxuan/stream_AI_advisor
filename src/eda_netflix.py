@@ -280,9 +280,47 @@ plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
 
 # 繪製折線圖
 
-# 創建一個第二個 y 軸，用於顯示折線圖
-ax2 = ax.twinx()  # 設置第二個 y 軸
+# 創建一個第二個 y 軸
+ax2 = ax.twinx()  # 使用 twinx 方法創建第二個 y 軸，與第一個軸共享相同的 x 軸
 
+# 確保年份範圍一致，創建一個包含所有年份的索引
+all_years = sorted(set(tv_show_year_counts.index).union(set(movie_year_counts.index)))
+# 使用 set 來獲取兩個數據系列中所有的年份，並合併成一個集合
+# 然後使用 sorted 將這些年份按升序排序
+
+# 重新索引以填補缺失年份
+tv_show_year_counts = tv_show_year_counts.reindex(all_years, fill_value=0)
+# 將 tv_show_year_counts 重新索引為 all_years，這樣它會有與 all_years 相同的年份索引
+# 如果 tv_show_year_counts 中某個年份在 all_years 中不存在，則用 fill_value=0 來填補
+
+movie_year_counts = movie_year_counts.reindex(all_years, fill_value=0)
+# 同樣，將 movie_year_counts 重新索引為 all_years，並用 fill_value=0 來填補缺失的年份
+
+# 繪製 "TV Shows" 的折線圖
+ax2.plot(
+    all_years, 
+    tv_show_year_counts, 
+    marker='o',  # 標記點設置為圓圈
+    color='#E50611',
+    label='TV Shows'  # 圖例標籤為 "TV Shows"
+    )
+
+# 繪製 "Movies" 的折線圖
+ax2.plot(
+    all_years, 
+    movie_year_counts, 
+    marker='o',  # 標記點設置為圓圈
+    color='#000000',
+    label='Movies'  # 圖例標籤為 "Movies"
+    )
+
+ax2.set_ylabel('Number of TV Shows and Movies Added', fontsize=14)  # 設置第二個 y 軸標籤和字體大小
+
+# 顯示圖例
+plt.legend(loc="upper left", bbox_to_anchor=(0.1,0.9))  # 在圖表中顯示圖例，位置設置在圖表的左上角，使用 bbox_to_anchor 調整位置
+
+# 顯示圖表
+plt.show()  # 顯示最終的圖表
 
 
 
