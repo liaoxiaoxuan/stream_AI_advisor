@@ -267,10 +267,10 @@ movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每�
 # plt.figure(figsize=(12, 10))  # 設置圖表大小
 # sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
 # ax = sns.countplot(
-    # x="year", 
-    # data=netflix_date, 
-    # color="#f9dbbd", 
-    # order=year_counts.index
+#     x="year", 
+#     data=netflix_date, 
+#     color="#f9dbbd", 
+#     order=year_counts.index
 # )  # 使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
 # ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表標題
 # ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
@@ -303,47 +303,41 @@ movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每�
 # plt.show()
 
 
+# 繪製雙折線圖
 
-# 繪製組合圖
+# 確保所有年份都在同一範圍內
+years = sorted(set(tv_show_year_counts.index).union(movie_year_counts.index))
 
-# 創建圖表並設置標題和 X 軸標籤
+# 將缺失的年份填充為 0
+tv_show_year_counts = tv_show_year_counts.reindex(years, fill_value=0)
+movie_year_counts = movie_year_counts.reindex(years, fill_value=0)
+
+# 計算總和年增長量
+total_year_counts = tv_show_year_counts + movie_year_counts
+
+# 創建圖表和第一個子圖（長條圖）
 fig, ax1 = plt.subplots(figsize=(12, 8))
-plt.title('Yearly Growth of TV Shows and Movies')
-plt.xlabel('Year')
 
-# 繪製第一個子圖（長條圖），顯示 "TV Shows" 和 "Movies" 的總和年增長量
+# 繪製長條圖，顯示 TV Shows 和 Movies 的總和年增長量
+ax1.bar(years, total_year_counts, color='tab:blue', alpha=0.6, label='Total Contents')
+
+# 設置第一個子圖的標題和 X 軸標籤
+ax1.set_title('Yearly Growth of TV Shows and Movies')
+ax1.set_xlabel('Year')
 ax1.set_ylabel('Total Number of Contents', color='tab:blue')
-sns.barplot(
-    x=year_counts.index,
-    y=year_counts.values,
-    color='tab:blue',
-    alpha=0.6,
-    ax=ax1
-)
+
+# 設置 Y 軸的刻度顏色
 ax1.tick_params(axis='y', labelcolor='tab:blue')
 
-# 創建第二個共享 X 軸的子圖（雙折線圖），分別顯示 "TV Shows" 和 "Movies" 的年增長量
+# 創建第二個共享 X 軸的子圖
 ax2 = ax1.twinx()
 ax2.set_ylabel('Number of Contents', color='black')
 
-# 繪製 "TV Show" 的年份數據折線圖
-ax2.plot(
-    x=movie_year_counts.index, 
-    y=tv_show_year_counts.values, 
-    label='TV Show', 
-    color='#E50611', 
-    marker='o', 
-    alpha=0.75)
+# 繪製雙折線圖
+ax2.plot(years, tv_show_year_counts, label='TV Shows', color='#E50611', marker='o', alpha=0.75)
+ax2.plot(years, movie_year_counts, label='Movies', color='black', marker='o', alpha=1)
 
-# 繪製 "Movie" 的年份數據折線圖
-ax2.plot(
-    x=movie_year_counts.index, 
-    y=movie_year_counts.values, 
-    label='Movie', 
-    color='black', 
-    marker='o', 
-    alpha=1)
-
+# 設置第二個子圖的 Y 軸顏色
 ax2.tick_params(axis='y', labelcolor='black')
 
 # 添加圖例
@@ -351,49 +345,6 @@ ax2.legend(loc='upper left')
 
 # 顯示圖表
 plt.show()
-
-# # 創建一個第二個 y 軸
-# ax2 = ax.twinx()  # 使用 twinx 方法創建第二個 y 軸，與第一個軸共享相同的 x 軸
-
-# # 確保年份範圍一致，創建一個包含所有年份的索引
-# all_years = sorted(set(tv_show_year_counts.index).union(set(movie_year_counts.index)))
-# # 使用 set 來獲取兩個數據系列中所有的年份，並合併成一個集合
-# # 然後使用 sorted 將這些年份按升序排序
-
-# # 重新索引以填補缺失年份
-# tv_show_year_counts = tv_show_year_counts.reindex(all_years, fill_value=0)
-# # 將 tv_show_year_counts 重新索引為 all_years，這樣它會有與 all_years 相同的年份索引
-# # 如果 tv_show_year_counts 中某個年份在 all_years 中不存在，則用 fill_value=0 來填補
-
-# movie_year_counts = movie_year_counts.reindex(all_years, fill_value=0)
-# # 同樣，將 movie_year_counts 重新索引為 all_years，並用 fill_value=0 來填補缺失的年份
-
-# # 繪製 "TV Shows" 的折線圖
-# ax2.plot(
-    # all_years, 
-    # tv_show_year_counts, 
-    # marker='o',  # 標記點設置為圓圈
-    # color='#E50611',
-    # label='TV Shows'  # 圖例標籤為 "TV Shows"
-    # )
-
-# # 繪製 "Movies" 的折線圖
-# ax2.plot(
-    # all_years, 
-    # movie_year_counts, 
-    # marker='o',  # 標記點設置為圓圈
-    # color='#000000',
-    # label='Movies'  # 圖例標籤為 "Movies"
-    # )
-
-# ax2.set_ylabel('Number of TV Shows and Movies Added', fontsize=14)  # 設置第二個 y 軸標籤和字體大小
-
-# # 顯示圖例
-# plt.legend(loc="upper left", bbox_to_anchor=(0.1,0.9))  # 在圖表中顯示圖例，位置設置在圖表的左上角，使用 bbox_to_anchor 調整位置
-
-# 顯示圖表
-# plt.show()  # 顯示最終的圖表
-
 
 
 
