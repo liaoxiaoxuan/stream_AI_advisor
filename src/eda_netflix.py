@@ -4,6 +4,7 @@ import seaborn as sns  # seaborn 提供高級抽象層，讓複雜的圖表生�
 import matplotlib.pyplot as plt  # matplotlib 提供底層功能，讓用戶可以對圖表進行詳細的控制和定制。
 import numpy as np  # 數值計算庫，主要用於處理大型多維陣列和矩陣運算，以及提供大量的數學函數庫來操作這些陣列。
 import plotly.graph_objects as go  # 使用 Plotly 的功能來創建和顯示交互式圖表和圖形
+from matplotlib.ticker import MaxNLocator  # 引入 MaxNLocator，用來設置 Y 軸的刻度，使其間距相等。
 
 
 
@@ -262,41 +263,91 @@ movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每�
 # print(movie_year_counts)
 
 
-# 繪製年分柱狀圖
-plt.figure(figsize=(12, 10))  # 設置圖表大小
-sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
-ax = sns.countplot(
-    x="year", 
-    data=netflix_date, 
-    color="#f9dbbd", 
-    order=year_counts.index
-)  # 使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
-ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表標題
-ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
-ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
-plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
-plt.show()
+# # 繪製年分柱狀圖
+# plt.figure(figsize=(12, 10))  # 設置圖表大小
+# sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
+# ax = sns.countplot(
+    # x="year", 
+    # data=netflix_date, 
+    # color="#f9dbbd", 
+    # order=year_counts.index
+# )  # 使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
+# ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表標題
+# ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
+# ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
+# plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
+# plt.show()
 
 
-# 繪製雙折線圖
-plt.figure(figsize=(10, 6))
+# # 繪製雙折線圖
+# plt.figure(figsize=(10, 6))
 
-# 繪製 "TV Show" 的年份數據，設定顏色為藍色
-plt.plot(tv_show_year_counts.index, tv_show_year_counts.values, label='TV Show', color='#E50611', marker='o')
+# # 繪製 "TV Show" 的年份數據，設定顏色為藍色
+# plt.plot(tv_show_year_counts.index, tv_show_year_counts.values, label='TV Show', color='#E50611', marker='o')
 
-# 繪製 "Movie" 的年份數據，設定顏色為橙色
-plt.plot(movie_year_counts.index, movie_year_counts.values, label='Movie', color='#000000', marker='o')
+# # 繪製 "Movie" 的年份數據，設定顏色為橙色
+# plt.plot(movie_year_counts.index, movie_year_counts.values, label='Movie', color='#000000', marker='o')
 
-# 添加圖表標題和軸標籤
-plt.title('Yearly Counts of TV Shows and Movies')
+# # 添加圖表標題和軸標籤
+# plt.title('Yearly Counts of TV Shows and Movies')
+# plt.xlabel('Year')
+# plt.ylabel('Count')
+
+# # 顯示圖例
+# plt.legend()
+
+# # 顯示網格線
+# plt.grid(True)
+
+# # 顯示圖表
+# plt.show()
+
+
+
+# 繪製組合圖
+
+# 創建圖表並設置標題和 X 軸標籤
+fig, ax1 = plt.subplots(figsize=(12, 8))
+plt.title('Yearly Growth of TV Shows and Movies')
 plt.xlabel('Year')
-plt.ylabel('Count')
 
-# 顯示圖例
-plt.legend()
+# 繪製第一個子圖（長條圖），顯示 "TV Shows" 和 "Movies" 的總和年增長量
+ax1.set_ylabel('Total Number of Contents', color='tab:blue')
+sns.barplot(
+    x=year_counts.index,
+    y=year_counts.values,
+    color='tab:blue',
+    alpha=0.6,
+    ax=ax1
+)
+ax1.tick_params(axis='y', labelcolor='tab:blue')
 
-# 顯示網格線
-plt.grid(True)
+# 創建第二個共享 X 軸的子圖（雙折線圖），分別顯示 "TV Shows" 和 "Movies" 的年增長量
+ax2 = ax1.twinx()
+ax2.set_ylabel('Number of Contents', color='black')
+
+# 繪製 "TV Show" 的年份數據折線圖
+ax2.plot(
+    x=movie_year_counts.index, 
+    y=tv_show_year_counts.values, 
+    label='TV Show', 
+    color='#E50611', 
+    marker='o', 
+    alpha=0.75)
+
+# 繪製 "Movie" 的年份數據折線圖
+ax2.plot(
+    x=movie_year_counts.index, 
+    y=movie_year_counts.values, 
+    label='Movie', 
+    color='black', 
+    marker='o', 
+    alpha=1)
+
+ax2.tick_params(axis='y', labelcolor='black')
+
+# 添加圖例
+ax2.legend(loc='upper left')
 
 # 顯示圖表
 plt.show()
