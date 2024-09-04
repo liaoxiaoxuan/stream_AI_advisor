@@ -248,23 +248,6 @@ result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為�
 # plt.show()  # 顯示當前圖表，使其在螢幕上顯示出來，這對於交互式環境特別有用
 
 
-# 繪製年分柱狀圖
-plt.figure(figsize=(12, 10))  # 設置圖表大小
-sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
-ax = sns.countplot(
-    x="year", 
-    data=disney_plus_date, 
-    color="#baf4ff", 
-    order=year_counts.index
-)  # 使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
-ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表標題
-ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
-ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
-plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
-# plt.show()
-
-# 繪製折線圖
-
 # 分別計算 "TV Show" 和 "Movie" 的 year_counts
 tv_show_date = d1[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
 tv_show_date['date_added'] = pd.to_datetime(tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
@@ -276,10 +259,48 @@ movie_date['date_added'] = pd.to_datetime(movie_date['date_added'], format='%Y/%
 movie_date['year'] = movie_date['date_added'].dt.year  # 提取年份
 movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
 
-print(tv_show_year_counts)
-print(movie_year_counts)
+# print(tv_show_year_counts)
+# print(movie_year_counts)
 
 
+# 繪製年分柱狀圖
+# plt.figure(figsize=(12, 10))  # 設置圖表大小
+# sns.set(style="whitegrid")  # 設置 Seaborn 的樣式為 "whitegrid"
+# ax = sns.countplot(
+    # x="year", 
+    # data=disney_plus_date, 
+    # color="#baf4ff", 
+    # order=year_counts.index
+# )  # 使用 Seaborn 繪製柱狀圖，顯示每年發布的電影數量，並按年份排序
+# ax.set_title("Frequency of Content Added by Year", fontsize=16)  # 設置圖表標題
+# ax.set_xlabel("Year", fontsize=14)  # 設置 x 軸標籤
+# ax.set_ylabel("Number of Contents Added", fontsize=14)  # 設置 y 軸標籤
+# plt.xticks(rotation=45)  # 將 x 軸上的刻度標籤旋轉 45 度
+# plt.show()
+
+
+# 繪製雙折線圖
+plt.figure(figsize=(10, 6))
+
+# 繪製 "TV Show" 的年份數據，設定顏色為藍色
+plt.plot(tv_show_year_counts.index, tv_show_year_counts.values, label='TV Show', color='#E50611', marker='o')
+
+# 繪製 "Movie" 的年份數據，設定顏色為橙色
+plt.plot(movie_year_counts.index, movie_year_counts.values, label='Movie', color='#000000', marker='o')
+
+# 添加圖表標題和軸標籤
+plt.title('Yearly Counts of TV Shows and Movies')
+plt.xlabel('Year')
+plt.ylabel('Count')
+
+# 顯示圖例
+plt.legend()
+
+# 顯示網格線
+plt.grid(True)
+
+# 顯示圖表
+plt.show()
 
 
 # 分析發行年分（'release_year'列），並產生圖表
