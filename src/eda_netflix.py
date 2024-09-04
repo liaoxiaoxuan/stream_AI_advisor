@@ -303,7 +303,7 @@ movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每�
 # plt.show()
 
 
-# 繪製雙折線圖
+# 繪製組合圖
 
 
 # 確保所有年份都在同一範圍內
