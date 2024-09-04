@@ -323,7 +323,7 @@ fig, ax1 = plt.subplots(figsize=(12, 8))
 ax1.bar(years, total_year_counts, color='tab:blue', alpha=0.6, label='Total Contents')
 
 # 設置第一個子圖的標題和 X 軸標籤
-ax1.set_title('Yearly Growth of TV Shows and Movies')
+ax1.set_title('Yearly Growth of TV Shows and Movies on Netflix')
 ax1.set_xlabel('Year')
 ax1.set_ylabel('Total Number of Contents', color='tab:blue')
 
@@ -349,7 +349,7 @@ ax2.tick_params(axis='y', labelcolor='black')
 ax2.legend(loc='upper left')
 
 # 保存圖表
-output_path = os.path.join('reports', 'figures', 'Yearly Growth of TV Shows and Movies.png')  # 設定儲存路徑
+output_path = os.path.join('reports', 'figures', 'N_Yearly Growth of TV Shows and Movies.png')  # 設定儲存路徑
 plt.savefig(output_path, format='png', bbox_inches='tight')  # 保存圖片
 
 # 顯示圖表
