@@ -305,6 +305,7 @@ movie_year_counts = movie_date['year'].value_counts().sort_index()  # 計算每�
 
 # 繪製雙折線圖
 
+
 # 確保所有年份都在同一範圍內
 years = sorted(set(tv_show_year_counts.index).union(movie_year_counts.index))
 
@@ -333,15 +334,23 @@ ax1.tick_params(axis='y', labelcolor='tab:blue')
 ax2 = ax1.twinx()
 ax2.set_ylabel('Number of Contents', color='black')
 
+# 設置相同的 Y 軸範圍
+ax1_ylim = ax1.get_ylim()
+ax2.set_ylim(ax1_ylim)
+
 # 繪製雙折線圖
 ax2.plot(years, tv_show_year_counts, label='TV Shows', color='#E50611', marker='o', alpha=0.75)
 ax2.plot(years, movie_year_counts, label='Movies', color='black', marker='o', alpha=1)
 
-# 設置第二個子圖的 Y 軸顏色
+# 設置第二個 Y 軸的顏色
 ax2.tick_params(axis='y', labelcolor='black')
 
 # 添加圖例
 ax2.legend(loc='upper left')
+
+# 保存圖表
+output_path = os.path.join('reports', 'figures', 'Yearly Growth of TV Shows and Movies.png')  # 設定儲存路徑
+plt.savefig(output_path, format='png', bbox_inches='tight')  # 保存圖片
 
 # 顯示圖表
 plt.show()
