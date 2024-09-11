@@ -30,3 +30,6 @@ def import_csv_to_db_1(csv_file_path):
         database=database
     )
 
+    # 創建一個資料庫游標
+    db_cursor = db_connection.cursor()
+
