@@ -10,6 +10,10 @@ load_dotenv()
 
 
 
+# 定義 CSV 數據文件路徑
+
+csv_file_path = os.path.join('data', 'processed', 'netflix_titles_processed.csv')
+
 # 匯入 CSV 到第一個 MySQL 資料庫
 def import_csv_to_db_1(csv_file_path):
     # 從 .env 讀取資料庫 Netflix 的連接資訊
@@ -17,3 +21,6 @@ def import_csv_to_db_1(csv_file_path):
     user = os.getenv("MYSQL_USER_N")
     password = os.getenv("MYSQL_PASSWORD_N")
     database = os.getenv("MYSQL_DATABASE_N")
+
+
+
