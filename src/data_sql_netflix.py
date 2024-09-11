@@ -22,5 +22,11 @@ def import_csv_to_db_1(csv_file_path):
     password = os.getenv("MYSQL_PASSWORD_N")
     database = os.getenv("MYSQL_DATABASE_N")
 
-
+    # 連接到 MySQL Netflix 資料庫
+    db_connection = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=database
+    )
 
