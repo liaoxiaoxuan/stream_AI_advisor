@@ -33,3 +33,21 @@ def import_csv_to_db_1(csv_file_path):
     # 創建一個資料庫游標
     db_cursor = db_connection.cursor()
 
+    # 建立表格
+    db_cursor.execute("""
+    CREATE TABLE IF NOT EXISTS netflix_titles (
+        show_id VARCHAR(255) PRIMARY KEY,  # 設定 show_id 為主鍵
+        type VARCHAR(50),
+        title VARCHAR(255),
+        director VARCHAR(255),
+        cast TEXT,
+        country VARCHAR(255),
+        date_added VARCHAR(50),
+        release_year INT,
+        rating VARCHAR(50),
+        duration VARCHAR(50),
+        listed_in TEXT,
+        description TEXT
+    """)
+
+
