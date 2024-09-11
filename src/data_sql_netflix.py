@@ -57,4 +57,8 @@ def import_csv_to_db_1(csv_file_path):
         csv_data = csv.reader(csv_file)
         header = next(csv_data)  # 跳過標題行
 
+        # 插入每一行數據
+        for row in csv_data:
+            db_cursor.execute("INSERT INTO table_1 (col1, col2) VALUES (%s, %s)", row)
+
 
