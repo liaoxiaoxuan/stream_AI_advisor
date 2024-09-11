@@ -51,3 +51,10 @@ def import_csv_to_db_1(csv_file_path):
     """)
 
 
+
+    # 打開 CSV 檔案
+    with open(csv_file_path, 'r', encoding='utf-8') as csv_file:
+        csv_data = csv.reader(csv_file)
+        header = next(csv_data)  # 跳過標題行
+
+
