@@ -50,8 +50,6 @@ def import_csv_to_db_1(csv_file_path):
         description TEXT
     """)
 
-
-
     # 打開 CSV 檔案
     with open(csv_file_path, 'r', encoding='utf-8') as csv_file:
         csv_data = csv.reader(csv_file)
@@ -60,5 +58,13 @@ def import_csv_to_db_1(csv_file_path):
         # 插入每一行數據
         for row in csv_data:
             db_cursor.execute("INSERT INTO table_1 (col1, col2) VALUES (%s, %s)", row)
+    
+    # 提交更改並關閉連接
+    db_connection.commit()
+    db_cursor.close()
+    db_connection.close()
+    print("CSV 已成功匯入到 MySQL Netflix 資料庫！")
+
+
 
 
