@@ -25,7 +25,10 @@ def collect_data(path):  # 定義了一個名為 collect_data 的函數
 
 # 定義日期轉換函數
 def convert_date_format(date_str):
-    if isinstance(date_str, str):  # 確保 date_str 是字符串
+    if isinstance(date_str, str):
+        date_str = date_str.strip()  # 去掉前後空白字符
+        if date_str.upper() == 'NA':
+            return None  # 將 'NA' 替換為 None
         try:
             # 解析原始日期字符串
             date_obj = datetime.strptime(date_str, '%B %d, %Y')
