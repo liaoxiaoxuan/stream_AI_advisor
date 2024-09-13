@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from datetime import datetime
 from utils.data_utils import preprocess_data, save_data
 
 
@@ -8,9 +9,9 @@ from utils.data_utils import preprocess_data, save_data
 # 透過 os.path.join() 函式將導入文件路徑，這個方法具有話平台的兼容性
 
 # 原始數據
-raw_data_path = os.path.join('data', 'raw', 'netflix_titles.csv')
+raw_data_path = os.path.join('D:/PYTHON/oo_hank_project/stream_AI_advisor/data/raw/netflix_titles.csv')
 # 整理過後
-processed_data_path = os.path.join('data', 'processed', 'netflix_titles_processed.csv')
+processed_data_path = os.path.join('D:/PYTHON/oo_hank_project/stream_AI_advisor/data/processed/netflix_titles_processed.csv')
 
 
 
@@ -19,6 +20,23 @@ processed_data_path = os.path.join('data', 'processed', 'netflix_titles_processe
 def collect_data(path):  # 定義了一個名為 collect_data 的函數
     df = pd.read_csv(path)  # 使用 Pandas 的 read_csv 函數從指定路徑讀取 CSV 檔，並將其內容存儲在變數 df 中
     return df  # 返回 df 變數，從 CSV 檔中讀取的資料框
+
+
+
+# 定義日期轉換函數
+def convert_date_format(date_str):
+    if isinstance(date_str, str):  # 確保 date_str 是字符串
+        try:
+            # 解析原始日期字符串
+            date_obj = datetime.strptime(date_str, '%B %d, %Y')
+            # 轉換為 MySQL 所需的日期格式
+            return date_obj.strftime('%Y-%m-%d')
+        except ValueError:
+            # 處理格式不正確的日期
+            return None
+    else:
+        # 處理非字符串類型
+        return None
 
 
 
@@ -61,9 +79,18 @@ if __name__ == "__main__":
     # print(f"資料摘要已成功寫入到 {output_file} 文件中。")
 
 
+    # 日期格式轉換
+    if 'date_added' in df_netflix.columns:
+        df_netflix['date_added'] = df_netflix['date_added'].apply(convert_date_format)
+
+
     # 預處理數據
     print("Preprocessing Netflix data...")   # 輸出通知：即將預處理原始的 Netflix 資料
     df_netflix_cleaned = preprocess_data(df_netflix)  # 調用 preprocess_data 函數，對 df_netflix 中的資料進行預處理，並將結果存儲在變數 df_netflix_cleaned 中
+
+    from datetime import datetime
+
+
 
     # 輸出整理結果至 terminal
     print(f"Preprocessing Netflix data（first 20 rows）：\n{df_netflix_cleaned.head(20)}\n")
