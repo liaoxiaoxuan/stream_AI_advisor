@@ -1,33 +1,43 @@
+import pandas as pd
 import csv
 import mysql.connector  # 匯入與MySQL互動所需的模組
 from dotenv import load_dotenv
 import os
+import pymysql
+
+
+
+# 定義 CSV 數據文件路徑
+
+csv_file_path = 'D:/PYTHON/oo_hank_project/stream_AI_advisor/data/processed/netflix_titles_processed.csv'
+# csv_file_path = os.path.join('data', 'processed', 'netflix_titles_processed.csv')
+
+# 讀取 csv 文件到 DataFrame
+
+df = pd.read_csv(csv_file_path)
 
 
 
 # 載入 .env 檔案中的環境變數
 load_dotenv()
 
-
-
-# 定義 CSV 數據文件路徑
-
-csv_file_path = os.path.join('data', 'processed', 'netflix_titles_processed.csv')
-
 # 匯入 CSV 到第一個 MySQL 資料庫
 def import_csv_to_db_1(csv_file_path):
     # 從 .env 讀取資料庫 Netflix 的連接資訊
+    
     host = os.getenv("MYSQL_HOST_N")
     user = os.getenv("MYSQL_USER_N")
     password = os.getenv("MYSQL_PASSWORD_N")
     database = os.getenv("MYSQL_DATABASE_N")
 
+    # print(f"Host: {host}, User: {user}, Password: {password}, Database: {database}")
+
     # 連接到 MySQL Netflix 資料庫
     db_connection = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database
+        host = host,
+        user = user,
+        password = password,
+        database = database
     )
 
     # 創建一個資料庫游標
@@ -36,18 +46,18 @@ def import_csv_to_db_1(csv_file_path):
     # 建立表格
     db_cursor.execute("""
     CREATE TABLE IF NOT EXISTS netflix_titles (
-        show_id VARCHAR(255) PRIMARY KEY,  # 設定 show_id 為主鍵
-        type VARCHAR(50),
-        title VARCHAR(255),
-        director VARCHAR(255),
-        cast TEXT,
-        country VARCHAR(255),
-        date_added VARCHAR(50),
+        show_id VARCHAR(10) PRIMARY KEY,  # 設定 show_id 為主鍵
+        type VARCHAR(10),
+        title VARCHAR(250),
+        director VARCHAR(500),
+        cast VARCHAR(2000),
+        country VARCHAR(200),
+        date_added DATE,
         release_year INT,
         rating VARCHAR(50),
         duration VARCHAR(50),
-        listed_in TEXT,
-        description TEXT
+        listed_in VARCHAR(100),
+        description VARCHAR(800))
     """)
 
     # 打開 CSV 檔案
@@ -57,7 +67,10 @@ def import_csv_to_db_1(csv_file_path):
 
         # 插入每一行數據
         for row in csv_data:
-            db_cursor.execute("INSERT INTO table_1 (col1, col2) VALUES (%s, %s)", row)
+            db_cursor.execute(
+                """INSERT INTO data_netflix (show_id, type, title, director, cast, country, date_added, release_year, rating, duration, listed_in, description) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, row)
     
     # 提交更改並關閉連接
     db_connection.commit()
@@ -66,5 +79,6 @@ def import_csv_to_db_1(csv_file_path):
     print("CSV 已成功匯入到 MySQL Netflix 資料庫！")
 
 
-
+if __name__ == "__main__":
+    import_csv_to_db_1(csv_file_path)
 
