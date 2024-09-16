@@ -27,8 +27,8 @@ def collect_data(path):  # 定義了一個名為 collect_data 的函數
 def convert_date_format(date_str):
     if isinstance(date_str, str):
         date_str = date_str.strip()  # 去掉前後空白字符
-        if date_str.upper() == 'NA':
-            return None  # 將 'NA' 替換為 None
+        if date_str.upper() in ['NA', 'N/A', 'None', 'Null', 'nan'] or not date_str:
+            return ''
         try:
             # 解析原始日期字符串
             date_obj = datetime.strptime(date_str, '%B %d, %Y')
@@ -37,8 +37,12 @@ def convert_date_format(date_str):
         except ValueError:
             # 處理格式不正確的日期
             return None
+    elif isinstance(date_str, float):
+        return '1999-01-01'
     else:
         # 處理非字符串類型
+        print(type(date_str))
+        print(date_str)
         return None
 
 
