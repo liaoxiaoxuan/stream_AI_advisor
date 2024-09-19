@@ -12,11 +12,11 @@ load_dotenv()
 # 初始化資料庫連接，使用 .env 檔案中的環境變數或傳入的參數
 
 class MySQLConnector:
-    def __init__(self, host=None, user=None, password=None, database=None):
-        self.host = host if host else os.getenv('MYSQL_HOST_N')
-        self.user = user if user else os.getenv('MYSQL_USER_N')
-        self.password = password if password else os.getenv('MYSQL_PASSWORD_N')
-        self.database = database if database else os.getenv('MYSQL_DATABASE_N')
+    def __init__(self, host=None, user=None, password=None, database=None,name='N'):
+        self.host = host if host else os.getenv(f'MYSQL_HOST_{name}')
+        self.user = user if user else os.getenv(f'MYSQL_USER_{name}')
+        self.password = password if password else os.getenv(f'MYSQL_PASSWORD_{name}')
+        self.database = database if database else os.getenv(f'MYSQL_DATABASE_{name}')
         self.conn = None
         self.cursor = None
 
@@ -76,12 +76,12 @@ class MySQLConnector:
 
 
 if __name__ == "__main__":
-    db = MySQLConnector()
+    db = MySQLConnector(name='N')
     db.connect()
 
     # 查詢特定欄位的資料
     table_name = "data_netflix"
-    columns = ["title"]  # 替換成你需要的欄位名稱
+    columns = ["type"]  # 替換成你需要的欄位名稱
     df = db.query_specific_columns(table_name, columns)
 
     if df is not None:
