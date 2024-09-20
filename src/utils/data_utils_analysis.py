@@ -139,6 +139,7 @@ class Analysis:
         """
         # 設置輸出目錄
         output_dir = os.path.join('D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data')
+        output_dir = os.path.join('reports', 'figures')
         # 創建輸出目錄（如果不存在）
         os.makedirs(output_dir, exist_ok=True)
         # 保存圖表到指定文件
