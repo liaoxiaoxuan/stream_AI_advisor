@@ -60,8 +60,19 @@ class MySQLConnector:
         # return：pandas DataFrame
         
         columns_str = ', '.join(columns)  # 將欄位名稱列表轉換為 SQL 查詢所需的格式
-        sql_query = f"SELECT {columns_str} FROM {table_name}"  # 构造 SQL 查詢語句
+        sql_query = f"SELECT {columns_str} FROM {table_name}"  # 建構 SQL 查詢語句
         return self.query(sql_query)  # 使用已存在的 query 方法執行查詢
+
+
+    # 獲取表的所有列名
+    def get_table_columns(self, table_name):
+        try:
+            self.cursor.execute(f"SHOW COLUMNS FROM {table_name}")
+            columns = [column[0] for column in self.cursor.fetchall()]
+            return columns
+        except mysql.connector.Error as err:
+            print(f"獲取表結構時出現錯誤: {err}")
+            return None
 
 
 # 關閉游標和資料庫連接
@@ -76,15 +87,34 @@ class MySQLConnector:
 
 
 if __name__ == "__main__":
-    db = MySQLConnector(name='N')
+    db = MySQLConnector(name="N")
     db.connect()
 
     # 查詢特定欄位的資料
     table_name = "data_netflix"
-    columns = ["type"]  # 替換成你需要的欄位名稱
-    df = db.query_specific_columns(table_name, columns)
+    # columns = ["type"]  # 替換成你需要的欄位名稱
+    # df = db.query_specific_columns(table_name, columns)
 
-    if df is not None:
-        print(df.head())  # 顯示前幾筆資料
-    
+    # 動態獲取表的所有列名
+    all_columns = db.get_table_columns(table_name)
+
+    if all_columns:
+        print(f"表 {table_name} 的所有列: {', '.join(all_columns)}")
+
+        # 使用for循環遍歷所有列
+        for column in all_columns:
+            print(f"\n查詢列: {column}")
+            df = db.query_specific_columns(table_name, [column])
+            if df is not None:
+                print(df.head())  # 顯示前幾筆資料
+            else:
+                print(f"查詢 {column} 列時出現錯誤")
+    else:
+        print(f"無法獲取表 {table_name} 的列訊息")
+
     db.close()
+
+    # if df is not None:
+    #     print(df.head())  # 顯示前幾筆資料
+    
+    # db.close()
