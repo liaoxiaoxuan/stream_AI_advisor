@@ -184,6 +184,12 @@ class Analysis:
                 # 繪製年度內容數量的折線圖
                 self._plot_line(self.year_counts, 'Yearly Content Addition')
 
+    def set_color_table(self):
+        self.colors_map = {
+            'N1': ['#f9dbbd'],  # Netflix 單色
+            'N2':  ['#E50611','black'],  # Netflix 雙色主視覺
+        }
+    
     def _plot_bar(self, data, title):
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(12, 6))
