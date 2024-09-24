@@ -140,20 +140,28 @@ class Analysis:
         if self.data is None:
             raise ValueError("Data not loaded. Call get_data() first.")
 
-        # 計算內容類型的數量
+        # 計算內容類型 'type' 的數量
         self.type_counts = self.data['type'].value_counts()
+        
         # 將 'date_added' 列轉換為日期時間格式
         self.data['date_added'] = pd.to_datetime(self.data['date_added'])
         # 從 'date_added' 提取年份
         self.data['year'] = self.data['date_added'].dt.year
         # 從 'date_added' 提取月份名稱
         self.data['month'] = self.data['date_added'].dt.month_name()
+        # 指定月份的順序
+        month_order = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December']
+        # 將月份轉換為有序類別
+        self.data['month'] = pd.Categorical(self.data['month'], categories=month_order, ordered=True)
         # 計算每年每月的內容數量
         self.month_counts = self.data.groupby('year')['month'].value_counts()
         # 計算每年的內容數量並按年份排序
         self.year_counts = self.data['year'].value_counts().sort_index()
-        # 計算每個發行年份的內容數量並排序
+
+        # 計算每個發行年份 'release_year' 的內容數量並排序
         self.release_year_counts = self.data['release_year'].value_counts().sort_index()
+
         # 計算每個分級的內容數量並排序
         self.rating_counts = self.data['rating'].value_counts().sort_index()
 
@@ -233,8 +241,18 @@ class Analysis:
         plt.figure(figsize=(12, 8))
         # 使用 Seaborn 繪製熱力圖
         sns.heatmap(pivot_table, annot=True, fmt='.0f', cmap='YlGnBu')
+        """
+        設定熱力圖配色 cmap
+        'YlGnBu': 黃-綠-藍漸變
+        'viridis': 默認色彩映射，綠-藍-黃
+        'coolwarm': 冷暖色對比
+        'magma': 黑-紫-橙漸變
+        """
         # 設置圖表標題
         plt.title('Content Addition Heatmap by Year and Month')
+
+
+
 
     def _plot_line(self, data, title):
         # 創建一個新的圖形，設置大小
@@ -247,6 +265,9 @@ class Analysis:
         plt.xlabel('Year')
         # 設置 y 軸標籤
         plt.ylabel('Number of Contents')
+
+
+
 
     
     # 儲存當前的圖表
@@ -306,21 +327,23 @@ def analysis():
     # 進行數據計算
     analysis.calculate()
 
-    # 生成並保存內容類型柱狀圖
+    # 生成並保存柱狀圖
     analysis.visualize('bar', 'type')
     analysis.export('content_type_bar.png')
 
-    # 生成並保存內容分級圓餅圖
+    # 生成並保存圓餅圖
     analysis.visualize('pie', 'rating')
     analysis.export('content_rating_pie.png')
 
-    # 生成並保存年月內容數量熱力圖
+    # 生成並保存熱力圖
     analysis.visualize('heatmap', 'month_year')
     analysis.export('content_addition_heatmap.png')
 
-    # 生成並保存年度內容數量折線圖
+    # 生成並保存折線圖
     analysis.visualize('line', 'year')
     analysis.export('yearly_content_addition_line.png')
+
+
 
 def main():
     mySQLConnector()
