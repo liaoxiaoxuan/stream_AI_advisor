@@ -110,6 +110,8 @@ class Analysis:
         self.table_name = table_name
         # 初始化 data 屬性為 None，稍後會用來存儲從數據庫讀取的數據
         self.data = None
+        self.set_color_table()
+        
 
 
     # 從 MySQL 資料庫讀取資料
@@ -187,14 +189,22 @@ class Analysis:
     def set_color_table(self):
         self.colors_map = {
             'N1': ['#f9dbbd'],  # Netflix 單色
-            'N2':  ['#E50611','black'],  # Netflix 雙色主視覺
+            'N2':  ['#E50611','#000000'],  # Netflix 雙色主視覺
+        }
+
+        self.color_map = {
+            'N1': ['#f9dbbd'],  # Netflix 單色
+            'N2':  ['#E50611','#000000'],  # Netflix 雙色主視覺
         }
     
     def _plot_bar(self, data, title):
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(12, 6))
         # 使用 Seaborn 繪製柱狀圖
-        sns.barplot(x=data.index, y=data.values)
+        ax = sns.barplot(x=data.index, y=data.values)
+        # 在每個柱狀圖上添加數字標籤
+        for i, value in enumerate(data.values):
+            ax.text(i, value + 0.01, f'{value:.0f}', ha='center', va='bottom')
         # 設置圖表標題
         plt.title(title)
         # 旋轉 x 軸標籤，避免重疊
@@ -206,7 +216,13 @@ class Analysis:
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(10, 10))
         # 繪製圓餅圖
-        plt.pie(data.values, labels=data.index, autopct='%1.1f%%')
+        plt.pie(
+            data.values, 
+            labels=data.index, 
+            colors=self.colors_map['N2'], 
+            autopct='%1.1f%%', 
+            textprops={'color': 'white', 'fontsize': 12, 'fontweight': 'bold'}
+            )
         # 設置圖表標題
         plt.title(title)
 
