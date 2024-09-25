@@ -150,13 +150,13 @@ class Analysis:
         # 從 'date_added' 提取月份名稱
         self.data['month'] = self.data['date_added'].dt.month_name()
         # 指定月份的順序
-        month_order = ['January', 'February', 'March', 'April', 'May', 'June', 
+        self.month_order = ['January', 'February', 'March', 'April', 'May', 'June', 
                        'July', 'August', 'September', 'October', 'November', 'December']
         # 將月份轉換為有序類別
-        self.data['month'] = pd.Categorical(self.data['month'], categories=month_order, ordered=True)
-        # 計算每年每月的內容數量
+        self.data['month'] = pd.Categorical(self.data['month'], categories=self.month_order, ordered=True)
+        # 計算每年每月的新增數量
         self.month_counts = self.data.groupby('year')['month'].value_counts()
-        # 計算每年的內容數量並按年份排序
+        # 計算每年的新增數量並按年份排序
         self.year_counts = self.data['year'].value_counts().sort_index()
 
         # 計算每個發行年份 'release_year' 的內容數量並排序
@@ -186,9 +186,13 @@ class Analysis:
                 # 繪製內容分級的圓餅圖
                 self._plot_pie(self.rating_counts, 'Content Rating Distribution')
         elif plot_type == 'heatmap':
-            if data_type == 'month_year':
+            if data_type == 'date_added':
                 # 繪製年月內容數量的熱力圖
-                self._plot_heatmap()
+                self._plot_heatmap(self.month_counts, 'Content Addition Heatmap by Year and Month')
+        elif plot_type == 'table':
+            if data_type == 'date_added':
+                # 繪製年度內容數量的折線圖
+                self._plot_table(self.month_counts, 'Content Addition Table by Year and Month')
         elif plot_type == 'line':
             if data_type == 'year':
                 # 繪製年度內容數量的折線圖
@@ -234,7 +238,7 @@ class Analysis:
         # 設置圖表標題
         plt.title(title)
 
-    def _plot_heatmap(self):
+    def _plot_heatmap(self, data, title):
         # 將月度數據轉換為透視表格式
         pivot_table = self.month_counts.unstack()
         # 創建一個新的圖形，設置大小
@@ -252,6 +256,44 @@ class Analysis:
         plt.title('Content Addition Heatmap by Year and Month')
 
 
+    def _plot_table(self, data, title):
+        
+        # 排列為矩陣
+        matrix = self.month_counts.unstack()  # 先使用 unstack() 將月份從行索引轉為列索引，未出現的月份會變成 NaN
+        matrix = matrix.fillna(0)  # 使用 fillna(0) 將 NaN 值填充為 0
+        matrix = matrix.astype(int)  # 將數據類型轉換為整數
+        matrix = matrix[self.month_order]  # 根據指定的月份順序重新排序列
+        result = matrix.T  # 將矩陣轉置，讓年份成為列索引，月份成為行索引# 設置圖表大小和分辨率
+        
+        # 計算年和月的總和
+        result['Month Total'] = result.sum(axis=1)  # 計算每年的總和，並將結果新增至 DataFrame 的新列 'Year Total'
+        result.loc['Year Total'] = result.sum(axis=0)  # 計算每月的總和，並將結果新增至 DataFrame 的新行 'Month Total'
+
+        # 繪製表格
+        plt.figure(figsize=(12, 8), dpi=300)
+        # plt.figure(): 創建一個新的圖形對象，這是 Matplotlib 用來顯示和處理圖形的容器。
+        # figsize=(12, 8): 設定圖形的尺寸。figsize 是一個元組，表示圖形的寬度和高度，單位是英寸（inches）。
+        # dpi=200: 設定圖形的解析度。dpi 代表 "dots per inch"（每英寸點數），它決定了圖形的解析度。在這個例子中，dpi=200 表示每英寸有 200 個點，這將使圖形的細節更為清晰。高 dpi 值通常用於生成高質量的圖像文件。
+        
+        table = plt.table(cellText = result.values,  # cellText：表格中的數據
+                          rowLabels = result.index,  # rowLabels：表格的行標籤
+                          colLabels = result.columns,  # colLabels：表格的列標籤
+                          cellLoc = 'center',  # cellLoc：表格單元格中文字的位置
+                          loc = 'center')  # loc：表格在圖中的位置
+        
+        # 設置表格樣式
+        table.auto_set_font_size(True)  # 自動調整字體大小
+        table.set_fontsize(10)  # 設置字體大小
+        table.scale(1, 1)  # 調整表格的縮放比例
+        
+        # 繪製格線（使用 table 的內建方法）
+        for key, cell in table.get_celld().items():  # 遍歷表格中的所有單元格，返回的 key 是單元格的行列索引，cell 是單元格對象
+            if key[0] in result.index and key[1] in result.columns:  # 檢查單元格的行和列是否在結果的索引和列中
+                cell.set_edgecolor('black')  # 設置單元格邊框顏色為黑色
+                cell.set_linewidth(0.05)  # 設置單元格邊框的線寬
+        
+        # 隱藏坐標軸
+        plt.axis('off')
 
 
     def _plot_line(self, data, title):
@@ -266,9 +308,7 @@ class Analysis:
         # 設置 y 軸標籤
         plt.ylabel('Number of Contents')
 
-
-
-
+        
     
     # 儲存當前的圖表
     def export(self, filename):
@@ -284,6 +324,7 @@ class Analysis:
         plt.savefig(os.path.join(output_dir, filename))
         # 關閉當前圖表，釋放內存
         plt.close()
+
 
 
 def mySQLConnector():
@@ -336,10 +377,14 @@ def analysis():
     analysis.export('content_rating_pie.png')
 
     # 生成並保存熱力圖
-    analysis.visualize('heatmap', 'month_year')
+    analysis.visualize('heatmap', 'date_added')
     analysis.export('content_addition_heatmap.png')
 
-    # 生成並保存折線圖
+    # 生成並保存統計表
+    analysis.visualize('table', 'date_added')
+    analysis.export('content_addition_table.png')
+    
+    # 生成並保存單折線圖
     analysis.visualize('line', 'year')
     analysis.export('yearly_content_addition_line.png')
 
