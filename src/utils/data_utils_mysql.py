@@ -143,6 +143,21 @@ class Analysis:
         # 計算內容類型 'type' 的數量
         self.type_counts = self.data['type'].value_counts()
         
+        # 分別計算 "TV Show" 和 "Movie" 的 year_counts
+        self.TV_Show = self.data[self.data["type"] == "TV Show"]
+        self.tv_show_date = self.TV_Show[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
+        self.tv_show_date['date_added'] = pd.to_datetime(self.tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+        self.tv_show_date['year'] = self.tv_show_date['date_added'].dt.year  # 提取年份
+        self.tv_show_year_counts = self.tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
+        
+        self.Movie = self.data[self.data["type"] == "Movie"]
+        self.movie_date = self.Movie[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
+        self.movie_date['date_added'] = pd.to_datetime(self.movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
+        self.movie_date['year'] = self.movie_date['date_added'].dt.year  # 提取年份
+        self.movie_year_counts = self.movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
+        print(self.tv_show_year_counts)
+        print(self.movie_year_counts)
+        
         # 將 'date_added' 列轉換為日期時間格式
         self.data['date_added'] = pd.to_datetime(self.data['date_added'])
         # 從 'date_added' 提取年份
@@ -196,7 +211,7 @@ class Analysis:
         elif plot_type == 'line':
             if data_type == 'year':
                 # 繪製年度內容數量的折線圖
-                self._plot_line(self.year_counts, 'Yearly Content Addition')
+                self._plot_a_line(self.year_counts, 'Yearly Content Addition')
 
     def set_color_table(self):
         self.colors_map = {
@@ -255,7 +270,6 @@ class Analysis:
         # 設置圖表標題
         plt.title('Content Addition Heatmap by Year and Month')
 
-
     def _plot_table(self, data, title):
         
         # 排列為矩陣
@@ -295,8 +309,7 @@ class Analysis:
         # 隱藏坐標軸
         plt.axis('off')
 
-
-    def _plot_line(self, data, title):
+    def _plot_a_line(self, data, title):
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(12, 6))
         # 繪製折線圖
@@ -308,8 +321,31 @@ class Analysis:
         # 設置 y 軸標籤
         plt.ylabel('Number of Contents')
 
-        
-    
+    def _plot_two_line(self, data, title):
+        # 繪製雙折線圖
+        plt.figure(figsize=(10, 6))
+
+        # 繪製 "TV Show" 的年份數據，設定顏色為藍色
+        plt.plot(tv_show_year_counts.index, tv_show_year_counts.values, label='TV Show', color='#E50611', marker='o')
+
+        # 繪製 "Movie" 的年份數據，設定顏色為橙色
+        plt.plot(movie_year_counts.index, movie_year_counts.values, label='Movie', color='#000000', marker='o')
+
+        # 添加圖表標題和軸標籤
+        plt.title('Yearly Counts of TV Shows and Movies')
+        plt.xlabel('Year')
+        plt.ylabel('Count')
+
+        # 顯示圖例
+        plt.legend()
+
+        # 顯示網格線
+        plt.grid(True)
+
+        # 顯示圖表
+        plt.show()   
+
+
     # 儲存當前的圖表
     def export(self, filename):
         """
@@ -385,7 +421,7 @@ def analysis():
     analysis.export('content_addition_table.png')
     
     # 生成並保存單折線圖
-    analysis.visualize('line', 'year')
+    analysis.visualize('a_line', 'year')
     analysis.export('yearly_content_addition_line.png')
 
 
