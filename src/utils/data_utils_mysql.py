@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 # from data_utils_mysql import MySQLConnector
 
+from pprint import pprint
+from pathlib import Path
+
 
 
 # 載入 .env 檔案中的環境變數
@@ -143,19 +146,40 @@ class Analysis:
         # 計算內容類型 'type' 的數量
         self.type_counts = self.data['type'].value_counts()
         
-        # 分別計算 "TV Show" 和 "Movie" 的 year_counts
+        # 分別計算 "TV Show" 和 "Movie" 的分組資料
         self.TV_Show = self.data[self.data["type"] == "TV Show"]
+        self.Movie = self.data[self.data["type"] == "Movie"]
+        
+        # date_added
         self.tv_show_date = self.TV_Show[['date_added']].dropna()  # 提取 "TV Show" 的 "date_added" 列，並刪除空值
         self.tv_show_date['date_added'] = pd.to_datetime(self.tv_show_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
         self.tv_show_date['year'] = self.tv_show_date['date_added'].dt.year  # 提取年份
         self.tv_show_year_counts = self.tv_show_date['year'].value_counts().sort_index()  # 計算每年 "TV Show" 的數量並排序
-        
-        self.Movie = self.data[self.data["type"] == "Movie"]
+                
         self.movie_date = self.Movie[['date_added']].dropna()  # 提取 "Movie" 的 "date_added" 列，並刪除空值
         self.movie_date['date_added'] = pd.to_datetime(self.movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
         self.movie_date['year'] = self.movie_date['date_added'].dt.year  # 提取年份
         self.movie_year_counts = self.movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
         
+        # duration
+        self.tv_show_duration = self.TV_Show['duration'].dropna()  # 提取 "TV Show" 的 "duration" 列，並刪除空值
+        self.tv_show_duration_split = self.tv_show_duration.str.split(' ', expand = True)  # 分割 "duration" 當中的數據
+        self.tv_show_duration_int = self.tv_show_duration_split.apply(pd.to_numeric, errors = 'coerce')  # 分割 "duration" 當中的數據
+        self.tv_show_duration_sort = self.tv_show_duration_int.sort_values(by=0)  # 排序 "TV Show" 當中的 "duration"
+        bins = [1,2,3,5,7,9,11,13,15,17,19]
+        tv_show_duration_segments = pd.cut(self.tv_show_duration_sort[0], bins, right = False)
+        self.tv_show_duration_counts = pd.value_counts(tv_show_duration_segments, sort = False)
+
+        self.movie_duration = self.Movie['duration'].dropna()  # 提取 "Movie" 的 "duration" 列，並刪除空值
+        self.movie_duration_split = self.movie_duration.str.split(' ', expand = True)  # 分割 "duration" 當中的數據
+        self.movie_duration_int = self.movie_duration_split.apply(pd.to_numeric, errors = 'coerce')  # 分割 "duration" 當中的數據
+        self.movie_duration_sort = self.movie_duration_int.sort_values(by=0)  # 排序 "TV Show" 當中的 "duration"
+        bins = [10,20,40,60,90,120,150,180,240,300,330]
+        movie_duration_segments = pd.cut(self.movie_duration_sort[0], bins, right = False)
+        self.movie_duration_counts = pd.value_counts(movie_duration_segments, sort = False)
+        print(self.tv_show_duration_counts)
+        print(self.movie_duration_counts)
+
 
         # 將 'date_added' 列轉換為日期時間格式
         self.data['date_added'] = pd.to_datetime(self.data['date_added'])
@@ -178,6 +202,15 @@ class Analysis:
 
         # 計算每個分級的內容數量並排序
         self.rating_counts = self.data['rating'].value_counts().sort_index()
+    
+
+    # 輸出全部資料
+    def export(self):
+        Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/tv_show_duration_sort.txt').open('w').write(
+            self.tv_show_duration_sort[0].to_string())
+        Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/movie_duration_sort.txt').open('w').write(
+            self.movie_duration_sort[0].to_string())
+        print(type(self.tv_show_duration_sort[0]))
 
 
     # 根據指定的圖表類型和資料類型進行可視化
@@ -458,33 +491,33 @@ def analysis():
     # 進行數據計算
     analysis.calculate()
 
-    # 生成並保存柱狀圖
-    analysis.visualize('bar', 'type')
-    analysis.export('content type bar.png')
+    # # 生成並保存柱狀圖
+    # analysis.visualize('bar', 'type')
+    # analysis.export('content type bar.png')
 
-    # 生成並保存圓餅圖
-    analysis.visualize('pie', 'rating')
-    analysis.export('content rating pie.png')
+    # # 生成並保存圓餅圖
+    # analysis.visualize('pie', 'rating')
+    # analysis.export('content rating pie.png')
 
-    # 生成並保存熱力圖
-    analysis.visualize('heatmap', 'date_added')
-    analysis.export('content addition heatmap.png')
+    # # 生成並保存熱力圖
+    # analysis.visualize('heatmap', 'date_added')
+    # analysis.export('content addition heatmap.png')
 
-    # 生成並保存統計表
-    analysis.visualize('table', 'date_added')
-    analysis.export('content addition table.png')
+    # # 生成並保存統計表
+    # analysis.visualize('table', 'date_added')
+    # analysis.export('content addition table.png')
     
-    # 生成並保存單折線圖
-    analysis.visualize('a_line', 'year')
-    analysis.export('yearly content addition line.png')
+    # # 生成並保存單折線圖
+    # analysis.visualize('a_line', 'year')
+    # analysis.export('yearly content addition line.png')
     
-    # 生成並保存雙折線圖
-    analysis.visualize('two_line', 'year')
-    analysis.export('Yearly Counts of TV Shows and Movies.png')
+    # # 生成並保存雙折線圖
+    # analysis.visualize('two_line', 'year')
+    # analysis.export('Yearly Counts of TV Shows and Movies.png')
 
-    # 生成並保存組合圖
-    analysis.visualize('combine_b2l', 'year')
-    analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
+    # # 生成並保存組合圖
+    # analysis.visualize('combine_b2l', 'year')
+    # analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
 
 
 
