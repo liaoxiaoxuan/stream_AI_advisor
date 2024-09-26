@@ -12,6 +12,8 @@ import numpy as np
 from pprint import pprint
 from pathlib import Path
 
+from textblob import TextBlob
+
 
 
 # 載入 .env 檔案中的環境變數
@@ -202,7 +204,7 @@ class Analysis:
         self.rating_counts = self.data['rating'].value_counts().sort_index()
     
 
-    # 輸出全部資料
+    # 輸出某 colum 的全部資料
     def export(self):
         Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/tv_show_duration_sort.txt').open('w').write(
             self.tv_show_duration_sort[0].to_string())
