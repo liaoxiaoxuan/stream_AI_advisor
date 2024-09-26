@@ -168,7 +168,7 @@ class Analysis:
         self.tv_show_duration_sort = self.tv_show_duration_int.sort_values(by=0)  # 排序 "TV Show" 當中的 "duration"
         bins = [1,2,3,5,7,9,11,13,15,17,19]
         tv_show_duration_segments = pd.cut(self.tv_show_duration_sort[0], bins, right = False)
-        self.tv_show_duration_counts = pd.value_counts(tv_show_duration_segments, sort = False)
+        self.tv_show_duration_counts = tv_show_duration_segments.value_counts(sort = False)
 
         self.movie_duration = self.Movie['duration'].dropna()  # 提取 "Movie" 的 "duration" 列，並刪除空值
         self.movie_duration_split = self.movie_duration.str.split(' ', expand = True)  # 分割 "duration" 當中的數據
@@ -176,9 +176,7 @@ class Analysis:
         self.movie_duration_sort = self.movie_duration_int.sort_values(by=0)  # 排序 "TV Show" 當中的 "duration"
         bins = [10,20,40,60,90,120,150,180,240,300,330]
         movie_duration_segments = pd.cut(self.movie_duration_sort[0], bins, right = False)
-        self.movie_duration_counts = pd.value_counts(movie_duration_segments, sort = False)
-        print(self.tv_show_duration_counts)
-        print(self.movie_duration_counts)
+        self.movie_duration_counts = movie_duration_segments.value_counts(sort = False)
 
 
         # 將 'date_added' 列轉換為日期時間格式
@@ -225,6 +223,9 @@ class Analysis:
             elif data_type == 'rating':
                 # 繪製內容分級的柱狀圖
                 self._plot_bar(self.rating_counts, 'Content Rating Distribution')
+            elif data_type == 'duration':
+                # 繪製影片時長的柱狀圖
+                self._plot_bar(self.tv_show_duration_counts, 'Content TV Show Distribution')
         
         elif plot_type == 'pie':
             if data_type == 'type':
@@ -233,6 +234,9 @@ class Analysis:
             elif data_type == 'rating':
                 # 繪製內容分級的圓餅圖
                 self._plot_pie(self.rating_counts, 'Content Rating Distribution')
+            elif data_type == 'duration':
+                # 繪製影片時長的圓餅圖
+                self._plot_pie(self.movie_duration_counts, 'Content Movie_Duration Distribution')
         
         elif plot_type == 'heatmap':
             if data_type == 'date_added':
@@ -256,7 +260,7 @@ class Analysis:
 
         elif plot_type == 'combine_b2l':
             if data_type == 'year':
-                # 繪製年度內容數量的折線圖
+                # 繪製年度內容數量的組合圖
                 self._plot_combine_b2l(self.year_counts, 'Yearly Growth of TV Shows and Movies on Netflix')
 
     def set_color_table(self):
@@ -289,7 +293,7 @@ class Analysis:
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(10, 10))
         # 繪製圓餅圖
-        plt.pie(
+        wedges, texts, autotexts = plt.pie(
             data.values, 
             labels=data.index, 
             colors=self.colors_map['N2'], 
@@ -298,6 +302,8 @@ class Analysis:
             )
         # 設置圖表標題
         plt.title(title)
+        # 新增標籤到圖例中
+        plt.legend(wedges, data.index, title="統計項目", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
 
     def _plot_heatmap(self, data, title):
         # 將月度數據轉換為透視表格式
@@ -491,33 +497,33 @@ def analysis():
     # 進行數據計算
     analysis.calculate()
 
-    # # 生成並保存柱狀圖
-    # analysis.visualize('bar', 'type')
-    # analysis.export('content type bar.png')
+    # 生成並保存柱狀圖
+    analysis.visualize('bar', 'duration')
+    analysis.export('Content TV Show Distribution bar.png')
 
-    # # 生成並保存圓餅圖
-    # analysis.visualize('pie', 'rating')
-    # analysis.export('content rating pie.png')
+    # 生成並保存圓餅圖
+    analysis.visualize('pie', 'duration')
+    analysis.export('Content Movie Duration Distribution pie.png')
 
-    # # 生成並保存熱力圖
-    # analysis.visualize('heatmap', 'date_added')
-    # analysis.export('content addition heatmap.png')
+    # 生成並保存熱力圖
+    analysis.visualize('heatmap', 'date_added')
+    analysis.export('content addition heatmap.png')
 
-    # # 生成並保存統計表
-    # analysis.visualize('table', 'date_added')
-    # analysis.export('content addition table.png')
+    # 生成並保存統計表格
+    analysis.visualize('table', 'date_added')
+    analysis.export('content addition table.png')
     
-    # # 生成並保存單折線圖
-    # analysis.visualize('a_line', 'year')
-    # analysis.export('yearly content addition line.png')
+    # 生成並保存單折線圖
+    analysis.visualize('a_line', 'year')
+    analysis.export('yearly content addition line.png')
     
-    # # 生成並保存雙折線圖
-    # analysis.visualize('two_line', 'year')
-    # analysis.export('Yearly Counts of TV Shows and Movies.png')
+    # 生成並保存雙折線圖
+    analysis.visualize('two_line', 'year')
+    analysis.export('Yearly Counts of TV Shows and Movies.png')
 
-    # # 生成並保存組合圖
-    # analysis.visualize('combine_b2l', 'year')
-    # analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
+    # 生成並保存組合圖
+    analysis.visualize('combine_b2l', 'year')
+    analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
 
 
 
