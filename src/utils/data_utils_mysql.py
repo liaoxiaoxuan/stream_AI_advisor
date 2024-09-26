@@ -155,9 +155,8 @@ class Analysis:
         self.movie_date['date_added'] = pd.to_datetime(self.movie_date['date_added'], format='%Y/%m/%d')  # 確保 'date_added' 列是日期時間格式
         self.movie_date['year'] = self.movie_date['date_added'].dt.year  # 提取年份
         self.movie_year_counts = self.movie_date['year'].value_counts().sort_index()  # 計算每年 "Movie" 的數量並排序
-        print(self.tv_show_year_counts)
-        print(self.movie_year_counts)
         
+
         # 將 'date_added' 列轉換為日期時間格式
         self.data['date_added'] = pd.to_datetime(self.data['date_added'])
         # 從 'date_added' 提取年份
@@ -193,6 +192,7 @@ class Analysis:
             elif data_type == 'rating':
                 # 繪製內容分級的柱狀圖
                 self._plot_bar(self.rating_counts, 'Content Rating Distribution')
+        
         elif plot_type == 'pie':
             if data_type == 'type':
                 # 繪製內容類型的圓餅圖
@@ -200,18 +200,31 @@ class Analysis:
             elif data_type == 'rating':
                 # 繪製內容分級的圓餅圖
                 self._plot_pie(self.rating_counts, 'Content Rating Distribution')
+        
         elif plot_type == 'heatmap':
             if data_type == 'date_added':
                 # 繪製年月內容數量的熱力圖
                 self._plot_heatmap(self.month_counts, 'Content Addition Heatmap by Year and Month')
+        
         elif plot_type == 'table':
             if data_type == 'date_added':
                 # 繪製年度內容數量的折線圖
                 self._plot_table(self.month_counts, 'Content Addition Table by Year and Month')
-        elif plot_type == 'line':
+        
+        elif plot_type == 'a_line':
             if data_type == 'year':
                 # 繪製年度內容數量的折線圖
                 self._plot_a_line(self.year_counts, 'Yearly Content Addition')
+        
+        elif plot_type == 'two_line':
+            if data_type == 'year':
+                # 繪製年度內容數量的折線圖
+                self._plot_two_line(self.year_counts, 'Yearly Counts of TV Shows and Movies')
+
+        elif plot_type == 'combine_b2l':
+            if data_type == 'year':
+                # 繪製年度內容數量的折線圖
+                self._plot_combine_b2l(self.year_counts, 'Yearly Growth of TV Shows and Movies on Netflix')
 
     def set_color_table(self):
         self.colors_map = {
@@ -320,30 +333,71 @@ class Analysis:
         plt.xlabel('Year')
         # 設置 y 軸標籤
         plt.ylabel('Number of Contents')
+        # 顯示網格線
+        plt.grid(True)
 
     def _plot_two_line(self, data, title):
         # 繪製雙折線圖
         plt.figure(figsize=(10, 6))
-
-        # 繪製 "TV Show" 的年份數據，設定顏色為藍色
-        plt.plot(tv_show_year_counts.index, tv_show_year_counts.values, label='TV Show', color='#E50611', marker='o')
-
-        # 繪製 "Movie" 的年份數據，設定顏色為橙色
-        plt.plot(movie_year_counts.index, movie_year_counts.values, label='Movie', color='#000000', marker='o')
-
+        # 繪製 "TV Show" 的年份數據，設定顏色
+        plt.plot(self.tv_show_year_counts.index, self.tv_show_year_counts.values, label='TV Show', color='#E50611')
+        # 繪製 "Movie" 的年份數據，設定顏色
+        plt.plot(self.movie_year_counts.index, self.movie_year_counts.values, label='Movie', color='#000000')
         # 添加圖表標題和軸標籤
-        plt.title('Yearly Counts of TV Shows and Movies')
+        plt.title(title)
         plt.xlabel('Year')
         plt.ylabel('Count')
-
+        # 確保這裡的index是每一年的列表
+        plt.xticks(self.tv_show_year_counts.index)
         # 顯示圖例
         plt.legend()
-
         # 顯示網格線
         plt.grid(True)
+  
+    def _plot_combine_b2l(self, data, title):
+        
+        # 確保所有年份都在同一範圍內
+        years = sorted(set(self.tv_show_year_counts.index).union(self.movie_year_counts.index))
+        
+        # 將缺失的年份填充為 0
+        self.tv_show_year_counts = self.tv_show_year_counts.reindex(years, fill_value=0)
+        self.movie_year_counts = self.movie_year_counts.reindex(years, fill_value=0)
+        
+        # 計算總和年增長量
+        self.total_year_counts = self.tv_show_year_counts + self.movie_year_counts
+        
+        # 創建圖表和第一個子圖（長條圖）
+        fig, ax1 = plt.subplots(figsize=(12, 8))
+        
+        # 繪製長條圖，顯示 TV Shows 和 Movies 的總和年增長量
+        ax1.bar(years, self.total_year_counts, color='tab:blue', alpha=0.6, label='Total Contents')
+        
+        # 設置第一個子圖的標題和 X 軸標籤
+        ax1.set_title('Yearly Growth of TV Shows and Movies on Netflix')
+        ax1.set_xlabel('Year')
+        ax1.set_ylabel('Total Number of Contents', color='tab:blue')
+        
+        # 設置 Y 軸的刻度顏色
+        ax1.tick_params(axis='y', labelcolor='tab:blue')
+        
+        # 創建第二個共享 X 軸的子圖
+        ax2 = ax1.twinx()
+        ax2.set_ylabel('Number of Contents', color='black')
+        
+        # 設置相同的 Y 軸範圍
+        ax1_ylim = ax1.get_ylim()
+        ax2.set_ylim(ax1_ylim)
+        
+        # 繪製雙折線圖
+        ax2.plot(years, self.tv_show_year_counts, label='TV Shows', color='#E50611', marker='o', alpha=0.75)
+        ax2.plot(years, self.movie_year_counts, label='Movies', color='black', marker='o', alpha=1)
+        
+        # 設置第二個 Y 軸的顏色
+        ax2.tick_params(axis='y', labelcolor='black')
+        
+        # 添加圖例
+        ax2.legend(loc='upper left')
 
-        # 顯示圖表
-        plt.show()   
 
 
     # 儲存當前的圖表
@@ -406,23 +460,31 @@ def analysis():
 
     # 生成並保存柱狀圖
     analysis.visualize('bar', 'type')
-    analysis.export('content_type_bar.png')
+    analysis.export('content type bar.png')
 
     # 生成並保存圓餅圖
     analysis.visualize('pie', 'rating')
-    analysis.export('content_rating_pie.png')
+    analysis.export('content rating pie.png')
 
     # 生成並保存熱力圖
     analysis.visualize('heatmap', 'date_added')
-    analysis.export('content_addition_heatmap.png')
+    analysis.export('content addition heatmap.png')
 
     # 生成並保存統計表
     analysis.visualize('table', 'date_added')
-    analysis.export('content_addition_table.png')
+    analysis.export('content addition table.png')
     
     # 生成並保存單折線圖
     analysis.visualize('a_line', 'year')
-    analysis.export('yearly_content_addition_line.png')
+    analysis.export('yearly content addition line.png')
+    
+    # 生成並保存雙折線圖
+    analysis.visualize('two_line', 'year')
+    analysis.export('Yearly Counts of TV Shows and Movies.png')
+
+    # 生成並保存組合圖
+    analysis.visualize('combine_b2l', 'year')
+    analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
 
 
 
