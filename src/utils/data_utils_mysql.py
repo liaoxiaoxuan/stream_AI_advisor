@@ -202,6 +202,7 @@ class Analysis:
 
         # 計算每個分級的內容數量並排序
         self.rating_counts = self.data['rating'].value_counts().sort_index()
+        
     
 
     # 輸出某 colum 的全部資料
@@ -211,6 +212,17 @@ class Analysis:
         Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/movie_duration_sort.txt').open('w').write(
             self.movie_duration_sort[0].to_string())
         print(type(self.tv_show_duration_sort[0]))
+
+
+
+    # 情感分析
+    def TextBlob(self):
+        text_description = self.data['description']  # 寫入文句內容
+        polarity = [TextBlob(review).sentiment.polarity for review in text_description]  # 使用列表推導式，對每一條影評計算其情感極性（polarity），TextBlob(review).sentiment.polarity 會返回一個情感分數，範圍為 -1 到 1，-1 表示負面情感，1 表示正面情感
+        subjectivity = [TextBlob(review).sentiment.subjectivity for review in text_description]  # 使用列表推導式，對每一條影評計算其情感極性（polarity），TextBlob(review).sentiment.polarity 會返回一個情感分數，範圍為 -1 到 1，-1 表示負面情感，1 表示正面情感
+        df_text_description = pd.DataFrame({'Review': text_description, 'Polarity': polarity, 'Subjectivity' : subjectivity})  # 建立一個 DataFrame，包含兩列：'Review'（影評）和 'Sentiment'（情感分數）
+        print(df_text_description)  # 輸出 DataFrame，顯示每條影評和對應的情感分數
+
 
 
     # 根據指定的圖表類型和資料類型進行可視化
@@ -456,6 +468,9 @@ class Analysis:
         # 關閉當前圖表，釋放內存
         plt.close()
 
+    
+
+
 
 
 def mySQLConnector():
@@ -499,33 +514,37 @@ def analysis():
     # 進行數據計算
     analysis.calculate()
 
-    # 生成並保存柱狀圖
-    analysis.visualize('bar', 'duration')
-    analysis.export('Content TV Show Distribution bar.png')
+    # # 生成並保存柱狀圖
+    # analysis.visualize('bar', 'duration')
+    # analysis.export('Content TV Show Distribution bar.png')
 
-    # 生成並保存圓餅圖
-    analysis.visualize('pie', 'duration')
-    analysis.export('Content Movie Duration Distribution pie.png')
+    # # 生成並保存圓餅圖
+    # analysis.visualize('pie', 'duration')
+    # analysis.export('Content Movie Duration Distribution pie.png')
 
-    # 生成並保存熱力圖
-    analysis.visualize('heatmap', 'date_added')
-    analysis.export('content addition heatmap.png')
+    # # 生成並保存熱力圖
+    # analysis.visualize('heatmap', 'date_added')
+    # analysis.export('content addition heatmap.png')
 
-    # 生成並保存統計表格
-    analysis.visualize('table', 'date_added')
-    analysis.export('content addition table.png')
+    # # 生成並保存統計表格
+    # analysis.visualize('table', 'date_added')
+    # analysis.export('content addition table.png')
     
-    # 生成並保存單折線圖
-    analysis.visualize('a_line', 'year')
-    analysis.export('yearly content addition line.png')
+    # # 生成並保存單折線圖
+    # analysis.visualize('a_line', 'year')
+    # analysis.export('yearly content addition line.png')
     
-    # 生成並保存雙折線圖
-    analysis.visualize('two_line', 'year')
-    analysis.export('Yearly Counts of TV Shows and Movies.png')
+    # # 生成並保存雙折線圖
+    # analysis.visualize('two_line', 'year')
+    # analysis.export('Yearly Counts of TV Shows and Movies.png')
 
-    # 生成並保存組合圖
-    analysis.visualize('combine_b2l', 'year')
-    analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
+    # # 生成並保存組合圖
+    # analysis.visualize('combine_b2l', 'year')
+    # analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
+
+    # 生成分析結果
+    analysis.TextBlob()
+    
 
 
 
