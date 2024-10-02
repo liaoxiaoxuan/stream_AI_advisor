@@ -218,12 +218,13 @@ class Analysis:
     # 情感分析
     def TextBlob(self):
         text_description = self.data['description']  # 寫入文句內容
-        polarity = [TextBlob(review).sentiment.polarity for review in text_description]  # 使用列表推導式，對每一條影評計算其情感極性（polarity），TextBlob(review).sentiment.polarity 會返回一個情感分數，範圍為 -1 到 1，-1 表示負面情感，1 表示正面情感
+        self.polarity = [TextBlob(review).sentiment.polarity for review in text_description]  # 使用列表推導式，對每一條影評計算其情感極性（polarity），TextBlob(review).sentiment.polarity 會返回一個情感分數，範圍為 -1 到 1，-1 表示負面情感，1 表示正面情感
         subjectivity = [TextBlob(review).sentiment.subjectivity for review in text_description]  # 使用列表推導式，對每一條影評計算其情感極性（polarity），TextBlob(review).sentiment.polarity 會返回一個情感分數，範圍為 -1 到 1，-1 表示負面情感，1 表示正面情感
-        df_text_description = pd.DataFrame({'Review': text_description, 'Polarity': polarity, 'Subjectivity' : subjectivity})  # 建立一個 DataFrame，包含兩列：'Review'（影評）和 'Sentiment'（情感分數）
-        print(df_text_description)  # 輸出 DataFrame，顯示每條影評和對應的情感分數
-
-
+        self.df_text_description = pd.DataFrame({'Review': text_description, 'Polarity': self.polarity, 'Subjectivity' : subjectivity})  # 建立一個 DataFrame，包含兩列：'Review'（影評）和 'Sentiment'（情感分數）
+        print(self.df_text_description)  # 輸出 DataFrame，顯示每條影評和對應的情感分數
+        print(self.df_text_description['Polarity'])  # 輸出 DataFrame，顯示每條影評和對應的情感分數
+        # sns.kdeplot(self.polarity, fill=True, color='#f9dbbd')
+        # self.blobTest = 'ldjhnsifugnspogin'
 
     # 根據指定的圖表類型和資料類型進行可視化
     def visualize(self, plot_type, data_type):
@@ -276,6 +277,8 @@ class Analysis:
             if data_type == 'year':
                 # 繪製年度內容數量的組合圖
                 self._plot_combine_b2l(self.year_counts, 'Yearly Growth of TV Shows and Movies on Netflix')
+
+
 
     def set_color_table(self):
         self.colors_map = {
@@ -451,6 +454,36 @@ class Analysis:
         # 添加圖例
         ax2.legend(loc='upper left')
 
+    # 密度估計圖
+    def kdeplot(self):
+        # print(self.blobTest)
+        # return
+        sns.kdeplot(self.polarity, fill=True, color='#f9dbbd')
+        # 使用 Seaborn 中的 kdeplot 函數繪製情感分數的核密度估計圖（Kernel Density Estimate），
+        # 'sentiments' 是情感分數的數據，fill=True 表示填充曲線下的區域，color 設置曲線顏色為 'skyblue'（天藍色）
+        plt.title('Kernel Density Estimate of Sentiment Distribution')
+        # 設置圖表標題為 'Kernel Density Estimate of Sentiment Distribution'（情感分佈的核密度估計）
+        plt.xlabel('Polarity')
+        # 設置 X 軸標籤為 'Polarity'（情感極性）
+        plt.ylabel('Density')
+        # 設置 Y 軸標籤為 'Density'（情感主觀性）
+        # plt.show()
+        # # 顯示繪製的圖表
+
+    # 散點圖
+    def scatterplot(self):
+        sns.scatterplot(self.df_text_description, x='Polarity', y='Subjectivity')
+        # # 使用 Seaborn 中的 kdeplot 函數繪製情感分數的核密度估計圖（Kernel Density Estimate），
+        # # 'sentiments' 是情感分數的數據，fill=True 表示填充曲線下的區域，color 設置曲線顏色為 'skyblue'（天藍色）
+        plt.title('Scatter plot of Sentiment')
+        # 設置圖表標題為 'Kernel Density Estimate of Sentiment Distribution'（情感分佈的核密度估計）
+        plt.xlabel('Polarity')
+        # 設置 X 軸標籤為 'Polarity'（情感極性）
+        plt.ylabel('Subjectivity')
+        # 設置 Y 軸標籤為 'Density'（情感主觀性）
+        # plt.show()
+        # # 顯示繪製的圖表
+
 
 
     # 儲存當前的圖表
@@ -539,11 +572,18 @@ def analysis():
     # analysis.export('Yearly Counts of TV Shows and Movies.png')
 
     # # 生成並保存組合圖
-    # analysis.visualize('combine_b2l', 'year')
-    # analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
+    analysis.visualize('combine_b2l', 'year')
+    analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
 
-    # 生成分析結果
+    # 生成分析結果並保存密度估計圖
     analysis.TextBlob()
+    analysis.kdeplot()
+    analysis.export('Kernel Density Estimate of Sentiment Distribution')
+
+    # 生成分析結果並保存散點圖
+    analysis.TextBlob()
+    analysis.scatterplot()
+    analysis.export('Scatter plot of Sentiment')
     
 
 
