@@ -14,6 +14,8 @@ from pathlib import Path
 
 from textblob import TextBlob
 
+from collections import Counter
+
 
 
 # 載入 .env 檔案中的環境變數
@@ -205,16 +207,35 @@ class Analysis:
         
     
 
-    # 輸出某 colum 的全部資料
-    def export(self):
-        Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/tv_show_duration_sort.txt').open('w').write(
-            self.tv_show_duration_sort[0].to_string())
-        Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/movie_duration_sort.txt').open('w').write(
-            self.movie_duration_sort[0].to_string())
-        print(type(self.tv_show_duration_sort[0]))
+    # # 輸出某 colum 的全部資料
+    # def export(self):
+        # Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/tv_show_duration_sort.txt').open('w').write(
+            # self.tv_show_duration_sort[0].to_string())
+        # Path('D:\PYTHON\oo_hank_project\stream_AI_advisor\local/movie_duration_sort.txt').open('w').write(
+            # self.movie_duration_sort[0].to_string())
+        # print(type(self.tv_show_duration_sort[0]))
 
 
 
+    # 多標籤分析
+    def multi_label(self, header):
+        self.data_multi_label = self.data[header].dropna()
+        # all_labels = [_ for _ in [row.strip('"').split(',') for row in self.data_multi_label]]
+        all_labels = []
+        for row in self.data_multi_label:
+            cut_data = row.strip('"').split(',')
+            for label in cut_data:
+                all_labels.append(label)
+        self.label_counts = dict(Counter(all_labels).most_common(15))
+        self.label_counts.pop('NA',None)
+        self.label_counts.pop('Joey Bada$$',None)
+
+        print(self.label_counts)
+        print(self.label_counts)
+
+        
+    
+    
     # 情感分析
     def TextBlob(self):
         text_description = self.data['description']  # 寫入文句內容
@@ -241,6 +262,18 @@ class Analysis:
             elif data_type == 'duration':
                 # 繪製影片時長的柱狀圖
                 self._plot_bar(self.tv_show_duration_counts, 'Content TV Show Distribution')
+            elif data_type == 'director':
+                # 繪製單一導演數量的柱狀圖
+                self._plot_bar_matplot(self.label_counts, 'Content Director Multi_label Distribution')
+            elif data_type == 'cast':
+                # 繪製單一演員數量的柱狀圖
+                self._plot_bar_matplot(self.label_counts, 'Content Cast Multi_label Distribution')
+            elif data_type == 'country':
+                # 繪製單一發行國家數量的柱狀圖
+                self._plot_bar_matplot(self.label_counts, 'Content Country Multi_label Distribution')
+            elif data_type == 'listed_in':
+                # 繪製單一內容分類數量的柱狀圖
+                self._plot_bar_matplot(self.label_counts, 'Content Listed_in Multi_label Distribution')
         
         elif plot_type == 'pie':
             if data_type == 'type':
@@ -305,6 +338,14 @@ class Analysis:
         plt.xticks(rotation=45)
         # 自動調整子圖參數，使之填充整個圖像區域
         plt.tight_layout()
+    
+    def _plot_bar_matplot(self, label_counts, title):
+        plt.bar(label_counts.keys(), label_counts.values())
+        plt.title(title)
+        plt.xlabel('Labels')
+        plt.ylabel('Count')
+        # plt.show()
+
 
     def _plot_pie(self, data, title):
         # 創建一個新的圖形，設置大小
@@ -497,7 +538,7 @@ class Analysis:
         # 創建輸出目錄（如果不存在）
         os.makedirs(output_dir, exist_ok=True)
         # 保存圖表到指定文件
-        plt.savefig(os.path.join(output_dir, filename))
+        plt.savefig(os.path.join(output_dir, filename),format='png')
         # 關閉當前圖表，釋放內存
         plt.close()
 
@@ -571,19 +612,38 @@ def analysis():
     # analysis.visualize('two_line', 'year')
     # analysis.export('Yearly Counts of TV Shows and Movies.png')
 
-    # # 生成並保存組合圖
-    analysis.visualize('combine_b2l', 'year')
-    analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
+    # # # 生成並保存組合圖
+    # analysis.visualize('combine_b2l', 'year')
+    # analysis.export('Yearly Growth of TV Shows and Movies on Netflix.png')
 
-    # 生成分析結果並保存密度估計圖
-    analysis.TextBlob()
-    analysis.kdeplot()
-    analysis.export('Kernel Density Estimate of Sentiment Distribution')
+    # # 生成分析結果並保存密度估計圖
+    # analysis.TextBlob()
+    # analysis.kdeplot()
+    # analysis.export('Kernel Density Estimate of Sentiment Distribution')
 
-    # 生成分析結果並保存散點圖
-    analysis.TextBlob()
-    analysis.scatterplot()
-    analysis.export('Scatter plot of Sentiment')
+    # # 生成分析結果並保存散點圖
+    # analysis.TextBlob()
+    # analysis.scatterplot()
+    # analysis.export('Scatter plot of Sentiment')
+
+    #  生成多標籤分析結果並保存柱狀圖
+    analysis.multi_label('director')
+    analysis.visualize('bar', 'director')
+    analysis.export('Content Director Multi_label Distribution bar.png')
+    
+    analysis.multi_label('cast')
+    analysis.visualize('bar', 'cast')
+    analysis.export('Content Cast Multi_label Distribution bar.png')
+    
+    analysis.multi_label('country')
+    analysis.visualize('bar', 'country')
+    analysis.export('Content Country Multi_label Distribution bar.png')
+    
+    analysis.multi_label('listed_in')
+    analysis.visualize('bar', 'listed_in')
+    analysis.export('Content Listed_in Multi_label Distribution bar.png')
+    
+    
     
 
 
