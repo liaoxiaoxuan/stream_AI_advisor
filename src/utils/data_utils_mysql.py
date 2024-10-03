@@ -219,19 +219,32 @@ class Analysis:
 
     # 多標籤分析
     def multi_label(self, header):
-        self.data_multi_label = self.data[header].dropna()
+        df = self.data[header]
+        self.data_multi_label = df.drop(df[df.str.contains('NA')].index)
+        cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]
+        # all_labels = [item for sublist in cut_data for item in sublist]
         # all_labels = [_ for _ in [row.strip('"').split(',') for row in self.data_multi_label]]
         all_labels = []
-        for row in self.data_multi_label:
-            cut_data = row.strip('"').split(',')
-            for label in cut_data:
-                all_labels.append(label)
+        for sublist in cut_data:
+            all_labels.extend(sublist)
+
+        # 計算前 15 名
         self.label_counts = dict(Counter(all_labels).most_common(15))
         self.label_counts.pop('NA',None)
         self.label_counts.pop('Joey Bada$$',None)
 
-        print(self.label_counts)
-        print(self.label_counts)
+        # print(self.label_counts)
+        # print(self.label_counts)
+
+    # 多標籤組合頻率分析
+    def get_combo_counts(self,header):
+        df = self.data[header]
+        self.data_multi_label = df.drop(df[df.str.contains('NA')].index)
+        cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]        
+        self.combo_counts = dict(Counter(tuple(sorted(sublist)) for sublist in cut_data).most_common(20))
+        # self.combo_counts.most_common(20)
+
+        print(self.combo_counts)
 
         
     
@@ -262,7 +275,8 @@ class Analysis:
             elif data_type == 'duration':
                 # 繪製影片時長的柱狀圖
                 self._plot_bar(self.tv_show_duration_counts, 'Content TV Show Distribution')
-            elif data_type == 'director':
+        elif plot_type == 'bar_matplot':
+            if data_type == 'director':
                 # 繪製單一導演數量的柱狀圖
                 self._plot_bar_matplot(self.label_counts, 'Content Director Multi_label Distribution')
             elif data_type == 'cast':
@@ -274,6 +288,19 @@ class Analysis:
             elif data_type == 'listed_in':
                 # 繪製單一內容分類數量的柱狀圖
                 self._plot_bar_matplot(self.label_counts, 'Content Listed_in Multi_label Distribution')
+        elif plot_type == 'bar_combo':
+            if data_type == 'director':
+                # 繪製導演組合頻率的柱狀圖
+                self._plot_bar_combo(self.combo_counts, 'Content Director Combo_Counts Distribution')
+            elif data_type == 'cast':
+                # 繪製演員組合頻率的柱狀圖
+                self._plot_bar_combo(self.combo_counts, 'Content Cast Combo_Counts Distribution')
+            elif data_type == 'country':
+                # 繪製發行國家組合頻率的柱狀圖
+                self._plot_bar_combo(self.combo_counts, 'Content Country Combo_Counts Distribution')
+            elif data_type == 'listed_in':
+                # 繪製內容分類組合頻率的柱狀圖
+                self._plot_bar_combo(self.combo_counts, 'Content Listed_in Combo_Counts Distribution')
         
         elif plot_type == 'pie':
             if data_type == 'type':
@@ -340,10 +367,33 @@ class Analysis:
         plt.tight_layout()
     
     def _plot_bar_matplot(self, label_counts, title):
-        plt.bar(label_counts.keys(), label_counts.values())
+        """
+            繪製單一多標籤分析柱狀圖
+        """
+        p1=plt.bar(label_counts.keys(), label_counts.values())
+        # 在每個柱狀圖上添加數字標籤
+        plt.bar_label(p1, label_type='edge')
+        plt.xticks(rotation=75)
         plt.title(title)
         plt.xlabel('Labels')
         plt.ylabel('Count')
+        # 自動調整子圖參數，使之填充整個圖像區域
+        plt.tight_layout()
+        # plt.show()
+    
+    def _plot_bar_combo(self, combo_counts, title):
+        """
+            繪製多標籤組合頻率分析柱狀圖
+        """
+        p1=plt.bar(list(map(str,combo_counts.keys())), combo_counts.values())
+        # 在每個柱狀圖上添加數字標籤
+        plt.bar_label(p1, label_type='edge')
+        plt.xticks(rotation=90)
+        plt.title(title)
+        plt.xlabel('Combo')
+        plt.ylabel('Count')
+        # 自動調整子圖參數，使之填充整個圖像區域
+        plt.tight_layout()
         # plt.show()
 
 
@@ -626,22 +676,40 @@ def analysis():
     # analysis.scatterplot()
     # analysis.export('Scatter plot of Sentiment')
 
-    #  生成多標籤分析結果並保存柱狀圖
+    # #  生成多標籤分析結果並保存柱狀圖
     analysis.multi_label('director')
-    analysis.visualize('bar', 'director')
-    analysis.export('Content Director Multi_label Distribution bar.png')
+    # analysis.visualize('bar_matplot', 'director')
+    # analysis.export('Content Director Multi_label Distribution bar.png')
     
     analysis.multi_label('cast')
-    analysis.visualize('bar', 'cast')
-    analysis.export('Content Cast Multi_label Distribution bar.png')
+    # analysis.visualize('bar_matplot', 'cast')
+    # analysis.export('Content Cast Multi_label Distribution bar.png')
     
     analysis.multi_label('country')
-    analysis.visualize('bar', 'country')
-    analysis.export('Content Country Multi_label Distribution bar.png')
+    # analysis.visualize('bar_matplot', 'country')
+    # analysis.export('Content Country Multi_label Distribution bar.png')
     
     analysis.multi_label('listed_in')
-    analysis.visualize('bar', 'listed_in')
-    analysis.export('Content Listed_in Multi_label Distribution bar.png')
+    # analysis.visualize('bar_matplot', 'listed_in')
+    # analysis.export('Content Listed_in Multi_label Distribution bar.png')
+
+
+    #  生成多標籤組合頻率分析結果並保存柱狀圖
+    analysis.get_combo_counts('director')
+    analysis.visualize('bar_combo', 'director')
+    analysis.export('Content Director Combo_Counts Distribution bar.png')
+    
+    analysis.get_combo_counts('cast')
+    analysis.visualize('bar_combo', 'cast')
+    analysis.export('Content Cast Combo_Counts Distribution bar.png')
+    
+    analysis.get_combo_counts('country')
+    analysis.visualize('bar_combo', 'country')
+    analysis.export('Content Country Combo_Counts Distribution bar.png')
+    
+    analysis.get_combo_counts('listed_in')
+    analysis.visualize('bar_combo', 'listed_in')
+    analysis.export('Content Listed_in Combo_Counts Distribution bar.png')
     
     
     
