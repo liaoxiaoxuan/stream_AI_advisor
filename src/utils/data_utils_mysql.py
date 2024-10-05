@@ -224,12 +224,12 @@ class Analysis:
         cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]
         # all_labels = [item for sublist in cut_data for item in sublist]
         # all_labels = [_ for _ in [row.strip('"').split(',') for row in self.data_multi_label]]
-        all_labels = []
+        self.all_labels = []
         for sublist in cut_data:
-            all_labels.extend(sublist)
+            self.all_labels.extend(sublist)
 
         # 計算前 15 名
-        self.label_counts = dict(Counter(all_labels).most_common(15))
+        self.label_counts = dict(Counter(self.all_labels).most_common(15))
         self.label_counts.pop('NA',None)
         self.label_counts.pop('Joey Bada$$',None)
 
@@ -246,9 +246,56 @@ class Analysis:
 
         print(self.combo_counts)
 
+    # 共現矩陣分析
+    def get_co_occurrence(self,header:str,counts_threshold:int):
+
+        df = self.data[header]
+        self.data_multi_label = df.drop(df[df.str.contains('NA')].index)
+        cut_data = [list(map(str.lstrip,_.strip('"').split(','))) for _ in self.data_multi_label]
+        # all_labels = [item for sublist in cut_data for item in sublist]
+        # all_labels = [_ for _ in [row.strip('"').split(',') for row in self.data_multi_label]]
+        self.all_labels = []
+        for sublist in cut_data:
+            self.all_labels.extend(sublist)
+
+        # 計算標籤次數
+        self.label_counts = dict(Counter(self.all_labels))
+        # counts_threshold = threshold  # 次數門檻
+        label_counts_below_threshold = [_ for _ in self.label_counts if self.label_counts[_] < counts_threshold]
+        for key in self.label_counts:
+            if self.label_counts[key] < counts_threshold:
+                for _ in range(self.label_counts[key]):
+                    self.all_labels.remove(key)
+        print(self.all_labels)
+        # print(self.label_counts)
+        # print(label_counts_single)
+        # return
+        
         
     
-    
+        # 提取所有標籤
+        self.unique_labels = list(set(self.all_labels))  # 使用 set() 去除 all_labels 中的重複值，然後轉換為列表，得到所有唯一的標籤
+        self.co_occurrence_matrix = pd.DataFrame(0, index=self.unique_labels, columns=self.unique_labels)  # 建立一個全為 0 的共現矩陣，行和列都用 unique_labels 來標記，這個矩陣的行和列表示不同的標籤，矩陣中的數值表示標籤之間的共現次數
+
+        # 計算共現次數
+        for sublist in cut_data:  # 遍歷 multi_label_data，其中每個元素 sublist 是一組多標籤數據
+            
+            for i in range(len(sublist)):  # 針對 sublist 中的每個標籤進行迭代
+                for j in range(i + 1, len(sublist)):  # 從當前標籤之後的標籤開始，進行兩兩配對
+                    if sublist[i] in label_counts_below_threshold:
+                        continue
+                    if sublist[j] in label_counts_below_threshold:
+                        continue
+                    print(sublist[i], sublist[j])
+                    self.co_occurrence_matrix.loc[sublist[i], sublist[j]] += 1  # 增加 sublist[i] 和 sublist[j] 這對標籤在共現矩陣中的共現次數
+                    self.co_occurrence_matrix.loc[sublist[j], sublist[i]] += 1  # 由於共現矩陣是對稱的，同時更新 sublist[j] 和 sublist[i] 的共現次數
+        print(self.co_occurrence_matrix)        
+        # print(label_counts_below_threshold)        
+        # print(self.label_counts['Philippines'])        
+        # print(self.label_counts['Taiwan'])        
+        # print(self.label_counts['Nigeria'])        
+
+
     # 情感分析
     def TextBlob(self):
         text_description = self.data['description']  # 寫入文句內容
@@ -259,6 +306,8 @@ class Analysis:
         print(self.df_text_description['Polarity'])  # 輸出 DataFrame，顯示每條影評和對應的情感分數
         # sns.kdeplot(self.polarity, fill=True, color='#f9dbbd')
         # self.blobTest = 'ldjhnsifugnspogin'
+
+
 
     # 根據指定的圖表類型和資料類型進行可視化
     def visualize(self, plot_type, data_type):
@@ -316,7 +365,20 @@ class Analysis:
         elif plot_type == 'heatmap':
             if data_type == 'date_added':
                 # 繪製年月內容數量的熱力圖
-                self._plot_heatmap(self.month_counts, 'Content Addition Heatmap by Year and Month')
+                self._plot_heatmap(self.month_counts.unstack(), 'Content Addition Heatmap by Year and Month')
+            elif data_type == 'director':
+                # 繪製導演共現矩陣的熱力圖
+                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Director')
+            elif data_type == 'cast':
+                # 繪製導演共現矩陣的熱力圖
+                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Cast')
+            elif data_type == 'country':
+                # 繪製導演共現矩陣的熱力圖
+                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Country')
+            elif data_type == 'listed_in':
+                # 繪製導演共現矩陣的熱力圖
+                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Listed_in')
+
         
         elif plot_type == 'table':
             if data_type == 'date_added':
@@ -339,7 +401,6 @@ class Analysis:
                 self._plot_combine_b2l(self.year_counts, 'Yearly Growth of TV Shows and Movies on Netflix')
 
 
-
     def set_color_table(self):
         self.colors_map = {
             'N1': ['#f9dbbd'],  # Netflix 單色
@@ -350,7 +411,8 @@ class Analysis:
             'N1': ['#f9dbbd'],  # Netflix 單色
             'N2':  ['#E50611','#000000'],  # Netflix 雙色主視覺
         }
-    
+
+
     def _plot_bar(self, data, title):
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(12, 6))
@@ -413,13 +475,14 @@ class Analysis:
         # 新增標籤到圖例中
         plt.legend(wedges, data.index, title="統計項目", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
 
-    def _plot_heatmap(self, data, title):
+
+    def _plot_heatmap(self, data:pd.DataFrame, title):
         # 將月度數據轉換為透視表格式
-        pivot_table = self.month_counts.unstack()
+        pivot_table = data
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(12, 8))
         # 使用 Seaborn 繪製熱力圖
-        sns.heatmap(pivot_table, annot=True, fmt='.0f', cmap='YlGnBu')
+        sns.heatmap(pivot_table, annot=True, fmt='.0f', cmap='coolwarm')
         """
         設定熱力圖配色 cmap
         'YlGnBu': 黃-綠-藍漸變
@@ -428,7 +491,8 @@ class Analysis:
         'magma': 黑-紫-橙漸變
         """
         # 設置圖表標題
-        plt.title('Content Addition Heatmap by Year and Month')
+        plt.title(title)
+
 
     def _plot_table(self, data, title):
         
@@ -469,6 +533,7 @@ class Analysis:
         # 隱藏坐標軸
         plt.axis('off')
 
+
     def _plot_a_line(self, data, title):
         # 創建一個新的圖形，設置大小
         plt.figure(figsize=(12, 6))
@@ -482,6 +547,7 @@ class Analysis:
         plt.ylabel('Number of Contents')
         # 顯示網格線
         plt.grid(True)
+
 
     def _plot_two_line(self, data, title):
         # 繪製雙折線圖
@@ -501,6 +567,7 @@ class Analysis:
         # 顯示網格線
         plt.grid(True)
   
+
     def _plot_combine_b2l(self, data, title):
         
         # 確保所有年份都在同一範圍內
@@ -545,6 +612,7 @@ class Analysis:
         # 添加圖例
         ax2.legend(loc='upper left')
 
+
     # 密度估計圖
     def kdeplot(self):
         # print(self.blobTest)
@@ -560,6 +628,7 @@ class Analysis:
         # 設置 Y 軸標籤為 'Density'（情感主觀性）
         # plt.show()
         # # 顯示繪製的圖表
+
 
     # 散點圖
     def scatterplot(self):
@@ -694,22 +763,40 @@ def analysis():
     # analysis.export('Content Listed_in Multi_label Distribution bar.png')
 
 
-    #  生成多標籤組合頻率分析結果並保存柱狀圖
-    analysis.get_combo_counts('director')
-    analysis.visualize('bar_combo', 'director')
-    analysis.export('Content Director Combo_Counts Distribution bar.png')
+    # #  生成多標籤組合頻率分析結果並保存柱狀圖
+    # analysis.get_combo_counts('director')
+    # analysis.visualize('bar_combo', 'director')
+    # analysis.export('Content Director Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('cast')
-    analysis.visualize('bar_combo', 'cast')
-    analysis.export('Content Cast Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('cast')
+    # analysis.visualize('bar_combo', 'cast')
+    # analysis.export('Content Cast Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('country')
-    analysis.visualize('bar_combo', 'country')
-    analysis.export('Content Country Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('country')
+    # analysis.visualize('bar_combo', 'country')
+    # analysis.export('Content Country Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('listed_in')
-    analysis.visualize('bar_combo', 'listed_in')
-    analysis.export('Content Listed_in Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('listed_in')
+    # analysis.visualize('bar_combo', 'listed_in')
+    # analysis.export('Content Listed_in Combo_Counts Distribution bar.png')
+
+
+    #  生成共現矩陣分析結果並保存熱力圖
+    analysis.get_co_occurrence('director', counts_threshold = 10)
+    analysis.visualize('heatmap', 'director')
+    analysis.export('Co-occurrence Matrix of Labels by Director.png')
+    
+    analysis.get_co_occurrence('cast', counts_threshold = 25)
+    analysis.visualize('heatmap', 'cast')
+    analysis.export('Co-occurrence Matrix of Labels by Cast.png')
+
+    analysis.get_co_occurrence('country', counts_threshold = 80)
+    analysis.visualize('heatmap', 'country')
+    analysis.export('Co-occurrence Matrix of Labels by Country.png')  
+ 
+    analysis.get_co_occurrence('listed_in', counts_threshold = 200)
+    analysis.visualize('heatmap', 'listed_in')
+    analysis.export('Co-occurrence Matrix of Labels by Listed_in.png')  
     
     
     
