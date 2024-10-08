@@ -34,15 +34,15 @@ def main():
     # analysis.export('content_type_pie.png')
 
 
-    # 分析上架日期（'date_add'列），並產生圖表
+    # 分析上架日期（'date_added'列），並產生圖表
     
-    # # 生成統計表格
-    # analysis.visualize('table', 'date_added')
-    # analysis.export('yearly_content_addition.png')
+    # 生成統計表格
+    analysis.visualize('table', 'month_year')
+    analysis.export('content_addition_table.png')
 
-    # 生成熱力圖
-    analysis.visualize('heatmap', 'month_year')
-    analysis.export('content_addition_heatmap.png')    
+    # # 生成熱力圖
+    # analysis.visualize('heatmap', 'month_year')
+    # analysis.export('content_addition_heatmap.png')    
     
 
 

@@ -42,10 +42,14 @@ def import_csv_to_db_D(csv_file_path):
 
     # 創建一個資料庫游標
     db_cursor = db_connection.cursor()
+    db_cursor.execute("""
+    DROP TABLE IF EXISTS data_disney_plus;
+    """)
+    # return
 
     # 建立表格
     db_cursor.execute("""
-    CREATE TABLE IF NOT EXISTS data_Disney_pluse (
+    CREATE TABLE IF NOT EXISTS data_Disney_plus (
         show_id VARCHAR(10) PRIMARY KEY,  # 設定 show_id 為主鍵
         type VARCHAR(10),
         title VARCHAR(250),
@@ -68,7 +72,7 @@ def import_csv_to_db_D(csv_file_path):
         # 插入每一行數據
         for row in csv_data:
             db_cursor.execute(
-                """INSERT INTO data_Disney_pluse (show_id, type, title, director, cast, country, date_added, release_year, rating, duration, listed_in, description) 
+                """INSERT INTO data_Disney_plus (show_id, type, title, director, cast, country, date_added, release_year, rating, duration, listed_in, description) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, row)
     
