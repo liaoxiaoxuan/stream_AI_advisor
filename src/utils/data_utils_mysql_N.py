@@ -310,7 +310,7 @@ class Analysis:
 
 
     # 根據指定的圖表類型和資料類型進行可視化
-    def visualize(self, plot_type, data_type,db_name='N'):
+    def visualize(self, plot_type, data_type,db_name='Netflix'):
 
         """
         根據指定的圖表類型和資料類型進行可視化
@@ -725,9 +725,17 @@ def analysis():
     # analysis.visualize('bar', 'duration')
     # analysis.export(f'{db_name} Content TV Show Distribution bar.png')
 
+    # # 生成內容分級並保存柱狀圖
+    # analysis.visualize('bar', 'rating')
+    # analysis.export(f'{db_name} Content Rating Distribution bar.png')
+
     # # 生成影片類型並保存圓餅圖
     # analysis.visualize('pie', 'type')
     # analysis.export(f'{db_name} Content Type Distribution pie.png')
+
+    # # 生成影片類型並保存圓餅圖
+    # analysis.visualize('pie', 'rating')
+    # analysis.export(f'{db_name} Content Rating Distribution pie.png')
 
     # # 生成影片時長並保存圓餅圖
     # analysis.visualize('pie', 'duration')

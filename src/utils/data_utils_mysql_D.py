@@ -722,6 +722,10 @@ def analysis():
     # analysis.visualize('bar', 'type')
     # analysis.export(f'{db_name} Content Type Distribution bar.png')
 
+    # # 生成內容分級並保存柱狀圖
+    # analysis.visualize('bar', 'rating')
+    # analysis.export(f'{db_name} Content Rating Distribution bar.png')
+
     # # 生成影片時長並保存柱狀圖
     # analysis.visualize('bar', 'duration')
     # analysis.export(f'{db_name} Content TV Show Distribution bar.png')
@@ -729,6 +733,10 @@ def analysis():
     # # 生成影片類型並保存圓餅圖
     # analysis.visualize('pie', 'type')
     # analysis.export(f'{db_name} Content Type Distribution pie.png')
+
+    # # 生成影片類型並保存圓餅圖
+    # analysis.visualize('pie', 'rating')
+    # analysis.export(f'{db_name} Content Rating Distribution pie.png')
 
     # # 生成影片時長並保存圓餅圖
     # analysis.visualize('pie', 'duration')
