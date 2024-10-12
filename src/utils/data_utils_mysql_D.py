@@ -26,7 +26,7 @@ load_dotenv()
 # 初始化資料庫連接，使用 .env 檔案中的環境變數或傳入的參數
 
 class MySQLConnector:
-    def __init__(self, host=None, user=None, password=None, database=None,name=None):
+    def __init__(self, host=None, user=None, password=None, database=None,name='D'):
         self.host = host if host else os.getenv(f'MYSQL_HOST_{name}')
         self.user = user if user else os.getenv(f'MYSQL_USER_{name}')
         self.password = password if password else os.getenv(f'MYSQL_PASSWORD_{name}')
@@ -110,7 +110,7 @@ class MySQLConnector:
 
 
 class Analysis:
-    def __init__(self, table_name:str, db_name:str=None):
+    def __init__(self, table_name:str, db_name:str='D'):
         # 初始化 MySQLConnector 實例，用於數據庫連接
         self.db = MySQLConnector(name=db_name)
         # 設置要分析的資料表名稱
@@ -167,8 +167,8 @@ class Analysis:
         
         # duration
         self.tv_show_duration = self.TV_Show['duration'].dropna()  # 提取 "TV Show" 的 "duration" 列，並刪除空值
-        print( self.data['type'].value_counts())
-        print(self.TV_Show)
+        # print( self.data['type'].value_counts())
+        # print(self.TV_Show)
         self.tv_show_duration_split = self.tv_show_duration.str.split(' ', expand = True)  # 分割 "duration" 當中的數據
         self.tv_show_duration_int = self.tv_show_duration_split.apply(pd.to_numeric, errors = 'coerce')  # 分割 "duration" 當中的數據
         self.tv_show_duration_sort = self.tv_show_duration_int.sort_values(by=0)  # 排序 "TV Show" 當中的 "duration"
@@ -312,7 +312,7 @@ class Analysis:
 
 
     # 根據指定的圖表類型和資料類型進行可視化
-    def visualize(self, plot_type, data_type,db_name=''):
+    def visualize(self, plot_type, data_type,db_name='D'):
         """
         根據指定的圖表類型和資料類型進行可視化
         """
@@ -370,16 +370,16 @@ class Analysis:
                 self._plot_heatmap(self.month_counts.unstack(), f'Content {db_name} Addition Heatmap by Year and Month')
             elif data_type == 'director':
                 # 繪製導演共現矩陣的熱力圖
-                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Director')
+                self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Director')
             elif data_type == 'cast':
                 # 繪製導演共現矩陣的熱力圖
-                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Cast')
+                self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Cast')
             elif data_type == 'country':
                 # 繪製導演共現矩陣的熱力圖
-                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Country')
+                self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Country')
             elif data_type == 'listed_in':
                 # 繪製導演共現矩陣的熱力圖
-                self._plot_heatmap(self.co_occurrence_matrix, 'Co-occurrence Matrix of Labels by Listed_in')
+                self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Listed_in')
 
         
         elif plot_type == 'table':
@@ -405,9 +405,9 @@ class Analysis:
 
     def set_color_table(self):
         self.colors_map = {
-            'N1': ['#baf4ff'],  # Netflix 單色
+            'N1': ['#f9dbbd'],  # Netflix 單色
             'N2':  ['#E50611','#000000'],  # Netflix 雙色主視覺
-            'D1': ['#f9dbbd'],  # Disney+ 單色
+            'D1': ['#baf4ff'],  # Disney+ 單色
             'D2':  ['#002034','#005667'],  # Disney+ 雙色主視覺
             'C': ['tab10']  # Matplotlib 內建多筆數據調色盤
         }
@@ -594,7 +594,7 @@ class Analysis:
         fig, ax1 = plt.subplots(figsize=(12, 8))
         
         # 繪製長條圖，顯示 TV Shows 和 Movies 的總和年增長量
-        ax1.bar(years, self.total_year_counts, color='#f9dbbd', alpha=0.6, label='Total Contents')
+        ax1.bar(years, self.total_year_counts, color='#baf4ff', alpha=0.6, label='Total Contents')
         
         # 設置第一個子圖的標題和 X 軸標籤
         ax1.set_title('Yearly Growth of TV Shows and Movies on Netflix')
@@ -662,8 +662,8 @@ class Analysis:
         儲存當前的圖表
         """
         # 設置輸出目錄
-        # output_dir = os.path.join('D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data')
-        output_dir = os.path.join('reports', 'figures')
+        output_dir = os.path.join(r'D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data')
+        # output_dir = os.path.join('reports', 'figures')
         # 創建輸出目錄（如果不存在）
         os.makedirs(output_dir, exist_ok=True)
         # 保存圖表到指定文件
@@ -800,22 +800,22 @@ def analysis():
     # analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
 
 
-    #  生成共現矩陣分析結果並保存熱力圖
+    # #  生成共現矩陣分析結果並保存熱力圖
     # analysis.get_co_occurrence('director', counts_threshold = 10)
     # analysis.visualize('heatmap', 'director')
-    # analysis.export(f'{db_name} Co-occurrence Matrix of Labels by Director.png')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
     
     # analysis.get_co_occurrence('cast', counts_threshold = 15)
     # analysis.visualize('heatmap', 'cast')
-    # analysis.export(f'{db_name} Co-occurrence Matrix of Labels by Cast.png')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
 
     # analysis.get_co_occurrence('country', counts_threshold = 3)
     # analysis.visualize('heatmap', 'country')
-    # analysis.export(f'{db_name} Co-occurrence Matrix of Labels by Country.png')  
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
  
     # analysis.get_co_occurrence('listed_in', counts_threshold = 20)
     # analysis.visualize('heatmap', 'listed_in')
-    # analysis.export(f'{db_name} Co-occurrence Matrix of Labels by Listed_in.png')  
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
     
     
     
