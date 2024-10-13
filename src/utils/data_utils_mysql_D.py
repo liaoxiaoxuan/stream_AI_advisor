@@ -316,16 +316,23 @@ class Analysis:
         """
         根據指定的圖表類型和資料類型進行可視化
         """
-        if plot_type == 'bar':
+        if plot_type == 'bar_two':
             if data_type == 'type':
                 # 繪製內容類型的柱狀圖
-                self._plot_bar(self.type_counts, f'Content {db_name} Type Distribution')
-            elif data_type == 'rating':
+                self._plot_bar_two(self.type_counts, f'Content {db_name} Type Distribution')
+        elif plot_type == 'bar':
+            # if data_type == 'type':
+                # # 繪製內容類型的柱狀圖
+                # self._plot_bar(self.type_counts, f'Content {db_name} Type Distribution')
+            if data_type == 'rating':
                 # 繪製內容分級的柱狀圖
                 self._plot_bar(self.rating_counts, f'Content {db_name} Rating Distribution')
-            elif data_type == 'duration':
+            elif data_type == 'duration_tv':
                 # 繪製影片時長的柱狀圖
-                self._plot_bar(self.tv_show_duration_counts, f'Content {db_name} TV Show Distribution')
+                self._plot_bar(self.tv_show_duration_counts, f'Content {db_name} TV Show Duration Distribution')
+            elif data_type == 'duration_movie':
+                # 繪製影片時長的柱狀圖
+                self._plot_bar(self.movie_duration_counts, f'Content {db_name} Movie Duration Distribution')
         elif plot_type == 'bar_matplot':
             if data_type == 'director':
                 # 繪製單一導演數量的柱狀圖
@@ -353,11 +360,15 @@ class Analysis:
                 # 繪製內容分類組合頻率的柱狀圖
                 self._plot_bar_combo(self.combo_counts, f'Content {db_name} Listed_in Combo_Counts Distribution')
         
-        elif plot_type == 'pie':
+        elif plot_type == 'pie_two':
             if data_type == 'type':
                 # 繪製內容類型的圓餅圖
-                self._plot_pie(self.type_counts, f'Content {db_name} Type Distribution')
-            elif data_type == 'rating':
+                self._plot_pie_two(self.type_counts, f'Content {db_name} Type Distribution')
+        elif plot_type == 'pie':
+            # if data_type == 'type':
+                # # 繪製內容類型的圓餅圖
+                # self._plot_pie(self.type_counts, f'Content {db_name} Type Distribution')
+            if data_type == 'rating':
                 # 繪製內容分級的圓餅圖
                 self._plot_pie(self.rating_counts, f'Content {db_name} Rating Distribution')
             elif data_type == 'duration':
@@ -408,7 +419,7 @@ class Analysis:
             'N1': ['#f9dbbd'],  # Netflix 單色
             'N2':  ['#E50611','#000000'],  # Netflix 雙色主視覺
             'D1': ['#baf4ff'],  # Disney+ 單色
-            'D2':  ['#002034','#005667'],  # Disney+ 雙色主視覺
+            'D2':  ['#002034','#4CA2B4'],  # Disney+ 雙色主視覺
             'C': ['tab10']  # Matplotlib 內建多筆數據調色盤
         }
 
@@ -435,11 +446,29 @@ class Analysis:
         # 自動調整子圖參數，使之填充整個圖像區域
         plt.tight_layout()
     
+    def _plot_bar_two(self, data, title):
+        # 創建一個新的圖形，設置大小
+        plt.figure(figsize=(12, 6))
+        # 調整柱狀圖顏色
+        colors = self.colors_map['D2']  # 取用 D1 調色盤
+        # 使用 Seaborn 繪製柱狀圖
+        ax = sns.barplot(x=data.index, y=data.values, palette=colors * len(data))
+        # 在每個柱狀圖上添加數字標籤
+        for i, value in enumerate(data.values):
+            ax.text(i, value + 0.01, f'{value:.0f}', ha='center', va='bottom')
+        # 設置圖表標題
+        plt.title(title)
+        # 旋轉 x 軸標籤，避免重疊
+        plt.xticks(rotation=45)
+        # 自動調整子圖參數，使之填充整個圖像區域
+        plt.tight_layout()
+    
     def _plot_bar_matplot(self, label_counts, title):
         """
             繪製單一多標籤分析柱狀圖
         """
-        p1=plt.bar(label_counts.keys(), label_counts.values())
+        colors = self.colors_map['D1']  # 取用 D1 調色盤
+        p1=plt.bar(label_counts.keys(), label_counts.values(), color=colors)
         # 在每個柱狀圖上添加數字標籤
         plt.bar_label(p1, label_type='edge')
         plt.xticks(rotation=75)
@@ -454,7 +483,8 @@ class Analysis:
         """
             繪製多標籤組合頻率分析柱狀圖
         """
-        p1=plt.bar(list(map(str,combo_counts.keys())), combo_counts.values())
+        colors = self.colors_map['D1']  # 取用 D1 調色盤
+        p1=plt.bar(list(map(str,combo_counts.keys())), combo_counts.values(), color=colors)
         # 在每個柱狀圖上添加數字標籤
         plt.bar_label(p1, label_type='edge')
         plt.xticks(rotation=90)
@@ -477,6 +507,25 @@ class Analysis:
             labels=data.index, 
             # colors=self.colors_map['D2'],
             colors=colors[:len(data)],
+            autopct='%1.1f%%', 
+            textprops={'color': 'white', 'fontsize': 12, 'fontweight': 'bold'}
+            )
+        # 設置圖表標題
+        plt.title(title)
+        # 新增標籤到圖例中
+        plt.legend(wedges, data.index, title="統計項目", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+
+    def _plot_pie_two(self, data, title):
+        # 創建一個新的圖形，設置大小
+        plt.figure(figsize=(10, 10))
+        # 使用內建調色盤
+        colors = self.colors_map['D2']
+        # 繪製圓餅圖
+        wedges, texts, autotexts = plt.pie(
+            data.values, 
+            labels=data.index, 
+            colors=self.colors_map['D2'],
+            # colors=colors[:len(data)],
             autopct='%1.1f%%', 
             textprops={'color': 'white', 'fontsize': 12, 'fontweight': 'bold'}
             )
@@ -718,49 +767,53 @@ def analysis():
     # 進行數據計算
     analysis.calculate()
 
-    # # 生成影片類型並保存柱狀圖
-    # analysis.visualize('bar', 'type')
-    # analysis.export(f'{db_name} Content Type Distribution bar.png')
+    # 生成影片類型並保存柱狀圖
+    analysis.visualize('bar_two', 'type')
+    analysis.export(f'{db_name} Content Type Distribution bar.png')
 
-    # # 生成內容分級並保存柱狀圖
-    # analysis.visualize('bar', 'rating')
-    # analysis.export(f'{db_name} Content Rating Distribution bar.png')
+    # 生成內容分級並保存柱狀圖
+    analysis.visualize('bar', 'rating')
+    analysis.export(f'{db_name} Content Rating Distribution bar.png')
 
-    # # 生成影片時長並保存柱狀圖
-    # analysis.visualize('bar', 'duration')
-    # analysis.export(f'{db_name} Content TV Show Distribution bar.png')
+    # 生成影片時長並保存柱狀圖
+    analysis.visualize('bar', 'duration_tv')
+    analysis.export(f'{db_name} Content TV Show Duration Distribution bar.png')
 
-    # # 生成影片類型並保存圓餅圖
-    # analysis.visualize('pie', 'type')
-    # analysis.export(f'{db_name} Content Type Distribution pie.png')
+    # 生成影片時長並保存柱狀圖
+    analysis.visualize('bar', 'duration_movie')
+    analysis.export(f'{db_name} Content Movie Duration Distribution bar.png')
 
-    # # 生成影片類型並保存圓餅圖
-    # analysis.visualize('pie', 'rating')
-    # analysis.export(f'{db_name} Content Rating Distribution pie.png')
+    # 生成影片類型並保存圓餅圖
+    analysis.visualize('pie_two', 'type')
+    analysis.export(f'{db_name} Content Type Distribution pie.png')
 
-    # # 生成影片時長並保存圓餅圖
-    # analysis.visualize('pie', 'duration')
-    # analysis.export(f'{db_name} Content Movie Duration Distribution pie.png')    
+    # 生成影片類型並保存圓餅圖
+    analysis.visualize('pie', 'rating')
+    analysis.export(f'{db_name} Content Rating Distribution pie.png')
 
-    # # 生成上架時間並保存熱力圖
-    # analysis.visualize('heatmap', 'date_added')
-    # analysis.export(f'{db_name} content addition heatmap.png')
+    # 生成影片時長並保存圓餅圖
+    analysis.visualize('pie', 'duration')
+    analysis.export(f'{db_name} Content Movie Duration Distribution pie.png')    
 
-    # # 生成上架時間並保存統計表格
-    # analysis.visualize('table', 'date_added')
-    # analysis.export(f'{db_name} content addition table.png')
+    # 生成上架時間並保存熱力圖
+    analysis.visualize('heatmap', 'date_added')
+    analysis.export(f'{db_name} content addition heatmap.png')
+
+    # 生成上架時間並保存統計表格
+    analysis.visualize('table', 'date_added')
+    analysis.export(f'{db_name} content addition table.png')
     
-    # # 生成上架時間並保存單折線圖
-    # analysis.visualize('a_line', 'year')
-    # analysis.export(f'{db_name} yearly content addition line.png')
+    # 生成上架時間並保存單折線圖
+    analysis.visualize('a_line', 'year')
+    analysis.export(f'{db_name} yearly content addition line.png')
     
-    # # 生成上架時間並保存雙折線圖
-    # analysis.visualize('two_line', 'year')
-    # analysis.export(f'{db_name} Yearly Counts of TV Shows and Movies.png')
+    # 生成上架時間並保存雙折線圖
+    analysis.visualize('two_line', 'year')
+    analysis.export(f'{db_name} Yearly Counts of TV Shows and Movies.png')
 
-    # # 生成上架時間並保存組合圖
-    # analysis.visualize('combine_b2l', 'year')
-    # analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Netflix.png')
+    # 生成上架時間並保存組合圖
+    analysis.visualize('combine_b2l', 'year')
+    analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Netflix.png')
 
     # # 生成情感分析結果並保存密度估計圖
     # analysis.TextBlob()
@@ -772,58 +825,58 @@ def analysis():
     # analysis.scatterplot()
     # analysis.export(f'{db_name} Scatter plot of Sentiment')
 
-    # #  生成多標籤分析結果並保存柱狀圖
-    # analysis.multi_label('director')
-    # analysis.visualize('bar_matplot', 'director')
-    # analysis.export(f'{db_name} Content Director Multi_label Distribution bar.png')
+    #  生成多標籤分析結果並保存柱狀圖
+    analysis.multi_label('director')
+    analysis.visualize('bar_matplot', 'director')
+    analysis.export(f'{db_name} Content Director Multi_label Distribution bar.png')
     
-    # analysis.multi_label('cast')
-    # analysis.visualize('bar_matplot', 'cast')
-    # analysis.export(f'{db_name} Content Cast Multi_label Distribution bar.png')
+    analysis.multi_label('cast')
+    analysis.visualize('bar_matplot', 'cast')
+    analysis.export(f'{db_name} Content Cast Multi_label Distribution bar.png')
     
-    # analysis.multi_label('country')
-    # analysis.visualize('bar_matplot', 'country')
-    # analysis.export(f'{db_name} Content Country Multi_label Distribution bar.png')
+    analysis.multi_label('country')
+    analysis.visualize('bar_matplot', 'country')
+    analysis.export(f'{db_name} Content Country Multi_label Distribution bar.png')
     
-    # analysis.multi_label('listed_in')
-    # analysis.visualize('bar_matplot', 'listed_in')
-    # analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
+    analysis.multi_label('listed_in')
+    analysis.visualize('bar_matplot', 'listed_in')
+    analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
 
 
-    # #  生成多標籤組合頻率分析結果並保存柱狀圖
-    # analysis.get_combo_counts('director')
-    # analysis.visualize('bar_combo', 'director')
-    # analysis.export(f'{db_name} Content Director Combo_Counts Distribution bar.png')
+    #  生成多標籤組合頻率分析結果並保存柱狀圖
+    analysis.get_combo_counts('director')
+    analysis.visualize('bar_combo', 'director')
+    analysis.export(f'{db_name} Content Director Combo_Counts Distribution bar.png')
     
-    # analysis.get_combo_counts('cast')
-    # analysis.visualize('bar_combo', 'cast')
-    # analysis.export(f'{db_name} Content Cast Combo_Counts Distribution bar.png')
+    analysis.get_combo_counts('cast')
+    analysis.visualize('bar_combo', 'cast')
+    analysis.export(f'{db_name} Content Cast Combo_Counts Distribution bar.png')
     
-    # analysis.get_combo_counts('country')
-    # analysis.visualize('bar_combo', 'country')
-    # analysis.export(f'{db_name} Content Country Combo_Counts Distribution bar.png')
+    analysis.get_combo_counts('country')
+    analysis.visualize('bar_combo', 'country')
+    analysis.export(f'{db_name} Content Country Combo_Counts Distribution bar.png')
     
-    # analysis.get_combo_counts('listed_in')
-    # analysis.visualize('bar_combo', 'listed_in')
-    # analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
+    analysis.get_combo_counts('listed_in')
+    analysis.visualize('bar_combo', 'listed_in')
+    analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
 
 
-    # #  生成共現矩陣分析結果並保存熱力圖
-    # analysis.get_co_occurrence('director', counts_threshold = 10)
-    # analysis.visualize('heatmap', 'director')
-    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
+    #  生成共現矩陣分析結果並保存熱力圖
+    analysis.get_co_occurrence('director', counts_threshold = 10)
+    analysis.visualize('heatmap', 'director')
+    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
     
-    # analysis.get_co_occurrence('cast', counts_threshold = 15)
-    # analysis.visualize('heatmap', 'cast')
-    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
+    analysis.get_co_occurrence('cast', counts_threshold = 15)
+    analysis.visualize('heatmap', 'cast')
+    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
 
-    # analysis.get_co_occurrence('country', counts_threshold = 3)
-    # analysis.visualize('heatmap', 'country')
-    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
+    analysis.get_co_occurrence('country', counts_threshold = 3)
+    analysis.visualize('heatmap', 'country')
+    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
  
-    # analysis.get_co_occurrence('listed_in', counts_threshold = 20)
-    # analysis.visualize('heatmap', 'listed_in')
-    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
+    analysis.get_co_occurrence('listed_in', counts_threshold = 20)
+    analysis.visualize('heatmap', 'listed_in')
+    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
     
     
     
