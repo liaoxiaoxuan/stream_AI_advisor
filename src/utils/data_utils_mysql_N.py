@@ -315,16 +315,23 @@ class Analysis:
         """
         根據指定的圖表類型和資料類型進行可視化
         """
-        if plot_type == 'bar':
+        if plot_type == 'bar_two':
             if data_type == 'type':
                 # 繪製內容類型的柱狀圖
-                self._plot_bar(self.type_counts, f'Content {db_name} Type Distribution')
-            elif data_type == 'rating':
+                self._plot_bar_two(self.type_counts, f'Content {db_name} Type Distribution')
+        elif plot_type == 'bar':
+            # if data_type == 'type':
+            #     # 繪製內容類型的柱狀圖
+            #     self._plot_bar(self.type_counts, f'Content {db_name} Type Distribution')
+            if data_type == 'rating':
                 # 繪製內容分級的柱狀圖
                 self._plot_bar(self.rating_counts, f'Content {db_name} Rating Distribution')
-            elif data_type == 'duration':
+            elif data_type == 'duration_tv':
                 # 繪製影片時長的柱狀圖
                 self._plot_bar(self.tv_show_duration_counts, f'Content {db_name} TV Show Distribution')
+            elif data_type == 'duration_movie':
+                # 繪製影片時長的柱狀圖
+                self._plot_bar(self.movie_duration_counts, f'Content {db_name} Movie Distribution')
         elif plot_type == 'bar_matplot':
             if data_type == 'director':
                 # 繪製單一導演數量的柱狀圖
@@ -352,16 +359,20 @@ class Analysis:
                 # 繪製內容分類組合頻率的柱狀圖
                 self._plot_bar_combo(self.combo_counts, f'Content {db_name} Listed_in Combo_Counts Distribution')
         
-        elif plot_type == 'pie':
+        elif plot_type == 'pie_two':
             if data_type == 'type':
                 # 繪製內容類型的圓餅圖
-                self._plot_pie(self.type_counts, f'Content {db_name} Type Distribution')
-            elif data_type == 'rating':
+                self._plot_pie_two(self.type_counts, f'Content {db_name} Type Distribution')
+        elif plot_type == 'pie':
+            # if data_type == 'type':
+                # # 繪製內容類型的圓餅圖
+                # self._plot_pie(self.type_counts, f'Content {db_name} Type Distribution')
+            if data_type == 'rating':
                 # 繪製內容分級的圓餅圖
                 self._plot_pie(self.rating_counts, f'Content {db_name} Rating Distribution')
-            elif data_type == 'duration':
-                # 繪製影片時長的圓餅圖
-                self._plot_pie(self.movie_duration_counts, f'Content {db_name} Movie_Duration Distribution')
+            # elif data_type == 'duration':
+                # # 繪製影片時長的圓餅圖
+                # self._plot_pie(self.movie_duration_counts, f'Content {db_name} Movie_Duration Distribution')
         
         elif plot_type == 'heatmap':
             if data_type == 'date_added':
@@ -433,12 +444,30 @@ class Analysis:
         plt.xticks(rotation=45)
         # 自動調整子圖參數，使之填充整個圖像區域
         plt.tight_layout()
+
+    def _plot_bar_two(self, data, title):
+        # 創建一個新的圖形，設置大小
+        plt.figure(figsize=(12, 6))
+        # 調整柱狀圖顏色
+        colors = self.colors_map['N2']  # 取用 D1 調色盤
+        # 使用 Seaborn 繪製柱狀圖
+        ax = sns.barplot(x=data.index, y=data.values, palette=colors * len(data))
+        # 在每個柱狀圖上添加數字標籤
+        for i, value in enumerate(data.values):
+            ax.text(i, value + 0.01, f'{value:.0f}', ha='center', va='bottom')
+        # 設置圖表標題
+        plt.title(title)
+        # 旋轉 x 軸標籤，避免重疊
+        plt.xticks(rotation=45)
+        # 自動調整子圖參數，使之填充整個圖像區域
+        plt.tight_layout()
     
     def _plot_bar_matplot(self, label_counts, title):
         """
             繪製單一多標籤分析柱狀圖
         """
-        p1=plt.bar(label_counts.keys(), label_counts.values())
+        colors = self.colors_map['N1']  # 取用 D1 調色盤
+        p1=plt.bar(label_counts.keys(), label_counts.values(), color=colors)
         # 在每個柱狀圖上添加數字標籤
         plt.bar_label(p1, label_type='edge')
         plt.xticks(rotation=75)
@@ -453,7 +482,8 @@ class Analysis:
         """
             繪製多標籤組合頻率分析柱狀圖
         """
-        p1=plt.bar(list(map(str,combo_counts.keys())), combo_counts.values())
+        colors = self.colors_map['N1']  # 取用 D1 調色盤
+        p1=plt.bar(list(map(str,combo_counts.keys())), combo_counts.values(), color=colors)
         # 在每個柱狀圖上添加數字標籤
         plt.bar_label(p1, label_type='edge')
         plt.xticks(rotation=90)
@@ -470,6 +500,25 @@ class Analysis:
         plt.figure(figsize=(10, 10))
         # 使用內建調色盤
         colors = plt.get_cmap('tab10').colors
+        # 繪製圓餅圖
+        wedges, texts, autotexts = plt.pie(
+            data.values, 
+            labels=data.index, 
+            # colors=self.colors_map['N2'], 
+            colors=colors[:len(data)],
+            autopct='%1.1f%%', 
+            textprops={'color': 'white', 'fontsize': 12, 'fontweight': 'bold'}
+            )
+        # 設置圖表標題
+        plt.title(title)
+        # 新增標籤到圖例中
+        plt.legend(wedges, data.index, title="統計項目", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+
+    def _plot_pie_two(self, data, title):
+        # 創建一個新的圖形，設置大小
+        plt.figure(figsize=(10, 10))
+        # 調整圓餅圖顏色，從 self.colors_map 中取用
+        colors = self.colors_map['N2']
         # 繪製圓餅圖
         wedges, texts, autotexts = plt.pie(
             data.values, 
@@ -718,19 +767,19 @@ def analysis():
     analysis.calculate()
 
     # 生成影片類型並保存柱狀圖
-    analysis.visualize('bar', 'type')
+    analysis.visualize('bar_two', 'type')
     analysis.export(f'{db_name} Content type Distribution bar.png')
 
     # 生成影片時長並保存柱狀圖
-    analysis.visualize('bar', 'duration')
-    analysis.export(f'{db_name} Content TV Show Distribution bar.png')
+    analysis.visualize('bar', 'duration_tv')
+    analysis.export(f'{db_name} Content TV Show Duration Distribution bar.png')
 
     # 生成內容分級並保存柱狀圖
     analysis.visualize('bar', 'rating')
     analysis.export(f'{db_name} Content Rating Distribution bar.png')
 
     # 生成影片類型並保存圓餅圖
-    analysis.visualize('pie', 'type')
+    analysis.visualize('pie_two', 'type')
     analysis.export(f'{db_name} Content Type Distribution pie.png')
 
     # 生成影片類型並保存圓餅圖
@@ -738,7 +787,7 @@ def analysis():
     analysis.export(f'{db_name} Content Rating Distribution pie.png')
 
     # 生成影片時長並保存圓餅圖
-    analysis.visualize('pie', 'duration')
+    analysis.visualize('bar', 'duration_movie')
     analysis.export(f'{db_name} Content Movie Duration Distribution pie.png')    
 
     # 生成上架時間並保存熱力圖
@@ -761,15 +810,15 @@ def analysis():
     analysis.visualize('combine_b2l', 'year')
     analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Netflix.png')
 
-    # 生成情感分析結果並保存密度估計圖
-    analysis.TextBlob()
-    analysis.kdeplot()
-    analysis.export(f'{db_name} Kernel Density Estimate of Sentiment Distribution')
+    # # 生成情感分析結果並保存密度估計圖
+    # analysis.TextBlob()
+    # analysis.kdeplot()
+    # analysis.export(f'{db_name} Kernel Density Estimate of Sentiment Distribution')
 
-    # 生成情感分析結果並保存散點圖
-    analysis.TextBlob()
-    analysis.scatterplot()
-    analysis.export(f'{db_name} Scatter plot of Sentiment')
+    # # 生成情感分析結果並保存散點圖
+    # analysis.TextBlob()
+    # analysis.scatterplot()
+    # analysis.export(f'{db_name} Scatter plot of Sentiment')
 
     #  生成多標籤分析結果並保存柱狀圖
     analysis.multi_label('director')
