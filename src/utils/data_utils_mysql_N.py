@@ -816,58 +816,58 @@ def analysis():
     # analysis.scatterplot()
     # analysis.export(f'{db_name} Scatter plot of Sentiment')
 
-    #  生成多標籤分析結果並保存柱狀圖
-    analysis.multi_label('director')
-    analysis.visualize('bar_matplot', 'director')
-    analysis.export(f'{db_name} Content Director Multi_label Distribution bar.png')
+    # #  生成多標籤分析結果並保存柱狀圖
+    # analysis.multi_label('director')
+    # analysis.visualize('bar_matplot', 'director')
+    # analysis.export(f'{db_name} Content Director Multi_label Distribution bar.png')
     
-    analysis.multi_label('cast')
-    analysis.visualize('bar_matplot', 'cast')
-    analysis.export(f'{db_name} Content Cast Multi_label Distribution bar.png')
+    # analysis.multi_label('cast')
+    # analysis.visualize('bar_matplot', 'cast')
+    # analysis.export(f'{db_name} Content Cast Multi_label Distribution bar.png')
     
-    analysis.multi_label('country')
-    analysis.visualize('bar_matplot', 'country')
-    analysis.export(f'{db_name} Content Country Multi_label Distribution bar.png')
+    # analysis.multi_label('country')
+    # analysis.visualize('bar_matplot', 'country')
+    # analysis.export(f'{db_name} Content Country Multi_label Distribution bar.png')
     
-    analysis.multi_label('listed_in')
-    analysis.visualize('bar_matplot', 'listed_in')
-    analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
+    # analysis.multi_label('listed_in')
+    # analysis.visualize('bar_matplot', 'listed_in')
+    # analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
 
 
-    #  生成多標籤組合頻率分析結果並保存柱狀圖
-    analysis.get_combo_counts('director')
-    analysis.visualize('bar_combo', 'director')
-    analysis.export(f'{db_name} Content Director Combo_Counts Distribution bar.png')
+    # #  生成多標籤組合頻率分析結果並保存柱狀圖
+    # analysis.get_combo_counts('director')
+    # analysis.visualize('bar_combo', 'director')
+    # analysis.export(f'{db_name} Content Director Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('cast')
-    analysis.visualize('bar_combo', 'cast')
-    analysis.export(f'{db_name} Content Cast Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('cast')
+    # analysis.visualize('bar_combo', 'cast')
+    # analysis.export(f'{db_name} Content Cast Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('country')
-    analysis.visualize('bar_combo', 'country')
-    analysis.export(f'{db_name} Content Country Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('country')
+    # analysis.visualize('bar_combo', 'country')
+    # analysis.export(f'{db_name} Content Country Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('listed_in')
-    analysis.visualize('bar_combo', 'listed_in')
-    analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('listed_in')
+    # analysis.visualize('bar_combo', 'listed_in')
+    # analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
 
 
-    #  生成共現矩陣分析結果並保存熱力圖
-    analysis.get_co_occurrence('director', counts_threshold = 10)
-    analysis.visualize('heatmap', 'director')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
+    # #  生成共現矩陣分析結果並保存熱力圖
+    # analysis.get_co_occurrence('director', counts_threshold = 10)
+    # analysis.visualize('heatmap', 'director')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
     
-    analysis.get_co_occurrence('cast', counts_threshold = 25)
-    analysis.visualize('heatmap', 'cast')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
+    # analysis.get_co_occurrence('cast', counts_threshold = 25)
+    # analysis.visualize('heatmap', 'cast')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
 
-    analysis.get_co_occurrence('country', counts_threshold = 80)
-    analysis.visualize('heatmap', 'country')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
+    # analysis.get_co_occurrence('country', counts_threshold = 80)
+    # analysis.visualize('heatmap', 'country')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
  
-    analysis.get_co_occurrence('listed_in', counts_threshold = 200)
-    analysis.visualize('heatmap', 'listed_in')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
+    # analysis.get_co_occurrence('listed_in', counts_threshold = 200)
+    # analysis.visualize('heatmap', 'listed_in')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
     
     
     
