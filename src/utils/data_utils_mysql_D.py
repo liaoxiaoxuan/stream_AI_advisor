@@ -812,9 +812,9 @@ def analysis():
     # analysis.visualize('two_line', 'year')
     # analysis.export(f'{db_name} Yearly Counts of TV Shows and Movies.png')
 
-    # 生成上架時間並保存組合圖
-    analysis.visualize('combine_b2l', 'year')
-    analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Disney+.png')
+    # # 生成上架時間並保存組合圖
+    # analysis.visualize('combine_b2l', 'year')
+    # analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Disney+.png')
 
     # # 生成情感分析結果並保存密度估計圖
     # analysis.TextBlob()
