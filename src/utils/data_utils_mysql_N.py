@@ -221,7 +221,8 @@ class Analysis:
     def multi_label(self, header):
         df = self.data[header]
         self.data_multi_label = df.drop(df[df.str.contains('NA')].index)
-        cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]
+        # cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]
+        cut_data = [list(map(str.lstrip,_.strip('"').split(','))) for _ in self.data_multi_label]
         # all_labels = [item for sublist in cut_data for item in sublist]
         # all_labels = [_ for _ in [row.strip('"').split(',') for row in self.data_multi_label]]
         self.all_labels = []
@@ -240,7 +241,8 @@ class Analysis:
     def get_combo_counts(self,header):
         df = self.data[header]
         self.data_multi_label = df.drop(df[df.str.contains('NA')].index)
-        cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]        
+        # cut_data = [_.strip('"').split(',') for _ in self.data_multi_label]
+        cut_data = [list(map(str.lstrip,_.strip('"').split(','))) for _ in self.data_multi_label]        
         self.combo_counts = dict(Counter(tuple(sorted(sublist)) for sublist in cut_data).most_common(20))
         # self.combo_counts.most_common(20)
 
@@ -269,9 +271,7 @@ class Analysis:
         print(self.all_labels)
         # print(self.label_counts)
         # print(label_counts_single)
-        # return
-        
-        
+        # return        
     
         # 提取所有標籤
         self.unique_labels = list(set(self.all_labels))  # 使用 set() 去除 all_labels 中的重複值，然後轉換為列表，得到所有唯一的標籤
@@ -405,12 +405,12 @@ class Analysis:
         elif plot_type == 'two_line':
             if data_type == 'year':
                 # 繪製年度內容數量的折線圖
-                self._plot_two_line(self.year_counts, f'Yearly Counts of {db_name} TV Shows and Movies')
+                self._plot_two_line(self.year_counts, f'Yearly Counts of TV Shows and Movies on {db_name}')
 
         elif plot_type == 'combine_b2l':
             if data_type == 'year':
                 # 繪製年度內容數量的組合圖
-                self._plot_combine_b2l(self.year_counts, f'Yearly Growth of {db_name} TV Shows and Movies on Netflix')
+                self._plot_combine_b2l(self.year_counts, f'Yearly Growth of TV Shows and Movies on {db_name}')
 
 
     def set_color_table(self):
@@ -624,7 +624,6 @@ class Analysis:
         plt.legend()
         # 顯示網格線
         plt.grid(True)
-  
 
     def _plot_combine_b2l(self, data, title):
         
@@ -645,7 +644,7 @@ class Analysis:
         ax1.bar(years, self.total_year_counts, color='#f9dbbd', alpha=0.6, label='Total Contents')
         
         # 設置第一個子圖的標題和 X 軸標籤
-        ax1.set_title('Yearly Growth of TV Shows and Movies on Netflix')
+        ax1.set_title(title)
         ax1.set_xlabel('Year')
         ax1.set_ylabel('Total Number of Contents', color='tab:blue')
         
@@ -719,9 +718,6 @@ class Analysis:
         # 關閉當前圖表，釋放內存
         plt.close()
 
-    
-
-
 
 
 def mySQLConnector():
@@ -766,49 +762,49 @@ def analysis():
     # 進行數據計算
     analysis.calculate()
 
-    # 生成影片類型並保存柱狀圖
-    analysis.visualize('bar_two', 'type')
-    analysis.export(f'{db_name} Content type Distribution bar.png')
+    # # 生成影片類型並保存柱狀圖
+    # analysis.visualize('bar_two', 'type')
+    # analysis.export(f'{db_name} Content type Distribution bar.png')
 
-    # 生成影片時長並保存柱狀圖
-    analysis.visualize('bar', 'duration_tv')
-    analysis.export(f'{db_name} Content TV Show Duration Distribution bar.png')
+    # # 生成影片時長並保存柱狀圖
+    # analysis.visualize('bar', 'duration_tv')
+    # analysis.export(f'{db_name} Content TV Show Duration Distribution bar.png')
 
-    # 生成內容分級並保存柱狀圖
-    analysis.visualize('bar', 'rating')
-    analysis.export(f'{db_name} Content Rating Distribution bar.png')
+    # # 生成內容分級並保存柱狀圖
+    # analysis.visualize('bar', 'rating')
+    # analysis.export(f'{db_name} Content Rating Distribution bar.png')
 
-    # 生成影片類型並保存圓餅圖
-    analysis.visualize('pie_two', 'type')
-    analysis.export(f'{db_name} Content Type Distribution pie.png')
+    # # 生成影片類型並保存圓餅圖
+    # analysis.visualize('pie_two', 'type')
+    # analysis.export(f'{db_name} Content Type Distribution pie.png')
 
-    # 生成影片類型並保存圓餅圖
-    analysis.visualize('pie', 'rating')
-    analysis.export(f'{db_name} Content Rating Distribution pie.png')
+    # # 生成影片類型並保存圓餅圖
+    # analysis.visualize('pie', 'rating')
+    # analysis.export(f'{db_name} Content Rating Distribution pie.png')
 
-    # 生成影片時長並保存圓餅圖
-    analysis.visualize('bar', 'duration_movie')
-    analysis.export(f'{db_name} Content Movie Duration Distribution pie.png')    
+    # # 生成影片時長並保存圓餅圖
+    # analysis.visualize('bar', 'duration_movie')
+    # analysis.export(f'{db_name} Content Movie Duration Distribution pie.png')    
 
-    # 生成上架時間並保存熱力圖
-    analysis.visualize('heatmap', 'date_added')
-    analysis.export(f'{db_name} content addition heatmap.png')
+    # # 生成上架時間並保存熱力圖
+    # analysis.visualize('heatmap', 'date_added')
+    # analysis.export(f'{db_name} content addition heatmap.png')
 
-    # 生成上架時間並保存統計表格
-    analysis.visualize('table', 'date_added')
-    analysis.export(f'{db_name} content addition table.png')
+    # # 生成上架時間並保存統計表格
+    # analysis.visualize('table', 'date_added')
+    # analysis.export(f'{db_name} content addition table.png')
     
-    # 生成上架時間並保存單折線圖
-    analysis.visualize('a_line', 'year')
-    analysis.export(f'{db_name} yearly content addition line.png')
+    # # 生成上架時間並保存單折線圖
+    # analysis.visualize('a_line', 'year')
+    # analysis.export(f'{db_name} yearly content addition line.png')
     
-    # 生成上架時間並保存雙折線圖
-    analysis.visualize('two_line', 'year')
-    analysis.export(f'{db_name} Yearly Counts of TV Shows and Movies.png')
+    # # 生成上架時間並保存雙折線圖
+    # analysis.visualize('two_line', 'year')
+    # analysis.export(f'{db_name} Yearly Counts of TV Shows and Movies.png')
 
-    # 生成上架時間並保存組合圖
-    analysis.visualize('combine_b2l', 'year')
-    analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Netflix.png')
+    # # 生成上架時間並保存組合圖
+    # analysis.visualize('combine_b2l', 'year')
+    # analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Netflix.png')
 
     # # 生成情感分析結果並保存密度估計圖
     # analysis.TextBlob()
