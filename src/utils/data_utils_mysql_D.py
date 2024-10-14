@@ -649,6 +649,10 @@ class Analysis:
         ax1.set_title(title)
         ax1.set_xlabel('Year')
         ax1.set_ylabel('Total Number of Contents', color='tab:blue')
+
+        # 去除X軸小數點
+        ax1.set_xticks(years)  # 設置 X 軸刻度為年份
+        ax1.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{int(x)}'))  # 將刻度轉為整數格式
         
         # 設置 Y 軸的刻度顏色
         ax1.tick_params(axis='y', labelcolor='tab:blue')
@@ -808,9 +812,9 @@ def analysis():
     # analysis.visualize('two_line', 'year')
     # analysis.export(f'{db_name} Yearly Counts of TV Shows and Movies.png')
 
-    # # 生成上架時間並保存組合圖
-    # analysis.visualize('combine_b2l', 'year')
-    # analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Netflix.png')
+    # 生成上架時間並保存組合圖
+    analysis.visualize('combine_b2l', 'year')
+    analysis.export(f'{db_name} Yearly Growth of TV Shows and Movies on Disney+.png')
 
     # # 生成情感分析結果並保存密度估計圖
     # analysis.TextBlob()
@@ -822,58 +826,58 @@ def analysis():
     # analysis.scatterplot()
     # analysis.export(f'{db_name} Scatter plot of Sentiment')
 
-    #  生成多標籤分析結果並保存柱狀圖
-    analysis.multi_label('director')
-    analysis.visualize('bar_matplot', 'director')
-    analysis.export(f'{db_name} Content Director Multi_label Distribution bar.png')
+    # #  生成多標籤分析結果並保存柱狀圖
+    # analysis.multi_label('director')
+    # analysis.visualize('bar_matplot', 'director')
+    # analysis.export(f'{db_name} Content Director Multi_label Distribution bar.png')
     
-    analysis.multi_label('cast')
-    analysis.visualize('bar_matplot', 'cast')
-    analysis.export(f'{db_name} Content Cast Multi_label Distribution bar.png')
+    # analysis.multi_label('cast')
+    # analysis.visualize('bar_matplot', 'cast')
+    # analysis.export(f'{db_name} Content Cast Multi_label Distribution bar.png')
     
-    analysis.multi_label('country')
-    analysis.visualize('bar_matplot', 'country')
-    analysis.export(f'{db_name} Content Country Multi_label Distribution bar.png')
+    # analysis.multi_label('country')
+    # analysis.visualize('bar_matplot', 'country')
+    # analysis.export(f'{db_name} Content Country Multi_label Distribution bar.png')
     
-    analysis.multi_label('listed_in')
-    analysis.visualize('bar_matplot', 'listed_in')
-    analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
+    # analysis.multi_label('listed_in')
+    # analysis.visualize('bar_matplot', 'listed_in')
+    # analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
 
 
-    #  生成多標籤組合頻率分析結果並保存柱狀圖
-    analysis.get_combo_counts('director')
-    analysis.visualize('bar_combo', 'director')
-    analysis.export(f'{db_name} Content Director Combo_Counts Distribution bar.png')
+    # #  生成多標籤組合頻率分析結果並保存柱狀圖
+    # analysis.get_combo_counts('director')
+    # analysis.visualize('bar_combo', 'director')
+    # analysis.export(f'{db_name} Content Director Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('cast')
-    analysis.visualize('bar_combo', 'cast')
-    analysis.export(f'{db_name} Content Cast Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('cast')
+    # analysis.visualize('bar_combo', 'cast')
+    # analysis.export(f'{db_name} Content Cast Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('country')
-    analysis.visualize('bar_combo', 'country')
-    analysis.export(f'{db_name} Content Country Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('country')
+    # analysis.visualize('bar_combo', 'country')
+    # analysis.export(f'{db_name} Content Country Combo_Counts Distribution bar.png')
     
-    analysis.get_combo_counts('listed_in')
-    analysis.visualize('bar_combo', 'listed_in')
-    analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
+    # analysis.get_combo_counts('listed_in')
+    # analysis.visualize('bar_combo', 'listed_in')
+    # analysis.export(f'{db_name} Content Listed_in Combo_Counts Distribution bar.png')
 
 
-    #  生成共現矩陣分析結果並保存熱力圖
-    analysis.get_co_occurrence('director', counts_threshold = 10)
-    analysis.visualize('heatmap', 'director')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
+    # #  生成共現矩陣分析結果並保存熱力圖
+    # analysis.get_co_occurrence('director', counts_threshold = 10)
+    # analysis.visualize('heatmap', 'director')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Director.png')
     
-    analysis.get_co_occurrence('cast', counts_threshold = 15)
-    analysis.visualize('heatmap', 'cast')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
+    # analysis.get_co_occurrence('cast', counts_threshold = 15)
+    # analysis.visualize('heatmap', 'cast')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Cast.png')
 
-    analysis.get_co_occurrence('country', counts_threshold = 3)
-    analysis.visualize('heatmap', 'country')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
+    # analysis.get_co_occurrence('country', counts_threshold = 3)
+    # analysis.visualize('heatmap', 'country')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Country.png')  
  
-    analysis.get_co_occurrence('listed_in', counts_threshold = 20)
-    analysis.visualize('heatmap', 'listed_in')
-    analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
+    # analysis.get_co_occurrence('listed_in', counts_threshold = 20)
+    # analysis.visualize('heatmap', 'listed_in')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
     
     
     
