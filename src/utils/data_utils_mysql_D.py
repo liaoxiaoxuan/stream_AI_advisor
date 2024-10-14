@@ -312,7 +312,7 @@ class Analysis:
 
 
     # 根據指定的圖表類型和資料類型進行可視化
-    def visualize(self, plot_type, data_type,db_name='D'):
+    def visualize(self, plot_type, data_type,db_name='Disney+'):
         """
         根據指定的圖表類型和資料類型進行可視化
         """
@@ -406,12 +406,12 @@ class Analysis:
         elif plot_type == 'two_line':
             if data_type == 'year':
                 # 繪製年度內容數量的折線圖
-                self._plot_two_line(self.year_counts, f'Yearly Counts of {db_name} TV Shows and Movies')
+                self._plot_two_line(self.year_counts, f'Yearly Counts of TV Shows and Movies on {db_name}')
 
         elif plot_type == 'combine_b2l':
             if data_type == 'year':
                 # 繪製年度內容數量的組合圖
-                self._plot_combine_b2l(self.year_counts, f'Yearly Growth of {db_name} TV Shows and Movies on Netflix')
+                self._plot_combine_b2l(self.year_counts, f'Yearly Growth of TV Shows and Movies on {db_name}')
 
 
     def set_color_table(self):
@@ -646,7 +646,7 @@ class Analysis:
         ax1.bar(years, self.total_year_counts, color='#baf4ff', alpha=0.6, label='Total Contents')
         
         # 設置第一個子圖的標題和 X 軸標籤
-        ax1.set_title('Yearly Growth of TV Shows and Movies on Netflix')
+        ax1.set_title(title)
         ax1.set_xlabel('Year')
         ax1.set_ylabel('Total Number of Contents', color='tab:blue')
         
