@@ -24,12 +24,12 @@ with tab1:
     st.image(image_D_bar_type, caption="Disney+ 影片類型數量")
     st.write(
         """
-        - 關於 `chart_view` 這部分，是供使用者閱覽 `Netflix` 和 `Disney+` 這兩個串流平台部分數據的可視化分析結果
+        - 關於 `chart_view` 這部分，是供使用者閱覽 `Netflix` 和 `Disney+` 這兩個串流平台部分數據的可視化分析結果。
         - 數據來源主要是以下兩個網站：
         1. Netflix Movies and TV Shows　https://www.kaggle.com/datasets/shivamb/netflix-shows/data
         2. Disney+ Movies and TV Shows　https://kaggle.com/datasets/shivamb/disney-movies-and-tv-shows
         - 從上方兩張引圖，大抵可以了解：
-        1. 無論是在哪個平台，`Movie` 的數量都是多過於 `TV Show`
+        1. 無論是在哪個平台，`Movie` 的數量都是多過於 `TV Show`。
         2. 在總數上，`Netflix` 又多過於 `Disney+`，最主要的原因是，`Netflix` 的數據資料是從 2008 至 2021，而 `Disney+` 則是從 2019 至 2021，因為資料量的不同所產生的落差。
         """)
 
@@ -44,7 +44,7 @@ with tab2:
     st.image(image_D_bar_type, caption="Disney+ 影片類型佔比")
     st.write(
         """
-        `Netflix` 和 `Disney+` 兩平台，`Movie` 的比例較 `TV Show` 多出一倍，佔平台總量的三分之二
+        `Netflix` 和 `Disney+` 兩平台，`Movie` 的比例較 `TV Show` 多出一倍，佔平台總量的三分之二。
         """)
 
 
@@ -153,57 +153,89 @@ with tab7:
     
     image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Rating Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影片的年齡分級分布")
+    st.write(
+        """
+        1. 從整體柱狀圖來看，`Netflix` 收錄的影片，年齡分級最多的是 `TV-MA`，意即「為了成年觀眾而製作，因此可能有些內容不適合年齡低於 17 歲的兒童」；其次是 `TV-14`，也就是內容「包含家長可能認為不適合年齡低於 14 歲兒童的內容」；收錄數量第三多的也是 TV Show 當中的 `TV-PG`，內容「可能會讓部分家長感到不適合 8 歲以下兒童觀看，部分片段可能會有輕度驚嚇，輕度暴力，或輕度性暗示，但大部分內容適合兒童觀看」。
+        2. 若把電影分級獨立出來看，當中收錄最多的是 `R`（限制級），「17歲以下必須由父母或者監護陪伴才能觀看」；其次是 `PG-13`（特別輔導級），「13 歲以下建議要有父母陪同觀看，一些內容對兒童很不適宜」，內容雖然「沒有粗野的持續暴力鏡頭，一般沒有裸體鏡頭」，但「有時會有吸毒鏡頭和髒話」。
+        """)
+    
     image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Rating Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影片的年齡分級分布")
-    # st.write(
-        # """
-        # - 綜合而言，兩平台的成長數量，長期都是 `Movie` 較 `TV Show` 來得多；但整體來看， `Netflix` 較有持續、穩定的成長。
-        # - 從組合圖來看， `Netflix` 從 2016 開始，影片數量就有上升趨勢，直到 2019 達高峰。
-        # - 在 `Disney+` 的上架情形，則是 2019 平台推出當年，上架最多影片，而後兩年，影片成長數量都僅約首年的一半。
-        # """)
+    st.write(
+        """
+        1. 從整體柱狀圖來看，`Disney+` 收錄的影片，年齡分級最多的是 `TV-G`，意即「大多數的家長會認為此節目適合所有年齡」；其次是 `TV-PG`，也就是內容「可能會讓部分家長感到不適合8歲以下兒童觀看，部分片段可能會有輕度驚嚇，輕度暴力，或輕度性暗示，但大部分內容適合兒童觀看」。
+        2. 若把電影分級獨立出來看，當中收錄最多的是 `G`（大眾級），「所有年齡均可觀看」；其次是 `PG`（普通輔導級），「一些內容可能不適合兒童觀看，有些鏡頭可能產生不適感，建議在父母的陪伴下觀看」，和  `PG-13` 不同的是，`PG` 的內容「基本沒有性愛、吸毒和裸體場面，即使有時間也很短，此外，恐怖和暴力場面不會超出適度的範圍」。
+        
+        - - -
+        - 綜合而言
+        1. `Disney+` 適合觀賞的年齡層較為廣泛，收錄的大多是闔家觀賞的影片，特別是嬰幼兒少的觀影需求。
+        2. `Netflix` 收錄的影片，適合觀看年齡偏向青少年以上的閱聽眾。
+                
+        - - -
+        - 年齡分級參考資料：
+        1. 美國電視分級制度　https://zh.wikipedia.org/zh-tw/%E7%BE%8E%E5%9B%BD%E7%94%B5%E8%A7%86%E5%88%86%E7%BA%A7%E5%88%B6%E5%BA%A6#
+        2. 電影分級制度（美國）　https://zh.wikipedia.org/zh-tw/%E9%9B%BB%E5%BD%B1%E5%88%86%E7%B4%9A%E5%88%B6%E5%BA%A6#%E7%BE%8E%E5%9B%BD
+        """)
 
 
 with tab8:
     st.header("Netflix 和 Disney+ 影片的時長分布")
     st.subheader("The duration distribution of shows on Netflix and Disney+")
+    st.write(
+        """
+        - 考量 `TV Show` 和 `Movie` 影片時長計算單位的差異，在「影片時長分布」這部分，將 `TV Show` 和 `Movie` 分開說明。
+        1. `TV Show` 是以「季 `season`」為單位
+        2. `Movie` 是以「分鐘 `min`」為單位
+        - 此外，兩平台的時長記錄瑣碎且數量龐大，尤其是 `Movie` 的資料，因此該部分的分析以 `分組` 的方式加以計數、統計和可視化呈現。
+        """)
     
     image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Movie Duration Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 電影時長分布")
     image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Movie Duration Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 電影時長分布")
-    # st.write(
-        # """
-        # - 綜合而言，兩平台的成長數量，長期都是 `Movie` 較 `TV Show` 來得多；但整體來看， `Netflix` 較有持續、穩定的成長。
-        # - 從組合圖來看， `Netflix` 從 2016 開始，影片數量就有上升趨勢，直到 2019 達高峰。
-        # - 在 `Disney+` 的上架情形，則是 2019 平台推出當年，上架最多影片，而後兩年，影片成長數量都僅約首年的一半。
-        # """)
+    st.write(
+        """
+        - 兩平台收錄的 `Movie` 時長分布相似，最多的都是 `90~120 分鐘` 的電影，其次是 `60~90 分鐘`，第三名才有差異：
+        1. `Netflix` 是 `120~150 分鐘`。
+        2. `Disney+` 則是 `40~60 分鐘`。
+        - 整體來看，`150 分鐘` 以上的電影，在兩平台的收錄量都比較少，`120 分鐘` 以下的影片佔多數。
+        """)
 
     image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content TV Show Duration Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影集時長分布")
     image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content TV Show Duration Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影集時長分布")
-    # st.write(
-        # """
-        # - 綜合而言，兩平台的成長數量，長期都是 `Movie` 較 `TV Show` 來得多；但整體來看， `Netflix` 較有持續、穩定的成長。
-        # - 從組合圖來看， `Netflix` 從 2016 開始，影片數量就有上升趨勢，直到 2019 達高峰。
-        # - 在 `Disney+` 的上架情形，則是 2019 平台推出當年，上架最多影片，而後兩年，影片成長數量都僅約首年的一半。
-        # """)
+    st.write(
+        """
+        - 無獨有偶，兩平台收錄的 `TV Show` 時長分布，也有高度的相似性，都是 `1 至 2 季` 的電視節目收錄量最為突出，其次是 `2 至 3 季`，第三名才是 `3 至5 季`。
+        - 整體來看，5 季長度以內的電視節目，收錄量最多，尤其 `1 至 2 季` 的電視節目佔比最高，5 季以上收錄數量大幅降低，11 季以上近乎為零。
+        """)
 
 
 with tab9:
     st.header("Netflix 和 Disney+ 影片內容分類分布")
     st.subheader("The content category distribution of shows on Netflix and Disney+")
+    st.write(
+        """
+        - 從原始資料來看，一部影片通常不會只被歸為一項類別，可能是多元的組成類別，惟以下可視化圖表，僅計算單一類別的出現次數。
+        - 兩平台影片內容分類的類別繁多，在此僅以出現次數 `前 15 名` 進行可視化呈現。
+        """)
     
     image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Listed_in Multi_label Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影片內容分類")
+    st.write(
+        """
+        - 直觀來看，`Netflix` 平台上，`International Movies` 類型出現次數最多，其次則是 `戲劇 Drama` 和 `喜劇 Comedies`，有趣的是前 3 名都是 `Movies` 的類別，大概是 `Movies` 的收錄量本身就比 `TV Show` 多。
+        - 直到第 4 名才有 `TV Show` 的類別 `International Movies` 上榜，而後一直要到第 7 與第 8 才有 `TV Show` 的類別，分別是 `TV Drama` 和 `TV Comedies`，類型與 `Movies` 前 3 名相同。
+        """)
+    
     image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Listed_in Multi_label Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影片內容分類")
-    # st.write(
-        # """
-        # - 綜合而言，兩平台的成長數量，長期都是 `Movie` 較 `TV Show` 來得多；但整體來看， `Netflix` 較有持續、穩定的成長。
-        # - 從組合圖來看， `Netflix` 從 2016 開始，影片數量就有上升趨勢，直到 2019 達高峰。
-        # - 在 `Disney+` 的上架情形，則是 2019 平台推出當年，上架最多影片，而後兩年，影片成長數量都僅約首年的一半。
-        # """)
+    st.write(
+        """
+        - `Disney+` 的資料，不像 `Netflix` 有特別註明、區分 `TV Show` 和 `Movies`。
+        - 整體來看，在 `Disney+` 平台上，`家庭 Family`、`卡通 Animation`、`喜劇 Comedy` 和 `動作冒險 Action-Adventure` 數量最多，分別位居前四名。
+        """)
 
 
 
