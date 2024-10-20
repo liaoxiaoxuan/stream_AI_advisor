@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 
 # 定義一個函數來從文本中提取 TF-IDF 關鍵詞
-def extract_keywords_tfidf(tfidf_matrix, feature_names, num_keywords=3):
+def extract_keywords_tfidf(tfidf_matrix, feature_names, num_keywords=5):
     doc_index = tfidf_matrix.getrow(-1)  # 取出最新一行（即當前文本）的 TF-IDF 向量
     doc_weights = doc_index.toarray().flatten()  # 將稀疏矩陣轉換為一維數組
     top_indices = doc_weights.argsort()[-num_keywords:][::-1]  # 按權重排序，選出前 num_keywords 個最高值
@@ -35,7 +35,7 @@ def process_movie_summaries(host=None, user=None, password=None, database=None, 
 
 
     # 初始化TF-IDF向量器
-    tfidf = TfidfVectorizer(stop_words='english', max_features=2000)  # 去除英文停用詞，最多保留 5000 個特徵
+    tfidf = TfidfVectorizer(stop_words='english', max_features=3000)  # 去除英文停用詞，最多保留 5000 個特徵
 
 
     # 擬合 TF-IDF 向量器並將摘要轉換為 TF-IDF 矩陣
