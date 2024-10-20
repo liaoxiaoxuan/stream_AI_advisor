@@ -322,6 +322,7 @@ class Analysis:
             if data_type == 'type':
                 # 繪製內容類型的柱狀圖
                 self._plot_bar_two(self.type_counts, f'Content {db_name} Type Distribution')
+        
         elif plot_type == 'bar':
             # if data_type == 'type':
                 # # 繪製內容類型的柱狀圖
@@ -335,6 +336,7 @@ class Analysis:
             elif data_type == 'duration_movie':
                 # 繪製影片時長的柱狀圖
                 self._plot_bar(self.movie_duration_counts, f'Content {db_name} Movie Duration Distribution')
+        
         elif plot_type == 'bar_matplot':
             if data_type == 'director':
                 # 繪製單一導演數量的柱狀圖
@@ -348,6 +350,10 @@ class Analysis:
             elif data_type == 'listed_in':
                 # 繪製單一內容分類數量的柱狀圖
                 self._plot_bar_matplot(self.label_counts, f'Content {db_name} Listed_in Multi_label Distribution')
+            elif data_type == 'keywords':
+                # 繪製單一關鍵字數量的柱狀圖
+                self._plot_bar_matplot(self.label_counts, f'Content {db_name} Description Keywords Multi_label Distribution')
+        
         elif plot_type == 'bar_combo':
             if data_type == 'director':
                 # 繪製導演組合頻率的柱狀圖
@@ -366,6 +372,7 @@ class Analysis:
             if data_type == 'type':
                 # 繪製內容類型的圓餅圖
                 self._plot_pie_two(self.type_counts, f'Content {db_name} Type Distribution')
+        
         elif plot_type == 'pie':
             # if data_type == 'type':
                 # # 繪製內容類型的圓餅圖
@@ -842,6 +849,10 @@ def analysis():
     # analysis.multi_label('listed_in')
     # analysis.visualize('bar_matplot', 'listed_in')
     # analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
+
+    analysis.multi_label('keywords')
+    analysis.visualize('bar_matplot', 'keywords')
+    analysis.export(f'{db_name} Content Description Keywords Multi_label Distribution bar.png')
 
 
     # #  生成多標籤組合頻率分析結果並保存柱狀圖
