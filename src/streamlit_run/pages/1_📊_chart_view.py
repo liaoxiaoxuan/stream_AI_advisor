@@ -9,8 +9,8 @@ from PIL import Image
 
 
 # 分頁容器標籤
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs(
-   ["說明", "影片類型", "導演", "演員", "製作國家", "上架日期", "年齡分級", "時長", "內容分類", "影片摘要"]
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(
+   ["說明", "影片類型", "導演", "演員", "製作國家", "上架日期", "年齡分級", "時長", "內容分類"]
    )
 
 
