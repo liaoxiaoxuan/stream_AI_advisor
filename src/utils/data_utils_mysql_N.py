@@ -230,7 +230,7 @@ class Analysis:
             self.all_labels.extend(sublist)
 
         # 計算前 15 名
-        self.label_counts = dict(Counter(self.all_labels).most_common(15))
+        self.label_counts = dict(Counter(self.all_labels).most_common(25))
         self.label_counts.pop('NA',None)
         self.label_counts.pop('Joey Bada$$',None)
 
@@ -319,6 +319,7 @@ class Analysis:
             if data_type == 'type':
                 # 繪製內容類型的柱狀圖
                 self._plot_bar_two(self.type_counts, f'Content {db_name} Type Distribution')
+        
         elif plot_type == 'bar':
             # if data_type == 'type':
             #     # 繪製內容類型的柱狀圖
@@ -332,6 +333,7 @@ class Analysis:
             elif data_type == 'duration_movie':
                 # 繪製影片時長的柱狀圖
                 self._plot_bar(self.movie_duration_counts, f'Content {db_name} Movie Distribution')
+        
         elif plot_type == 'bar_matplot':
             if data_type == 'director':
                 # 繪製單一導演數量的柱狀圖
@@ -345,6 +347,10 @@ class Analysis:
             elif data_type == 'listed_in':
                 # 繪製單一內容分類數量的柱狀圖
                 self._plot_bar_matplot(self.label_counts, f'Content {db_name} Listed_in Multi_label Distribution')
+            elif data_type == 'keywords':
+                # 繪製單一關鍵字數量的柱狀圖
+                self._plot_bar_matplot(self.label_counts, f'Content {db_name} Description Keywords Multi_label Distribution')
+        
         elif plot_type == 'bar_combo':
             if data_type == 'director':
                 # 繪製導演組合頻率的柱狀圖
@@ -382,15 +388,17 @@ class Analysis:
                 # 繪製導演共現矩陣的熱力圖
                 self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Director')
             elif data_type == 'cast':
-                # 繪製導演共現矩陣的熱力圖
+                # 繪製演員共現矩陣的熱力圖
                 self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Cast')
             elif data_type == 'country':
-                # 繪製導演共現矩陣的熱力圖
+                # 繪製製作國家共現矩陣的熱力圖
                 self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Country')
             elif data_type == 'listed_in':
-                # 繪製導演共現矩陣的熱力圖
+                # 繪製內容分類共現矩陣的熱力圖
                 self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Listed_in')
-
+            elif data_type == 'keywords':
+                # 繪製關鍵字共現矩陣的熱力圖
+                self._plot_heatmap(self.co_occurrence_matrix, f'Co-occurrence {db_name} Matrix of Labels by Description Keywords')
         
         elif plot_type == 'table':
             if data_type == 'date_added':
@@ -816,6 +824,7 @@ def analysis():
     # analysis.scatterplot()
     # analysis.export(f'{db_name} Scatter plot of Sentiment')
 
+
     # #  生成多標籤分析結果並保存柱狀圖
     # analysis.multi_label('director')
     # analysis.visualize('bar_matplot', 'director')
@@ -832,6 +841,10 @@ def analysis():
     # analysis.multi_label('listed_in')
     # analysis.visualize('bar_matplot', 'listed_in')
     # analysis.export(f'{db_name} Content Listed_in Multi_label Distribution bar.png')
+
+    analysis.multi_label('keywords')
+    analysis.visualize('bar_matplot', 'keywords')
+    analysis.export(f'{db_name} Content Description Keywords Multi_label Distribution bar.png')
 
 
     # #  生成多標籤組合頻率分析結果並保存柱狀圖
@@ -868,6 +881,10 @@ def analysis():
     # analysis.get_co_occurrence('listed_in', counts_threshold = 200)
     # analysis.visualize('heatmap', 'listed_in')
     # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Listed_in.png')  
+
+    # analysis.get_co_occurrence('keywords', counts_threshold = 27)
+    # analysis.visualize('heatmap', 'keywords')
+    # analysis.export(f'{db_name} _Co-occurrence Matrix of Labels by Description Keywords.png')  
     
     
     
