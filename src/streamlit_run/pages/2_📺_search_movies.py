@@ -83,7 +83,10 @@ def main():
         # 合併數據集
         dataframe = pd.concat([netflix_dataframe, disney_dataframe], ignore_index=True)  # 合併兩個數據集
 
-        print(dataframe)
+        # 側邊欄篩選器
+        st.sidebar.header('篩選條件')  # 設定側邊欄的篩選條件標題
+
+        # print(dataframe)
 
 
 
