@@ -80,6 +80,11 @@ def main():
         netflix_dataframe['source'] = 'Netflix'  # 在Netflix數據集中添加一列，用於標識來源
         disney_dataframe['source'] = 'Disney+'  # 在Disney+數據集中添加一列，用於標識來源
 
+        # 合併數據集
+        dataframe = pd.concat([netflix_dataframe, disney_dataframe], ignore_index=True)  # 合併兩個數據集
+
+        print(dataframe)
+
 
 
 
