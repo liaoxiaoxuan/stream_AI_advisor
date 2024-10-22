@@ -95,82 +95,110 @@ def main():
         st.sidebar.header('篩選條件')  # 設定側邊欄的篩選條件標題
 
         # Type篩選器
-        type_filter = st.sidebar.multiselect('選擇類型', options=dataframe['type'].unique())  # 根據電影／影集類型篩選
+        type_filter = st.sidebar.multiselect('選擇類型', sorted(dataframe['type'].unique()))  # 根據電影／影集類型篩選
+
+        # 將需要排序的選項列表準備好
+        titles = sorted(dataframe['title'].unique())
+        directors = sorted(dataframe['director'].dropna().str.strip().str.strip('"').str.split(',').explode().str.strip().unique())
+        cast_list = sorted(dataframe['cast'].dropna().str.strip().str.strip('"').str.split(',').explode().str.strip().unique())
+        countries = sorted(dataframe['country'].dropna().str.strip().str.strip('"').str.split(',').explode().str.strip().unique())
+        ratings = sorted(dataframe['rating'].dropna().unique())
+        categories = sorted(dataframe['listed_in'].dropna().str.strip().str.strip('"').str.split(',').explode().str.strip().unique())
+        keywords = sorted(dataframe['keywords'].dropna().str.strip().str.strip('"').str.split(',').explode().str.strip().unique())
+
         # Title篩選器
-        title_filter = st.sidebar.multiselect('搜尋電影名稱', options=dataframe['title'].str.split(', ').explode().unique())  # 根據標題關鍵字篩選
+        title_filter = st.sidebar.selectbox('搜尋電影名稱', [''] + list(titles))  # 根據標題關鍵字篩選
         # Director篩選器
-        director_filter = st.sidebar.multiselect('搜尋導演名字', options=dataframe['director'].str.split(', ').explode().unique())  # 根據導演名字篩選
+        director_filter = st.sidebar.selectbox('搜尋導演名字', [''] + list(directors))  # 根據導演名字篩選
         # Cast篩選器
-        cast_filter = st.sidebar.multiselect('搜尋演員名字', options=dataframe['cast'].str.split(', ').explode().unique())  # 根據演員名字篩選
+        cast_filter = st.sidebar.selectbox('搜尋演員名字', [''] + list(cast_list))  # 根據演員名字篩選
         # Country篩選器
-        country_filter = st.sidebar.multiselect('選擇發行國家', options=dataframe['country'].str.split(', ').explode().unique())  # 根據國家篩選
+        country_filter = st.sidebar.multiselect('選擇發行國家', countries)  # 根據國家篩選
         # Release Year篩選器
         min_year, max_year = int(dataframe['release_year'].min()), int(dataframe['release_year'].max())  # 獲取年份範圍
         year_range = st.sidebar.slider('選擇發行年份範圍', min_year, max_year, (min_year, max_year))  # 根據發行年份篩選
         # Rating篩選器
-        rating_filter = st.sidebar.multiselect('選擇分級', options=dataframe['rating'].unique())  # 根據電影／影集的分級篩選
+        rating_filter = st.sidebar.multiselect('選擇分級', ratings)  # 根據電影／影集的分級篩選
         # Duration篩選器
-        if 'Movie' in type_filter:  # 如果篩選器中選擇的是電影
-            duration_bins = [10,20,40,60,90,120,150,180,240,300,330]  # 定義電影時長範圍
-            duration_labels = [f"{duration_bins[i]}-{duration_bins[i+1]} min" for i in range(len(duration_bins)-1)]  # 生成對應的時長標籤
-            duration_filter = st.sidebar.multiselect('選擇電影時長', options=duration_labels)  # 根據時長篩選
-        elif 'TV Show' in type_filter:  # 如果篩選器中選擇的是影集
-            season_bins = [1,2,3,5,7,9,11,13,15,17,19]  # 定義影集季數範圍
-            season_labels = [f"{season_bins[i]}-{season_bins[i+1]} seasons" for i in range(len(season_bins)-1)]  # 生成對應的季數標籤
-            duration_filter = st.sidebar.multiselect('選擇季數', options=season_labels)  # 根據季數篩選
+        if 'Movie' in type_filter:
+            min_duration = int(dataframe[dataframe['type'] == 'Movie']['duration'].str.extract('(\d+)').astype(float).min())
+            max_duration = int(dataframe[dataframe['type'] == 'Movie']['duration'].str.extract('(\d+)').astype(float).max())
+            duration_range = st.sidebar.slider('選擇電影時長 (分鐘)', min_duration, max_duration, (min_duration, max_duration))
+        elif 'TV Show' in type_filter:
+            min_seasons = int(dataframe[dataframe['type'] == 'TV Show']['duration'].str.extract('(\d+)').astype(float).min())
+            max_seasons = int(dataframe[dataframe['type'] == 'TV Show']['duration'].str.extract('(\d+)').astype(float).max())
+            duration_range = st.sidebar.slider('選擇季數', min_seasons, max_seasons, (min_seasons, max_seasons))
         # Listed In篩選器
-        listed_in_filter = st.sidebar.multiselect('選擇類別', options=dataframe['listed_in'].str.split(', ').explode().unique())  # 根據類別篩選
+        listed_in_filter = st.sidebar.multiselect('選擇類別', categories)  # 根據類別篩選
         # Description (Keywords) 篩選器
-        keywords_filter = st.sidebar.multiselect('搜尋電影關鍵字', options=dataframe['keywords'].str.split(',').explode().unique())  # 根據關鍵字篩選
+        keywords_filter = st.sidebar.selectbox('搜尋電影關鍵字', [''] + list(keywords))  # 根據關鍵字篩選
 
 
         # 應用篩選器
-        filtered_dataframe = dataframe.copy()  # 複製數據集，避免修改原數據
+        filtered_dataframe = dataframe.copy()
         
-        if type_filter:  # 應用類型篩選
+        if type_filter:
             filtered_dataframe = filtered_dataframe[filtered_dataframe['type'].isin(type_filter)]
         
-        if title_filter:  # 應用標題篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['title'].isin(title_filter)]
+        if title_filter:
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['title'] == title_filter]
         
-        if director_filter:  # 應用導演篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['director'].isin(director_filter)]
+        if director_filter:
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['director'] == director_filter]
         
-        if cast_filter:  # 應用演員篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['cast'].isin(cast_filter)]
+        if cast_filter:
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['cast'].str.contains(cast_filter, case=False, na=False)]
         
-        if country_filter:  # 應用國家篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['country'].apply(lambda x: any(country in x for country in country_filter))]
+        if country_filter:
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['country'].apply(lambda x: any(country in str(x) for country in country_filter))]
         
-        # 應用發行年份篩選
         filtered_dataframe = filtered_dataframe[(filtered_dataframe['release_year'] >= year_range[0]) & (filtered_dataframe['release_year'] <= year_range[1])]
         
-        if rating_filter:  # 應用分級篩選
+        if rating_filter:
             filtered_dataframe = filtered_dataframe[filtered_dataframe['rating'].isin(rating_filter)]
         
-        if duration_filter:  # 應用時長或季數篩選
-            if 'Movie' in type_filter:  # 如果篩選的是電影
-                filtered_dataframe['duration_num'] = filtered_dataframe['duration'].str.extract('(\d+)').astype(float)  # 提取時長數字
-                for duration_range in duration_filter:
-                    min_duration, max_duration = map(int, duration_range.split('-')[0].split()[0]), int(duration_range.split('-')[1].split()[0])
-                    filtered_dataframe = filtered_dataframe[(filtered_dataframe['duration_num'] >= min_duration) & (filtered_dataframe['duration_num'] < max_duration)]
-            elif 'TV Show' in type_filter:  # 如果篩選的是影集
-                filtered_dataframe['seasons'] = filtered_dataframe['duration'].str.extract('(\d+)').astype(float)  # 提取季數數字
-                for season_range in duration_filter:
-                    min_season, max_season = map(int, season_range.split('-')[0].split()[0]), int(season_range.split('-')[1].split()[0])
-                    filtered_dataframe = filtered_dataframe[(filtered_dataframe['seasons'] >= min_season) & (filtered_dataframe['seasons'] < max_season)]
+        # 更新後的duration篩選邏輯
+        if 'Movie' in type_filter:
+            filtered_dataframe['duration_num'] = filtered_dataframe['duration'].str.extract('(\d+)').astype(float)
+            filtered_dataframe = filtered_dataframe[
+                (filtered_dataframe['duration_num'] >= duration_range[0]) & 
+                (filtered_dataframe['duration_num'] <= duration_range[1])
+            ]
+        elif 'TV Show' in type_filter:
+            filtered_dataframe['seasons'] = filtered_dataframe['duration'].str.extract('(\d+)').astype(float)
+            filtered_dataframe = filtered_dataframe[
+                (filtered_dataframe['seasons'] >= duration_range[0]) & 
+                (filtered_dataframe['seasons'] <= duration_range[1])
+            ]
         
-        if listed_in_filter:  # 應用類別篩選
+        if listed_in_filter:
             filtered_dataframe = filtered_dataframe[filtered_dataframe['listed_in'].apply(lambda x: any(category in x for category in listed_in_filter))]
         
-        if keywords_filter:  # 應用關鍵字篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['description'].isin(keywords_filter)]
+        if keywords_filter:
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['keywords'].str.contains(keywords_filter, case=False, na=False)]
         
-        # 顯示篩選後的結果
-        st.write(f"共找到 {len(filtered_dataframe)} 條結果")  # 顯示結果數量
-        st.dataframe(filtered_dataframe)  # 顯示篩選後的數據集
-
-        # print(dataframe)
+        # 顯示columns
+        display_columns = ['type', 'title', 'director', 'cast', 'country', 'release_year', 'rating', 'duration', 'listed_in', 'description']
+        
+        # 分別顯示Netflix和Disney+的結果
+        st.write(
+            """
+            - Netflix 搜尋結果：
+            """)
+        netflix_results = filtered_dataframe[filtered_dataframe['source'] == 'Netflix'][display_columns]
+        st.dataframe(netflix_results)
+        
+        st.write(
+            """
+            - Disney+ 搜尋結果：
+            """)
+        disney_results = filtered_dataframe[filtered_dataframe['source'] == 'Disney+'][display_columns]
+        st.dataframe(disney_results)
+        
+        netflix_connection.close()
+        disney_connection.close()
+    else:
+        st.error('無法連接到一個或多個數據庫')
 
 
 
