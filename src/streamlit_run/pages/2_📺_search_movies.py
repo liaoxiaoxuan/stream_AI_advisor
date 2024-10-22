@@ -37,7 +37,12 @@ def get_data(connection, table):
 
 # 主函數
 def main():
-    st.title('Netflix 和 Disney+ 篩選電影')  # 設定應用程式的標題
+    st.title('搜尋 Netflix 和 Disney+ 的電影')  # 設定應用程式的標題
+    st.subheader('Searching Movies on Netflix and Disney+')
+    st.write(
+        """
+        請從左側欄位選擇篩選條件
+        """)
 
     # 數據庫配置
     netflix_database_config = {  # Netflix資料庫的連接配置
@@ -92,13 +97,13 @@ def main():
         # Type篩選器
         type_filter = st.sidebar.multiselect('選擇類型', options=dataframe['type'].unique())  # 根據電影／影集類型篩選
         # Title篩選器
-        title_filter = st.sidebar.text_input('輸入標題關鍵字')  # 根據標題關鍵字篩選
+        title_filter = st.sidebar.multiselect('搜尋電影名稱', options=dataframe['title'].str.split(', ').explode().unique())  # 根據標題關鍵字篩選
         # Director篩選器
-        director_filter = st.sidebar.text_input('輸入導演名字')  # 根據導演名字篩選
+        director_filter = st.sidebar.multiselect('搜尋導演名字', options=dataframe['director'].str.split(', ').explode().unique())  # 根據導演名字篩選
         # Cast篩選器
-        cast_filter = st.sidebar.text_input('輸入演員名字')  # 根據演員名字篩選
+        cast_filter = st.sidebar.multiselect('搜尋演員名字', options=dataframe['cast'].str.split(', ').explode().unique())  # 根據演員名字篩選
         # Country篩選器
-        country_filter = st.sidebar.multiselect('選擇國家', options=dataframe['country'].str.split(', ').explode().unique())  # 根據國家篩選
+        country_filter = st.sidebar.multiselect('選擇發行國家', options=dataframe['country'].str.split(', ').explode().unique())  # 根據國家篩選
         # Release Year篩選器
         min_year, max_year = int(dataframe['release_year'].min()), int(dataframe['release_year'].max())  # 獲取年份範圍
         year_range = st.sidebar.slider('選擇發行年份範圍', min_year, max_year, (min_year, max_year))  # 根據發行年份篩選
@@ -116,7 +121,7 @@ def main():
         # Listed In篩選器
         listed_in_filter = st.sidebar.multiselect('選擇類別', options=dataframe['listed_in'].str.split(', ').explode().unique())  # 根據類別篩選
         # Description (Keywords) 篩選器
-        keywords_filter = st.sidebar.multiselect('輸入關鍵字')  # 根據關鍵字篩選
+        keywords_filter = st.sidebar.multiselect('搜尋電影關鍵字', options=dataframe['keywords'].str.split(',').explode().unique())  # 根據關鍵字篩選
 
 
         # 應用篩選器
@@ -126,13 +131,13 @@ def main():
             filtered_dataframe = filtered_dataframe[filtered_dataframe['type'].isin(type_filter)]
         
         if title_filter:  # 應用標題篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['title'].str.contains(title_filter, case=False)]
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['title'].isin(title_filter)]
         
         if director_filter:  # 應用導演篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['director'].str.contains(director_filter, case=False)]
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['director'].isin(director_filter)]
         
         if cast_filter:  # 應用演員篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['cast'].str.contains(cast_filter, case=False)]
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['cast'].isin(cast_filter)]
         
         if country_filter:  # 應用國家篩選
             filtered_dataframe = filtered_dataframe[filtered_dataframe['country'].apply(lambda x: any(country in x for country in country_filter))]
@@ -159,7 +164,7 @@ def main():
             filtered_dataframe = filtered_dataframe[filtered_dataframe['listed_in'].apply(lambda x: any(category in x for category in listed_in_filter))]
         
         if keywords_filter:  # 應用關鍵字篩選
-            filtered_dataframe = filtered_dataframe[filtered_dataframe['description'].str.contains(keywords_filter, case=False)]
+            filtered_dataframe = filtered_dataframe[filtered_dataframe['description'].isin(keywords_filter)]
         
         # 顯示篩選後的結果
         st.write(f"共找到 {len(filtered_dataframe)} 條結果")  # 顯示結果數量
