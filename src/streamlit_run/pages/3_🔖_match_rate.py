@@ -234,3 +234,56 @@ def main():
         
         if keywords_filter:
             filtered_dataframe = filtered_dataframe[filtered_dataframe['keywords'].str.contains(keywords_filter, case=False, na=False)]
+    
+    # 收集所有篩選條件
+    filters = {
+        '類型': type_filter if type_filter else None,  # 收集類型篩選
+        '電影名稱': title_filter if title_filter else None,  # 收集電影名稱篩選
+        '導演': director_filter if director_filter else None,  # 收集導演篩選
+        '演員': cast_filter if cast_filter else None,  # 收集演員篩選
+        '發行國家': country_filter if country_filter else None,  # 收集發行國家篩選
+        '發行年份': year_range,  # 收集發行年份篩選
+        '分級': rating_filter if rating_filter else None,  # 收集分級篩選
+        '類別': listed_in_filter if listed_in_filter else None,  # 收集類別篩選
+        '關鍵字': keywords_filter if keywords_filter else None  # 收集關鍵字篩選
+    }
+    
+    # 添加時長/季數篩選條件
+    if type_filter:  # 如果有類型篩選
+        if 'Movie' in type_filter:  # 如果類型包含電影
+            filters['電影時長 (分鐘)'] = duration_range  # 設置電影時長篩選
+        elif 'TV Show' in type_filter:  # 如果類型包含電視劇
+            filters['季數'] = duration_range  # 設置季數篩選
+
+    # 顯示篩選條件摘要
+    display_filter_summary({k: v for k, v in filters.items() if v})  # 顯示已選擇的篩選條件
+    
+    # 計算匹配百分比
+    netflix_percentage = calculate_match_percentage(dataframe, filtered_dataframe, 'Netflix')  # 計算Netflix的符合條件百分比
+    disney_percentage = calculate_match_percentage(dataframe, filtered_dataframe, 'Disney+')  # 計算Disney+的符合條件百分比
+    
+    # 顯示匹配結果和統計圖表
+    st.markdown("### 📊 搜尋結果統計")  # 顯示統計標題
+    
+    # 使用columns布局來並排顯示兩個圖表
+    col1, col2 = st.columns(2)  # 創建兩列以並排顯示圖表
+    
+    with col1:
+        # Netflix環形圖
+        netflix_fig = create_gradient_donut(
+            start_color=(229/255, 6/255, 19/255),  # Netflix 紅
+            end_color=(0, 0, 0),                   # 黑色
+            match_percentage=netflix_percentage,  # 設定符合條件的百分比
+            platform_name='Netflix'  # 設定平台名稱
+        )
+        st.pyplot(netflix_fig)  # 在Streamlit中顯示Netflix環形圖
+        
+    with col2:
+        # Disney+環形圖
+        disney_fig = create_gradient_donut(
+            start_color=(0/255, 32/255, 52/255),     # Disney+ 深藍
+            end_color=(104/255, 212/255, 212/255),   # Disney+ 淺藍綠
+            match_percentage=disney_percentage,  # 設定符合條件的百分比
+            platform_name='Disney+'  # 設定平台名稱
+        )
+        st.pyplot(disney_fig)  # 在Streamlit中顯示Disney+環形圖
