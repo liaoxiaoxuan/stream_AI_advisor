@@ -14,7 +14,7 @@ from PIL import Image
 # 設置頁面標題與文字
 st.title('串流影音平台推薦系統')
 st.subheader("Streaming Media Platform Recommendation System")
-st.write('幫助您在 Netflix 與 Disney+ 之間，作出最適切的選擇！'+os.chdir('./'))
+st.write('幫助您在 Netflix 與 Disney+ 之間，作出最適切的選擇！'+os.getcwd())
 
 
 
