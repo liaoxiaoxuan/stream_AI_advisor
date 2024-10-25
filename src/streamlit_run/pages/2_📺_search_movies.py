@@ -181,19 +181,30 @@ def main():
         display_columns = ['type', 'title', 'director', 'cast', 'country', 'release_year', 'rating', 'duration', 'listed_in', 'description']
         
         # 分別顯示Netflix和Disney+的結果
-        st.write(
-            """
-            - Netflix 搜尋結果：
-            """)
+        st.subheader("- Netflix 搜尋結果：")
         netflix_results = filtered_dataframe[filtered_dataframe['source'] == 'Netflix'][display_columns]
-        st.dataframe(netflix_results)
+        netflix_count = len(netflix_results)
+
+        if netflix_count > 0:
+            st.write(f"+ 共 {netflix_count} 筆符合條件的結果")
+            st.dataframe(netflix_results)
+        else:
+            st.write("您所設定的條件，無相符的資料")
+
+        # st.dataframe(netflix_results)
         
-        st.write(
-            """
-            - Disney+ 搜尋結果：
-            """)
+        st.subheader("- Disney+ 搜尋結果：")
         disney_results = filtered_dataframe[filtered_dataframe['source'] == 'Disney+'][display_columns]
-        st.dataframe(disney_results)
+
+        disney_count = len(disney_results)
+        
+        if disney_count > 0:
+            st.write(f"+ 共 {disney_count} 筆符合條件的結果")
+            st.dataframe(disney_results)
+        else:
+            st.write("您所設定的條件，無相符的資料")
+
+        # st.dataframe(disney_results)
         
         netflix_connection.close()
         disney_connection.close()
