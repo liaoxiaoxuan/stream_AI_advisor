@@ -4,6 +4,14 @@ import seaborn as sns
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
+from dotenv import load_dotenv
+import os
+
+
+
+# 載入 .env 檔案中的環境變數
+load_dotenv()
+
 
 
 # 創建漸變環形圖
