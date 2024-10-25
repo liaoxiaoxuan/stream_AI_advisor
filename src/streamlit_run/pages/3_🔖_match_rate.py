@@ -26,3 +26,10 @@ def create_gradient_donut(start_color, end_color, match_percentage, platform_nam
         ratio = i / (n_segments - 1)  # 計算比例
         color = tuple(a + (b - a) * ratio for a, b in zip(start_color, end_color))  # 根據比例計算顏色
         colors.append(color)  # 將顏色添加到顏色列表
+    
+    # 添加透明色給未填充部分
+    colors.append((1, 1, 1, 0))  # 添加透明顏色
+    
+    # 設置圖表樣式
+    plt.style.use('dark_background')  # 使用深色主題，配合Streamlit
+    fig, ax = plt.subplots(figsize=(4, 4))  # 調整大小適應Streamlit側邊
