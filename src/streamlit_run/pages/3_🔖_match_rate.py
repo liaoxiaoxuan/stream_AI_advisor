@@ -121,11 +121,11 @@ def get_data(connection, table):
 
 # 主函數
 def main():
-    st.title('搜尋 Netflix 和 Disney+ 的電影')  # 設定應用程式的標題
-    st.subheader('Searching Movies on Netflix and Disney+')
+    st.title('Netflix 和 Disney+ 的推薦度比較')  # 設定應用程式的標題
+    st.subheader('Recommendation Ratio of Netflix and Disney+')
     st.write(
         """
-        請從左側欄位選擇篩選條件
+        - 請從左側欄位選擇篩選條件
         """)
 
     # 數據庫配置
@@ -176,7 +176,7 @@ def main():
         # 建立篩選器
         
         # 側邊欄篩選器
-        st.sidebar.header('篩選條件')  # 設定側邊欄的篩選條件標題
+        st.sidebar.header(' ☑️ 選擇條件')  # 設定側邊欄的篩選條件標題
 
         # Type篩選器
         type_filter = st.sidebar.multiselect('選擇類型', sorted(dataframe['type'].unique()))  # 根據電影／影集類型篩選
@@ -289,7 +289,7 @@ def main():
     disney_percentage = calculate_match_percentage(dataframe, filtered_dataframe, 'Disney+')  # 計算Disney+的符合條件百分比
     
     # 顯示匹配結果和統計圖表
-    st.markdown("### 📊 搜尋結果統計")  # 顯示統計標題
+    st.markdown("### 🧩 匹配指數")  # 顯示統計標題
     
     # 使用columns布局來並排顯示兩個圖表
     col1, col2 = st.columns(2)  # 創建兩列以並排顯示圖表
@@ -307,8 +307,8 @@ def main():
     with col2:
         # Disney+環形圖
         disney_fig = create_gradient_donut(
-            start_color=(0/255, 32/255, 52/255),     # Disney+ 深藍
-            end_color=(104/255, 212/255, 212/255),   # Disney+ 淺藍綠
+            start_color=(104/255, 212/255, 212/255),     # Disney+ 深藍
+            end_color=(0/255, 32/255, 52/255),   # Disney+ 淺藍綠
             match_percentage=disney_percentage,  # 設定符合條件的百分比
             platform_name='Disney+'  # 設定平台名稱
         )

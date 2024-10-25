@@ -92,7 +92,7 @@ def main():
         # 建立篩選器
         
         # 側邊欄篩選器
-        st.sidebar.header('篩選條件')  # 設定側邊欄的篩選條件標題
+        st.sidebar.header(' 🔎 篩選條件')  # 設定側邊欄的篩選條件標題
 
         # Type篩選器
         type_filter = st.sidebar.multiselect('選擇類型', sorted(dataframe['type'].unique()))  # 根據電影／影集類型篩選
@@ -181,7 +181,7 @@ def main():
         display_columns = ['type', 'title', 'director', 'cast', 'country', 'release_year', 'rating', 'duration', 'listed_in', 'description']
         
         # 分別顯示Netflix和Disney+的結果
-        st.subheader("- Netflix 搜尋結果：")
+        st.subheader(" 🍿 Netflix 搜尋結果：")
         netflix_results = filtered_dataframe[filtered_dataframe['source'] == 'Netflix'][display_columns]
         netflix_count = len(netflix_results)
 
@@ -193,7 +193,7 @@ def main():
 
         # st.dataframe(netflix_results)
         
-        st.subheader("- Disney+ 搜尋結果：")
+        st.subheader(" 🍿 Disney+ 搜尋結果：")
         disney_results = filtered_dataframe[filtered_dataframe['source'] == 'Disney+'][display_columns]
 
         disney_count = len(disney_results)
