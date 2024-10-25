@@ -25,7 +25,7 @@ st.write('幫助您在 Netflix 與 Disney+ 之間，作出最適切的選擇！'
 
 # 測試從local上傳圖片
 # 設定圖片文件夾路徑
-image = Image.open("D:\PYTHON\oo_hank_project\cat_choose.png")
+image = Image.open(r".\reports\collect_data\cat_choose.png")
 st.image(image)
 # st.image(image, caption="串接💝")
 # # 獲取圖片文件夾中所有圖片文件的路徑
