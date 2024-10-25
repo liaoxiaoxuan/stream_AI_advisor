@@ -57,3 +57,20 @@ def create_gradient_donut(start_color, end_color, match_percentage, platform_nam
     
     return fig  # 返回生成的圖表
 
+
+
+def display_filter_summary(filters):
+    """顯示所選擇的篩選條件"""
+    st.markdown("### 📋 已選擇的篩選條件")  # 顯示標題
+    
+    # 創建一個風格化的容器來顯示篩選條件
+    with st.container():
+        for filter_name, filter_value in filters.items():
+            if filter_value:  # 只顯示有被選擇的條件
+                if isinstance(filter_value, tuple):  # 範圍型篩選條件
+                    st.markdown(f"**{filter_name}:** {filter_value[0]} 到 {filter_value[1]}")  # 顯示範圍
+                elif isinstance(filter_value, list):  # 多選篩選條件
+                    if filter_value:  # 確保列表不為空
+                        st.markdown(f"**{filter_name}:** {', '.join(map(str, filter_value))}")  # 顯示選擇的項目
+                else:  # 單選篩選條件
+                    st.markdown(f"**{filter_name}:** {filter_value}")  # 顯示選擇的值
