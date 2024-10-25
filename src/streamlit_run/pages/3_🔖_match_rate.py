@@ -313,3 +313,9 @@ def main():
             platform_name='Disney+'  # 設定平台名稱
         )
         st.pyplot(disney_fig)  # 在Streamlit中顯示Disney+環形圖
+
+
+
+# 啟動應用
+if __name__ == "__main__":
+    main()  # 執行主函數
