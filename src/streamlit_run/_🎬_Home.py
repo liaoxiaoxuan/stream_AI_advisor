@@ -14,7 +14,7 @@ from PIL import Image
 # 設置頁面標題與文字
 st.title('串流影音平台推薦系統')
 st.subheader("Streaming Media Platform Recommendation System")
-st.write('幫助您在 Netflix 與 Disney+ 之間，作出最適切的選擇！'+os.getcwd())
+st.write('幫助您在 Netflix 與 Disney+ 之間，作出最適切的選擇！')
 
 
 
@@ -26,7 +26,8 @@ st.write('幫助您在 Netflix 與 Disney+ 之間，作出最適切的選擇！'
 
 # 測試從local上傳圖片
 # 設定圖片文件夾路徑
-image = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/cat_choose.png")
+image = Image.open(r"https://github.com/liaoxiaoxuan/stream_AI_advisor/tree/main/reports/collect_data/cat_choose.png")
+# image = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/cat_choose.png")
 st.image(image)
 # st.image(image, caption="串接💝")
 # # 獲取圖片文件夾中所有圖片文件的路徑
