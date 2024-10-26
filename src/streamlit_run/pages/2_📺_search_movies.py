@@ -12,8 +12,8 @@ import os
 
 
 
-# 載入 .env 檔案中的環境變數
-load_dotenv()
+# # 載入 .env 檔案中的環境變數
+# load_dotenv()
 
 
 
@@ -90,8 +90,8 @@ def main():
 
     # }
 
-    netflix_database_file = os.getenv(r"/mount/src/stream_ai_advisor/data/data_SQLite/netflix.db")  # Netflix資料庫文件的路徑
-    disney_database_file = os.getenv(r"/mount/src/stream_ai_advisor/data/data_SQLite/disney.db")  # Disney+資料庫文件的路徑
+    netflix_database_file = r"/mount/src/stream_ai_advisor/data/data_SQLite/netflix.db"  # Netflix資料庫文件的路徑
+    disney_database_file = r"/mount/src/stream_ai_advisor/data/data_SQLite/disney.db"  # Disney+資料庫文件的路徑
 
 
     # 創建數據庫連接
