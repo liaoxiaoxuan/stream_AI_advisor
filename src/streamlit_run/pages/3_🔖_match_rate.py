@@ -183,8 +183,8 @@ def main():
 
     if netflix_connection is not None and disney_connection is not None:  # 確認兩個資料庫的連接是否成功
         # 獲取Netflix和Disney+的數據
-        netflix_dataframe = get_data(netflix_connection, 'data_netflix')  # 從Netflix資料庫獲取數據
-        disney_dataframe = get_data(disney_connection, 'data_disney_plus')  # 從Disney+資料庫獲取數據
+        netflix_dataframe = get_data(netflix_connection, 'netflix_titles')  # 從Netflix資料庫獲取數據
+        disney_dataframe = get_data(disney_connection, 'Disney_titles')  # 從Disney+資料庫獲取數據
 
         # 添加來源列
         netflix_dataframe['source'] = 'Netflix'  # 在Netflix數據集中添加一列，用於標識來源
