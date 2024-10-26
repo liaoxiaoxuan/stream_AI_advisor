@@ -1,5 +1,9 @@
 import streamlit as st
 import pandas as pd
+
+import sqlite3
+from sqlite3 import Error
+
 import mysql.connector
 from mysql.connector import Error  # 引入MySQL連接器中的Error類，用於處理錯誤
 
@@ -13,13 +17,27 @@ load_dotenv()
 
 
 
-# 連接到MySQL數據庫
-def create_connection(db_config):
+# # 連接到MySQL數據庫
+# def create_connection(db_config):
+    # connection = None
+    # try:
+        # # 使用提供的配置參數連接到MySQL數據庫
+        # connection = mysql.connector.connect(**db_config)
+        # print(f"Successfully connected to MySQL database: {db_config['database']}")
+    # except Error as e:
+        # # 如果發生錯誤，輸出錯誤訊息
+        # print(f"The error '{e}' occurred")
+    # return connection  # 返回連接物件
+
+
+
+# 連接到SQLite數據庫
+def create_connection(db_file):
     connection = None
     try:
-        # 使用提供的配置參數連接到MySQL數據庫
-        connection = mysql.connector.connect(**db_config)
-        print(f"Successfully connected to MySQL database: {db_config['database']}")
+        # 使用提供的數據庫文件連接到SQLite數據庫
+        connection = sqlite3.connect(db_file)
+        print(f"Successfully connected to SQLite database: {db_file}")
     except Error as e:
         # 如果發生錯誤，輸出錯誤訊息
         print(f"The error '{e}' occurred")
@@ -45,36 +63,40 @@ def main():
         """)
 
     # 數據庫配置
-    netflix_database_config = {  # Netflix資料庫的連接配置
+    # netflix_database_config = {  # Netflix資料庫的連接配置
 
-        # 'host': 'your_netflix_host',
-        # 'database': 'netflix_database',
-        # 'user': 'your_netflix_username',
-        # 'password': 'your_netflix_password'
+        # # 'host': 'your_netflix_host',
+        # # 'database': 'netflix_database',
+        # # 'user': 'your_netflix_username',
+        # # 'password': 'your_netflix_password'
 
-        'host' : os.getenv('MYSQL_HOST_N'),
-        'user' : os.getenv('MYSQL_USER_N'),
-        'password' : os.getenv('MYSQL_PASSWORD_N'),
-        'database' : os.getenv('MYSQL_DATABASE_N')
+        # 'host' : os.getenv('MYSQL_HOST_N'),
+        # 'user' : os.getenv('MYSQL_USER_N'),
+        # 'password' : os.getenv('MYSQL_PASSWORD_N'),
+        # 'database' : os.getenv('MYSQL_DATABASE_N')
 
-    }
+    # }
 
-    disney_database_config = {  # Disney+資料庫的連接配置
-        # 'host': 'your_disney_host',
-        # 'database': 'disney_database',
-        # 'user': 'your_disney_username',
-        # 'password': 'your_disney_password'
+    # disney_database_config = {  # Disney+資料庫的連接配置
+        # # 'host': 'your_disney_host',
+        # # 'database': 'disney_database',
+        # # 'user': 'your_disney_username',
+        # # 'password': 'your_disney_password'
 
-        'host' : os.getenv('MYSQL_HOST_D'),
-        'user' : os.getenv('MYSQL_USER_D'),
-        'password' : os.getenv('MYSQL_PASSWORD_D'),
-        'database' : os.getenv('MYSQL_DATABASE_D')
+        # 'host' : os.getenv('MYSQL_HOST_D'),
+        # 'user' : os.getenv('MYSQL_USER_D'),
+        # 'password' : os.getenv('MYSQL_PASSWORD_D'),
+        # 'database' : os.getenv('MYSQL_DATABASE_D')
 
-    }
+    # }
+
+    netflix_database_file = os.getenv(r"/mount/src/stream_ai_advisor/data/data_SQLite/netflix.db")  # Netflix資料庫文件的路徑
+    disney_database_file = os.getenv(r"/mount/src/stream_ai_advisor/data/data_SQLite/disney.db")  # Disney+資料庫文件的路徑
+
 
     # 創建數據庫連接
-    netflix_connection = create_connection(netflix_database_config)  # 連接Netflix資料庫
-    disney_connection = create_connection(disney_database_config)  # 連接Disney+資料庫
+    netflix_connection = create_connection(netflix_database_file)  # 連接Netflix資料庫
+    disney_connection = create_connection(disney_database_file)  # 連接Disney+資料庫
 
     if netflix_connection is not None and disney_connection is not None:  # 確認兩個資料庫的連接是否成功
         # 獲取Netflix和Disney+的數據
