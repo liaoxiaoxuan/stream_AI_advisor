@@ -38,7 +38,7 @@ with tab2:
     st.header("比較 Netflix 和 Disney+ 影片類型")
     st.subheader("The comparison of movie genres between Netflix and Disney+")
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Type Distribution pie.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Type Distribution pie.png")
     st.image(image_N_bar_type, caption="Netflix 影片類型佔比")
     image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content type Distribution pie.png")
     st.image(image_D_bar_type, caption="Disney+ 影片類型佔比")
