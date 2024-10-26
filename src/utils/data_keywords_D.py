@@ -1,4 +1,5 @@
 import mysql.connector
+import sqlite3
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
@@ -18,14 +19,15 @@ def extract_keywords_tfidf(tfidf_matrix, feature_names, num_keywords=5):
 
 
 # 定義一個處理電影摘要的函數
-def process_movie_summaries(host=None, user=None, password=None, database=None, name='D', table_name='data_disney_plus'):
+def process_movie_summaries(host=None, user=None, password=None, database=None, name='N', table_name='Disney_titles'):
     # 連接到MySQL數據庫
-    connection = mysql.connector.connect(
-        host = host or os.getenv(f'MYSQL_HOST_{name}'),
-        user = user or os.getenv(f'MYSQL_USER_{name}'),
-        password = password or os.getenv(f'MYSQL_PASSWORD_{name}'),
-        database = database or os.getenv(f'MYSQL_DATABASE_{name}')
-    )
+    # connection = mysql.connector.connect(
+        # host = host or os.getenv(f'MYSQL_HOST_{name}'),
+        # user = user or os.getenv(f'MYSQL_USER_{name}'),
+        # password = password or os.getenv(f'MYSQL_PASSWORD_{name}'),
+        # database = database or os.getenv(f'MYSQL_DATABASE_{name}')
+    # )
+    connection = sqlite3.connect(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\data\data_SQLite\disney.db")
     cursor = connection.cursor()
 
 
@@ -62,14 +64,20 @@ def process_movie_summaries(host=None, user=None, password=None, database=None, 
     # return
 
     # 檢查是否存在 'keywords' 列，如果不存在則創建
-    cursor.execute(f"SHOW COLUMNS FROM {table_name} LIKE 'keywords'")
+    # cursor.execute(f"SHOW COLUMNS FROM {table_name} LIKE 'keywords'")
+    query = f"""
+        SELECT name 
+        FROM pragma_table_info('{table_name}')
+        WHERE name = ?
+    """
+    cursor.execute(query, ('keywords',))
     result = cursor.fetchone()
     if not result:
         cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN keywords TEXT")
     
 
     # 更新數據庫中的 'keywords' 列
-    update_query = f"UPDATE {table_name} SET keywords = %s WHERE show_id = %s"
+    update_query = f"UPDATE {table_name} SET keywords = ? WHERE show_id = ?"
     for _, row in tqdm(df.iterrows(), total=len(df)):
         cursor.execute(update_query, (row['keywords'], row['show_id']))
 
