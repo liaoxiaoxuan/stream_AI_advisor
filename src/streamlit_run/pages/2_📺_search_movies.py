@@ -4,8 +4,8 @@ import pandas as pd
 import sqlite3
 from sqlite3 import Error
 
-import mysql.connector
-from mysql.connector import Error  # 引入MySQL連接器中的Error類，用於處理錯誤
+# import mysql.connector
+# from mysql.connector import Error  # 引入MySQL連接器中的Error類，用於處理錯誤
 
 from dotenv import load_dotenv
 import os
