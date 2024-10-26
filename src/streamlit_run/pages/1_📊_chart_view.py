@@ -18,9 +18,9 @@ with tab1:
     st.header("資料來源與簡介")
     st.subheader("Data Sources and Overview")
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content type Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content type Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影片類型數量")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content type Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content type Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影片類型數量")
     st.write(
         """
@@ -40,7 +40,7 @@ with tab2:
     
     image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Type Distribution pie.png")
     st.image(image_N_bar_type, caption="Netflix 影片類型佔比")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content type Distribution pie.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content type Distribution pie.png")
     st.image(image_D_bar_type, caption="Disney+ 影片類型佔比")
     st.write(
         """
@@ -52,9 +52,9 @@ with tab3:
     st.header("比較 Netflix 和 Disney+ 收錄影片的導演")
     st.subheader("Comparison of Directors Featured in Netflix and Disney+ Movies")
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Director Multi_label Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Director Multi_label Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 收錄影片，參與指導數量前 15 名的導演")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Director Multi_label Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Director Multi_label Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 收錄影片，參與指導數量前 15 名的導演")
     st.write(
         """
@@ -68,9 +68,9 @@ with tab4:
     st.header("比較 Netflix 和 Disney+ 收錄影片的卡司")
     st.subheader("Comparison of Directors Featured in Netflix and Disney+ Movies")
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Cast Multi_label Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Cast Multi_label Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 收錄影片，參與演出數量前 15 名的卡司")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Cast Multi_label Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Cast Multi_label Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 收錄影片，參與演出數量前 15 名的卡司")
     st.write(
         """
@@ -88,9 +88,9 @@ with tab5:
         - 由於兩平台收錄影片的製作國家眾多，因此僅以出現次數前幾名的國家進行可視化呈現。
         """)
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Country Multi_label Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Country Multi_label Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 收錄影片，製作影片前幾名的國家")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Country Multi_label Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Country Multi_label Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 收錄影片，製作影片前幾名的國家")
     st.write(
         """
@@ -99,9 +99,9 @@ with tab5:
         - 在 `Disney+` ，第二多的是英國（U. A. ）所參與製作的電影，第三則是加拿大（Canada）。
         """)
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Country Combo_Counts Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Country Combo_Counts Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 收錄影片，共同參與製作影片前幾名的國家組合")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Country Combo_Counts Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Country Combo_Counts Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 收錄影片，共同參與製作影片前幾名的國家組合")
     st.write(
         """
@@ -111,9 +111,9 @@ with tab5:
         - 綜合來看，和前面兩張圖表不同的是，即使從「共同製作」的角度來分析， `Netflix` 平台較多單一國家製作的影片，但 `Disney+` 多為美國（U. S. ）和他國合作的作品。
         """)
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N _Co-occurrence Matrix of Labels by Country.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N _Co-occurrence Matrix of Labels by Country.png")
     st.image(image_N_bar_type, caption="以「共獻矩陣」呈現 Netflix 收錄影片，共同參與製作影片前幾名的國家組合")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D _Co-occurrence Matrix of Labels by Country.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D _Co-occurrence Matrix of Labels by Country.png")
     st.image(image_D_bar_type, caption="以「共獻矩陣」呈現 Disney+ 收錄影片，共同參與製作影片前幾名的國家組合")
     st.write(
         """
@@ -125,9 +125,9 @@ with tab6:
     st.header("Netflix 和 Disney+ 影片上架時間分布")
     st.subheader("The distribution of release times for shows on Netflix and Disney+")
 
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N content addition heatmap.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N content addition heatmap.png")
     st.image(image_N_bar_type, caption="以「共獻矩陣」呈現 Netflix 影片上架時間（包含年、月）")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D content addition heatmap.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D content addition heatmap.png")
     st.image(image_D_bar_type, caption="以「共獻矩陣」呈現 Disney+ 影片上架時間（包含年、月）")
     st.write(
         """
@@ -135,9 +135,9 @@ with tab6:
         - 在 `Disney+` 的上架情形，影片的上架數量平均成長，唯有 2019/11 有突破性的新增數，高達 730 部之多，這恰好也是 `Disney+` 平台的推出時間。
         """)
 
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Yearly Growth of TV Shows and Movies on Netflix.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Yearly Growth of TV Shows and Movies on Netflix.png")
     st.image(image_N_bar_type, caption="以組合圖呈現 Netflix 影片數量成長")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Yearly Growth of TV Shows and Movies on Disney+.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Yearly Growth of TV Shows and Movies on Disney+.png")
     st.image(image_D_bar_type, caption="以組合圖呈現 Disney+ 影片數量成長")
     st.write(
         """
@@ -151,7 +151,7 @@ with tab7:
     st.header("Netflix 和 Disney+ 影片的年齡分級分布")
     st.subheader("The age rating distribution of shows on Netflix and Disney+")
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Rating Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Rating Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影片的年齡分級分布")
     st.write(
         """
@@ -159,7 +159,7 @@ with tab7:
         2. 若把電影分級獨立出來看，當中收錄最多的是 `R`（限制級），「17歲以下必須由父母或者監護陪伴才能觀看」；其次是 `PG-13`（特別輔導級），「13 歲以下建議要有父母陪同觀看，一些內容對兒童很不適宜」，內容雖然「沒有粗野的持續暴力鏡頭，一般沒有裸體鏡頭」，但「有時會有吸毒鏡頭和髒話」。
         """)
     
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Rating Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Rating Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影片的年齡分級分布")
     st.write(
         """
@@ -189,9 +189,9 @@ with tab8:
         - 此外，兩平台的時長記錄瑣碎且數量龐大，尤其是 `Movie` 的資料，因此該部分的分析以 `分組` 的方式加以計數、統計和可視化呈現。
         """)
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Movie Duration Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Movie Duration Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 電影時長分布")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Movie Duration Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Movie Duration Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 電影時長分布")
     st.write(
         """
@@ -201,9 +201,9 @@ with tab8:
         - 整體來看，`150 分鐘` 以上的電影，在兩平台的收錄量都比較少，`120 分鐘` 以下的影片佔多數。
         """)
 
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content TV Show Duration Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content TV Show Duration Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影集時長分布")
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content TV Show Duration Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content TV Show Duration Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影集時長分布")
     st.write(
         """
@@ -221,7 +221,7 @@ with tab9:
         - 兩平台影片內容分類的類別繁多，在此僅以出現次數 `前 15 名` 進行可視化呈現。
         """)
     
-    image_N_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Netflix\N Content Listed_in Multi_label Distribution bar.png")
+    image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content Listed_in Multi_label Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影片內容分類")
     st.write(
         """
@@ -229,7 +229,7 @@ with tab9:
         - 直到第 4 名才有 `TV Show` 的類別 `International Movies` 上榜，而後一直要到第 7 與第 8 才有 `TV Show` 的類別，分別是 `TV Drama` 和 `TV Comedies`，類型與 `Movies` 前 3 名相同。
         """)
     
-    image_D_bar_type = Image.open(r"D:\PYTHON\oo_hank_project\stream_AI_advisor\reports\collect_data\Disney+\D Content Listed_in Multi_label Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney+/D Content Listed_in Multi_label Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影片內容分類")
     st.write(
         """
