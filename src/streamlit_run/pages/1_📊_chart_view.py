@@ -20,7 +20,7 @@ with tab1:
     
     image_N_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Netflix/N Content type Distribution bar.png")
     st.image(image_N_bar_type, caption="Netflix 影片類型數量")
-    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney/D Content type Distribution bar.png")
+    image_D_bar_type = Image.open(r"/mount/src/stream_ai_advisor/reports/collect_data/Disney/D Content Type Distribution bar.png")
     st.image(image_D_bar_type, caption="Disney+ 影片類型數量")
     st.write(
         """
