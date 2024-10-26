@@ -7,7 +7,7 @@ from sqlite3 import Error
 # import mysql.connector
 # from mysql.connector import Error  # 引入MySQL連接器中的Error類，用於處理錯誤
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 
 
@@ -117,7 +117,7 @@ def main():
         st.sidebar.header(' 🔎 篩選條件')  # 設定側邊欄的篩選條件標題
 
         # Type篩選器
-        type_filter = st.sidebar.multiselect('選擇類型', sorted(dataframe['type'].unique()))  # 根據電影／影集類型篩選
+        type_filter = st.sidebar.multiselect('選擇類型', sorted(dataframe['type'].str.strip().unique()))  # 根據電影／影集類型篩選
 
         # 將需要排序的選項列表準備好
         titles = sorted(dataframe['title'].unique())
