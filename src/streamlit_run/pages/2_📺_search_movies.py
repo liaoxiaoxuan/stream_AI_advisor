@@ -48,7 +48,7 @@ def create_connection(db_file):
 # 從數據庫獲取數據
 def get_data(connection, table):
     # 從指定的數據表中選取相關的數據字段
-    query = f"SELECT type, title, director, cast, country, release_year, rating, duration, listed_in, description, keywords FROM {table}"
+    query = f'SELECT "type", "title", "director", "cast", "country", "release_year", "rating", "duration", "listed_in", "description", "keywords" FROM "{table}"'
     return pd.read_sql(query, connection)  # 使用Pandas的read_sql方法執行查詢，並返回數據框
 
 
