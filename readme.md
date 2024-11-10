@@ -67,7 +67,6 @@
 + 用戶可以選擇篩選條件（如影片類型、影片標題、導演、演員等），系統將顯示 **Netflix** 和 **Disney+** 兩平台中符合條件的影片數量比例。
 + 這有助於用戶了解每個平台在符合其需求的影片範圍內的選擇比例，從而幫助使用者選擇最適合的觀影平台。
 
-
 ## 專案結構
 
 ```bash
@@ -108,6 +107,28 @@ stream_AI_advisor
     ├── data_sql_disney_plus.py            # Disney+ SQL 操作模組
     └── data_sql_netflix.py                # Netflix SQL 操作模組
 ```
+
+## 安裝與執行
+1. Clone 本專案：
+
+    ```bash
+    git clone https://github.com/liaoxiaoxuan/stream_AI_advisor.git
+    ```
+
+2. 切換至專案目錄並安裝必要套件：
+
+    ```bash
+    cd stream_AI_advisor/src
+    pip install -r requirements.txt
+    ```
+
+3. 啟動 Streamlit 應用程式：
+    
+    ```bash
+    streamlit run app.py
+    ```
+    
+4. 在瀏覽器中打開本地地址（預設為 `http://localhost:8501` ），開始使用推薦系統。
 
 ## 資料來源
 1. Netflix Movies and TV Shows  
