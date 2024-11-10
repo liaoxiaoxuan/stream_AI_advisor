@@ -1,5 +1,5 @@
 # AI 驅動的串流平台選擇系統：為 Netflix 和 Disney+ 提供深度推薦
-### AI-Driven Streaming Platform Selection System: In-Depth Recommendations for Netflix and Disney+
+AI-Driven Streaming Platform Selection System: In-Depth Recommendations for Netflix and Disney+
 
 ---
 
@@ -123,11 +123,11 @@ stream_AI_advisor
     ```
 
 3. 啟動 Streamlit 應用程式：
-    
+
     ```bash
     streamlit run app.py
     ```
-    
+
 4. 在瀏覽器中打開本地地址（預設為 `http://localhost:8501` ），開始使用推薦系統。
 
 ## 資料來源
