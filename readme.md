@@ -8,7 +8,7 @@ AI-Driven Streaming Platform Selection System: In-Depth Recommendations for Netf
 
 + 平台網址：https://pickyourstreambetweennetflixanddisneyplus.streamlit.app/  
 + 或點此 [🌐](https://pickyourstreambetweennetflixanddisneyplus.streamlit.app/) 進入平台
-+ 或掃描QRcode進入平台：
++ 或掃描QRcode進入平台：  
   ![image](https://github.com/user-attachments/assets/a3e87b0d-aaca-4577-b3a3-800d9563f4ee)
 
 
